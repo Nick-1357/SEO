@@ -47,19 +47,16 @@ def stabilityai_generate(prompt: str,
     print("Generating " + section + " image...")
     image_bytes = query({
         "inputs": f"{prompt}",
-        "width":1280,
-        "height":800,
+        "size": size
     })
 
     image = Image.open(io.BytesIO(image_bytes))
-    print("Done")
     directory = "./content"  # Change this to your directory
-    
     # Create the directory if it doesn't exist
     if not os.path.exists(directory):
         os.makedirs(directory)
-
     image.save(os.path.join(directory, f'{section}.jpg'))
+    print("Done")
     return (f'{section}.jpg')
     
 
@@ -400,12 +397,10 @@ def get_image_context(company_name: str,
     Format: {context_json}
     """
     image_context = chat_with_gpt3("Image Context Generation", prompt, temp=0.7, p=0.8)
-    image_context.join("hi")
-    print(image_context)
     startindex = image_context.find("{")
     endindex = image_context.rfind("}")
     if startindex == -1 or endindex == -1:
-        return ("False")
+        return ("None")
     else:
         image_context = image_context[startindex:endindex+1]
     imagecontext = json.loads(image_context)
@@ -421,8 +416,6 @@ def generate_gallery_images(company_name: str,
     gallery = []
     for i in range(8):
         gallery.append(get_image_context(company_name, keyword, f"gallery {i}", topic, industry))
-
-    print(gallery)
     return gallery
     
 def image_generation(company_name: str,
@@ -446,8 +439,8 @@ def image_generation(company_name: str,
 
     with concurrent.futures.ThreadPoolExecutor() as executor:
         # Start the threads and collect the futures for non-gallery sections
-        for section in ["banner", "about"]:
-            futures = {executor.submit(get_image_context, company_name, keyword, section, topic, industry): section}
+       
+        futures = {executor.submit(get_image_context, company_name, keyword, section, topic, industry): section for section in ["banner", "about"]}
 
         # Add the gallery futures
         image_json["gallery"]["image"] = (generate_gallery_images(company_name, keyword, topic, industry))
@@ -461,6 +454,7 @@ def image_generation(company_name: str,
             else:
                 if image_url:
                     image_json[section]["image"] = image_url
+    print(image_json)
     print("Images Generated")
     return image_json
     
@@ -511,6 +505,8 @@ def main():
         try:
             image_result = image_future.result()
             content_result = content_future.result()
+            print(image_result)
+            print(content_result)
         except Exception as e:
             print("An exception occurred during execution: ", e)
         merged_dict = deep_update(content_result, image_result)
