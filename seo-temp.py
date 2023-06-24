@@ -51,7 +51,8 @@ def stabilityai_generate(prompt: str,
     })
 
     image = Image.open(io.BytesIO(image_bytes))
-    directory = "./content"  # Change this to your directory
+    print("Done")
+    directory = os.path.join(os.getcwd(), "pictures")
     # Create the directory if it doesn't exist
     if not os.path.exists(directory):
         os.makedirs(directory)
@@ -61,13 +62,13 @@ def stabilityai_generate(prompt: str,
     
 
 def generate_content_response(prompt: str,
-                      temp: float,
-                      p: float,
-                      freq: float,
-                      presence: float,
-                      retries: int,
-                      max_retries: int,
-                      model: str) -> tuple:
+                              temp: float,
+                              p: float,
+                              freq: float,
+                              presence: float,
+                              retries: int,
+                              max_retries: int,
+                              model: str) -> tuple:
     try:
         response = openai.ChatCompletion.create(
             model=f"{model}",
@@ -309,7 +310,7 @@ def generate_content(company_name: str,
                 "p": "..."
         },
         "blogs":{
-            "h2": "",
+            "h2": "..",
             "post": [{
                     "h3": "...",
                     "p": "...",
@@ -457,9 +458,8 @@ def image_generation(company_name: str,
     print(image_json)
     print("Images Generated")
     return image_json
-    
-    
-#=======================================================================================================================
+
+# =======================================================================================================================
 # Main Function
 # =======================================================================================================================
 
