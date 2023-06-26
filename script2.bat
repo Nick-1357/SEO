@@ -15,7 +15,7 @@ set "Keyword[2]=Best Biscuit Company in Malaysia"
 set "Keyword[3]=Best Hotel in Malaysia"
 set "Keyword[4]=Car Rental Company in Malaysia"
 set "Keyword[5]=Best Ice Cream in Malaysia"
-set "Keyword[6]=Top Tech Company in Malaysia"
+set "Keyword[6]=Best Phone Company in Malaysia"
 set "Keyword[7]=Car Delership in Malaysia"
 set "Keyword[8]=Online Florist in Malaysia"
 

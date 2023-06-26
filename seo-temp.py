@@ -51,8 +51,7 @@ def stabilityai_generate(prompt: str,
     })
 
     image = Image.open(io.BytesIO(image_bytes))
-    print("Done")
-    directory = os.path.join(os.getcwd(), "pictures")
+    directory = os.path.join(os.getcwd(), "content")
     # Create the directory if it doesn't exist
     if not os.path.exists(directory):
         os.makedirs(directory)
@@ -147,7 +146,7 @@ def chat_with_gpt3(stage: str,
     for retries in range(max_retries):
         response, prompt_tokens, completion_tokens, total_tokens = generate_content_response(prompt, temp, p, freq, presence, retries, max_retries, model)
         if response is not None:   # If a response was successfully received
-            write_to_csv((stage, prompt_tokens, completion_tokens, total_tokens))
+            write_to_csv((stage, prompt_tokens, completion_tokens, total_tokens, None, None))
             return response
     raise Exception(f"Max retries exceeded. The API continues to respond with an error after " + str(max_retries) + " attempts.")
 
@@ -162,23 +161,38 @@ def chat_with_dall_e(prompt: str,
             return url
     raise Exception(f"Max retries exceeded. The API continues to respond with an error after " + str(max_retries) + " attempts.")
 
+#=======================================================================================================================
+# CSV Functions
+#=======================================================================================================================
 
 def write_to_csv(data: tuple):
     file_exists = os.path.isfile('token_usage.csv')  # Check if file already exists
-    with open('token_usage.csv', 'a', newline='') as csvfile:
+    with open('token_usage.csv', 'a+', newline='') as csvfile:
         fieldnames = ['Company Name', 'Keyword', 'Iteration', 'Stage', 'Prompt Tokens', 'Completion Tokens', 'Total Tokens', 'Price']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         if not file_exists:
             writer.writeheader()  # If file doesn't exist, write the header
-        with open('token_usage.csv', 'r') as f:
-            last_row = None
-            for last_row in csv.DictReader(f):
-                pass  # The loop will leave 'last_row' as the last row
-            iteration = int(last_row['Iteration']) + 1 if last_row else 1  # If there is a last row, increment its 'Iteration' value by 1. Otherwise, start at 1
+
+        csvfile.seek(0)  # Move the file pointer to the beginning of the file so we can read from the start
+        last_row = None
+        for last_row in csv.DictReader(csvfile):
+            pass  # The loop will leave 'last_row' as the last row
+        if data[0] == 'Initial':
+            iteration = 0
+        else:
+            iteration = int(last_row['Iteration']) + 1 if last_row else 0  # If there is a last row, increment its 'Iteration' value by 1. Otherwise, start at 0
         price = 0.000002 * data[3]  # Calculate the price of the request
-        writer.writerow({'Iteration': iteration, 'Stage': data[0], 'Prompt Tokens': data[1], 'Completion Tokens': data[2], 'Total Tokens': data[3], 'Price': float(price)})
+        writer.writerow({'Company Name': data[4], 'Keyword': data[5], 'Iteration': iteration, 'Stage': data[0], 'Prompt Tokens': data[1], 'Completion Tokens': data[2], 'Total Tokens': data[3], 'Price': float(price)})
 
+    # file_exists = os.path.isfile('token_usage.csv')  # Check if file already exists
+    # with open('token_usage.csv', 'a', newline='') as csvfile:
+    #     fieldnames = ['Company Name', 'Keyword', 'Iteration', 'Stage', 'Prompt Tokens', 'Completion Tokens', 'Total Tokens', 'Price']
+    #     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+    #     if not file_exists:
+    #         writer.writeheader()
+    #     writer.writerow({'Company Name': company_name, 'Keyword': topic, 'Iteration': 0, 'Stage': 'Initial', 'Prompt Tokens': 0, 'Completion Tokens': 0, 'Total Tokens': 0, 'Price': 0})
 
+    
 # ##==================================================================================================
 # JSON Functions
 # ##==================================================================================================
@@ -193,14 +207,16 @@ def deep_update(source, overrides):
             source[key] = value
     return source
 
+  
+def processjson(jsonf: str) -> str:
+    startindex = jsonf.find("{")
+    endindex = jsonf.rfind("}")
+    if startindex == -1 or endindex == -1:
+        return None
+    else:
+        jsonf = jsonf[startindex:endindex+1]
+    return jsonf
 
-def correctjson(jsonfile: Dict):
-    prompt = f"""
-    Correct this json file:
-    {jsonfile}
-    """
-    correctedjson = chat_with_gpt3("JSON Correction", prompt, temp=0.2, p=0.1)
-    return correctedjson
 
 
 def sanitize_filename(filename: str) -> str:
@@ -371,6 +387,7 @@ def content_generation(company_name: str,
     description = generate_meta_description(company_name, topic, keyword)
     print(description)
     content = generate_content(company_name, topic, industry, keyword, title)
+    content = processjson(content)
     contentjson = json.loads(content)
     updated_json = {"meta": {"title": title, "description": description}}
     updated_json.update(contentjson)
@@ -395,19 +412,14 @@ def get_image_context(company_name: str,
         }
     """
     prompt = f"""
-    Please generate a description of an image for the {section} section about {keyword} and {topic}. 
-    The company name is {company_name} and the scope of the image is  {industry}
+    Please generate a description of a background image about {keyword} and {topic}. 
+    The scope of the image is  {industry}
     Format: {context_json}
     """
     image_context = chat_with_gpt3("Image Context Generation", prompt, temp=0.7, p=0.8)
-    startindex = image_context.find("{")
-    endindex = image_context.rfind("}")
-    if startindex == -1 or endindex == -1:
-        return "None"
-    else:
-        image_context = image_context[startindex:endindex+1]
+    image_context = processjson(image_context)
+
     imagecontext = json.loads(image_context)
-    
     imageurl = stabilityai_generate(imagecontext["context"], imagecontext["size"], section)
     return imageurl
 
@@ -417,8 +429,15 @@ def generate_gallery_images(company_name: str,
                             topic: str, 
                             industry: str) -> List[str]:
     gallery = []
-    for i in range(8):
-        gallery.append(get_image_context(company_name, keyword, f"gallery {i}", topic, industry))
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        futures = {executor.submit(get_image_context, company_name, keyword, f"gallery {i}", topic, industry): i for i in range(8)}
+
+        for future in concurrent.futures.as_completed(futures):
+            try:
+                result = future.result()  # Get the result of the future
+                gallery.append(result)
+            except Exception as e:
+                print(f"An exception occurred during execution: {e}")
     return gallery
 
 
@@ -459,10 +478,34 @@ def image_generation(company_name: str,
             else:
                 if image_url:
                     image_json[section]["image"] = image_url
-    print(image_json)
     print("Images Generated")
     return image_json
 
+def feature_function(company_name: str,
+                     topic: str,
+                     industry: str,
+                     selected_keyword: str,
+                     title: str) -> Dict:
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+                image_future = executor.submit(image_generation, company_name, topic, industry, selected_keyword)
+                content_future = executor.submit(content_generation, company_name, topic, industry, selected_keyword, title)
+                futures = [image_future, content_future]
+                done, not_done = concurrent.futures.wait(futures, timeout=60, return_when=concurrent.futures.ALL_COMPLETED)
+                try:
+                    image_result = image_future.result()
+                    content_result = content_future.result()
+                    print(json.dumps(image_result, indent=4))
+                    print(json.dumps(content_result, indent=4))
+                except Exception as e:
+                    print("An exception occurred during execution: ", e)
+                    
+                if image_result is None or content_result is None:
+                    print("Error: No results returned")
+                    return None
+                else:
+                    merged_dict = deep_update(content_result, image_result)
+                    return merged_dict
+            
 # =======================================================================================================================
 # Main Function
 # =======================================================================================================================
@@ -470,64 +513,64 @@ def image_generation(company_name: str,
 
 def main():
     # Get the company name and topic from the user
-    # pic = stabilityai_generate("An image of a beautiful bouquet of flowers arranged in a vase, with a tagline that says 'Affordable online flower shop in Malaysia'. The image showcases a variety of flowers in different colors and sizes, with a focus on the affordability of the shop's offerings.", "512x512")
+    flag = True
+    tries = 0
+    max_tries = 2
     try:
         company_name = sys.argv[1]
         topic = sys.argv[2]
     except IndexError:
         company_name = input("Company Name: ")
         topic = input("Your Keywords: ")
-        
-    # Open token.csv to track token usage
-    file_exists = os.path.isfile('token_usage.csv')  # Check if file already exists
-    with open('token_usage.csv', 'a', newline='') as csvfile:
-        fieldnames = ['Company Name', 'Keyword', 'Iteration', 'Stage', 'Prompt Tokens', 'Completion Tokens', 'Total Tokens', 'Price']
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        if not file_exists:
-            writer.writeheader()
-        writer.writerow({'Company Name': company_name, 'Keyword': topic, 'Iteration': 0, 'Stage': 'Initial', 'Prompt Tokens': 0, 'Completion Tokens': 0, 'Total Tokens': 0, 'Price': 0})
-
-    # Generate industry 
-    industry = get_industry(topic)
-    print(industry)
-
-    # Generate SEO keywords
-    long_tail_keywords = generate_long_tail_keywords(topic)
-    for number, keyword in enumerate(long_tail_keywords):
-        print(f"{number+1}. {keyword}")
-
-    # Generate title from keyword
-    selected_keyword = long_tail_keywords[random.randint(0, 4)]
-    print("Selected Keyword: " + selected_keyword)
-    title = generate_title(company_name, selected_keyword)
-    print(title)
     
-    with concurrent.futures.ThreadPoolExecutor() as executor:
-        image_future = executor.submit(image_generation, company_name, topic, industry, selected_keyword)
-        content_future = executor.submit(content_generation, company_name, topic, industry, selected_keyword, title)
-        futures = [image_future, content_future]
-        done, not_done = concurrent.futures.wait(futures, timeout=60, return_when=concurrent.futures.ALL_COMPLETED)
-        try:
-            image_result = image_future.result()
-            content_result = content_future.result()
-            print(image_result)
-            print(content_result)
+    while flag:
+        try:   
+            # Open token.csv to track token usage
+            write_to_csv(("Initial", 0, 0, 0, company_name, topic))
+
+            # Generate industry 
+            industry = get_industry(topic)
+            print(industry)
+
+            # Generate SEO keywords
+            long_tail_keywords = generate_long_tail_keywords(topic)
+            for number, keyword in enumerate(long_tail_keywords):
+                print(f"{number+1}. {keyword}")
+
+            # Generate title from keyword
+            selected_keyword = long_tail_keywords[random.randint(0, 4)]
+            print("Selected Keyword: " + selected_keyword)
+            title = generate_title(company_name, selected_keyword)
+            print(title)
+            
+            merged_dict = feature_function(company_name, topic, industry, selected_keyword, title)
+            if merged_dict is None:
+                print("Error: No results returned")
+                if tries < max_tries:
+                    tries += 1
+                else:
+                    print(f"Maximum tries exceeded. Exiting the program.")
+                    flag = False
+                    break
+            else:
+                flag = False
+                # Write to JSON file
+                directory_path = "content"
+                os.makedirs(directory_path, exist_ok=True)
+                with open(os.path.join(directory_path, f'data.json'), 'w', encoding='utf-8') as f:
+                    json.dump(merged_dict, f, ensure_ascii=False, indent=4)
+                
+                # End procedures
+                write_to_csv(("Complete", 0, 0, 0, company_name, topic))
+                
         except Exception as e:
-            print("An exception occurred during execution: ", e)
-        merged_dict = deep_update(content_result, image_result)
-
-    directory_path = "content"
-    os.makedirs(directory_path, exist_ok=True)
-    with open(os.path.join(directory_path, f'data.json'), 'w', encoding='utf-8') as f:
-        json.dump(merged_dict, f, ensure_ascii=False, indent=4)
-    
-    # End procedures
-    with open('token_usage.csv', 'a', newline='') as csvfile:
-        fieldnames = ['Company Name', 'Keyword', 'Iteration', 'Stage', 'Prompt Tokens', 'Completion Tokens', 'Total Tokens', 'Price']
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        if not file_exists:
-            writer.writeheader()
-        writer.writerow({'Stage': 'Complete', 'Prompt Tokens': 0, 'Completion Tokens': 0, 'Total Tokens': 0, 'Price': 0})
+            print(f"An exception occurred: {e}, retrying attempt {tries+1}")
+            if tries < max_tries:
+                tries += 1
+            else:
+                print(f"Maximum tries exceeded. Exiting the program.")
+                flag = False
+                break
 
 
 if __name__ == "__main__":
@@ -597,75 +640,75 @@ if __name__ == "__main__":
 # }
 
 
-{
-    "meta": {
-        "title": "Experience Sustainable Luxury: Hertz's Eco-Friendly Lodges in the Heart of Malaysian Rainforest",
-        "description": "Looking for the best hotel in Malaysia? Look no further than Hertz! Our eco-friendly lodges in the Malaysian rainforest offer a unique and sustainable travel experience. Book your stay now and enjoy the natural beauty of Malaysia while minimizing your environmental impact."
-    },
-    "banner": {
-        "h1": "Experience Sustainable Luxury: Hertz's Eco-Friendly Lodges in the Heart of Malaysian Rainforest",
-        "h2": "Discover the Best Hotel in Malaysia",
-        "button": [
-            "About Us",
-            "Learn More"
-        ]
-    },
-    "about": {
-        "h2": "About Us",
-        "p": "At Hertz, we believe in providing sustainable luxury experiences for our guests. Nestled in the heart of the Malaysian rainforest, our eco-friendly lodges offer a unique opportunity to connect with nature while enjoying the utmost comfort and convenience. With a commitment to environmental conservation and responsible tourism, we strive to create a harmonious balance between luxury and sustainability."
-    },
-    "blogs": {
-        "h2": "Latest Articles",
-        "post": [
-            {
-                "h3": "Exploring the Biodiversity of the Malaysian Rainforest",
-                "p": "Embark on a journey through the lush greenery of the Malaysian rainforest and discover its incredible biodiversity. From rare flora and fauna to breathtaking waterfalls, our expert guides will take you on an unforgettable adventure, providing insights into the delicate ecosystem that surrounds our lodges."
-            },
-            {
-                "h3": "The Benefits of Eco-Friendly Tourism",
-                "p": "Learn about the positive impact of eco-friendly tourism and how it contributes to the preservation of natural resources. Discover how our lodges incorporate sustainable practices such as solar power, waste management, and local community engagement to minimize our environmental footprint."
-            },
-            {
-                "h3": "Indulge in Luxury: The Amenities at Hertz's Eco-Friendly Lodges",
-                "p": "Experience the ultimate in luxury at our eco-friendly lodges. From spacious rooms with panoramic rainforest views to gourmet dining options featuring locally sourced ingredients, our lodges offer an unparalleled level of comfort and relaxation. Unwind at our spa, take a dip in the infinity pool, or simply enjoy the tranquility of nature."
-            }
-        ]
-    },
-    "faq": {
-        "h2": "Frequently Asked Questions",
-        "question": [
-            {
-                "h3": "Are the lodges fully sustainable?",
-                "p": "Yes, our lodges are designed with sustainability in mind. We utilize renewable energy sources such as solar power, implement efficient waste management systems, and prioritize the use of eco-friendly materials in our construction and operations."
-            },
-            {
-                "h3": "What activities are available for guests?",
-                "p": "There are plenty of activities to choose from during your stay at our lodges. Explore the rainforest on guided nature walks, embark on thrilling wildlife safaris, or simply relax and rejuvenate in the serene surroundings. Our knowledgeable staff can assist in planning personalized itineraries based on your interests."
-            },
-            {
-                "h3": "How can I make a reservation?",
-                "p": "Making a reservation is easy. Simply visit our website or contact our friendly customer service team. We recommend booking in advance to secure your preferred dates as our lodges are in high demand."
-            }
-        ]
-    }
-}
+# {
+#     "meta": {
+#         "title": "Experience Sustainable Luxury: Hertz's Eco-Friendly Lodges in the Heart of Malaysian Rainforest",
+#         "description": "Looking for the best hotel in Malaysia? Look no further than Hertz! Our eco-friendly lodges in the Malaysian rainforest offer a unique and sustainable travel experience. Book your stay now and enjoy the natural beauty of Malaysia while minimizing your environmental impact."
+#     },
+#     "banner": {
+#         "h1": "Experience Sustainable Luxury: Hertz's Eco-Friendly Lodges in the Heart of Malaysian Rainforest",
+#         "h2": "Discover the Best Hotel in Malaysia",
+#         "button": [
+#             "About Us",
+#             "Learn More"
+#         ]
+#     },
+#     "about": {
+#         "h2": "About Us",
+#         "p": "At Hertz, we believe in providing sustainable luxury experiences for our guests. Nestled in the heart of the Malaysian rainforest, our eco-friendly lodges offer a unique opportunity to connect with nature while enjoying the utmost comfort and convenience. With a commitment to environmental conservation and responsible tourism, we strive to create a harmonious balance between luxury and sustainability."
+#     },
+#     "blogs": {
+#         "h2": "Latest Articles",
+#         "post": [
+#             {
+#                 "h3": "Exploring the Biodiversity of the Malaysian Rainforest",
+#                 "p": "Embark on a journey through the lush greenery of the Malaysian rainforest and discover its incredible biodiversity. From rare flora and fauna to breathtaking waterfalls, our expert guides will take you on an unforgettable adventure, providing insights into the delicate ecosystem that surrounds our lodges."
+#             },
+#             {
+#                 "h3": "The Benefits of Eco-Friendly Tourism",
+#                 "p": "Learn about the positive impact of eco-friendly tourism and how it contributes to the preservation of natural resources. Discover how our lodges incorporate sustainable practices such as solar power, waste management, and local community engagement to minimize our environmental footprint."
+#             },
+#             {
+#                 "h3": "Indulge in Luxury: The Amenities at Hertz's Eco-Friendly Lodges",
+#                 "p": "Experience the ultimate in luxury at our eco-friendly lodges. From spacious rooms with panoramic rainforest views to gourmet dining options featuring locally sourced ingredients, our lodges offer an unparalleled level of comfort and relaxation. Unwind at our spa, take a dip in the infinity pool, or simply enjoy the tranquility of nature."
+#             }
+#         ]
+#     },
+#     "faq": {
+#         "h2": "Frequently Asked Questions",
+#         "question": [
+#             {
+#                 "h3": "Are the lodges fully sustainable?",
+#                 "p": "Yes, our lodges are designed with sustainability in mind. We utilize renewable energy sources such as solar power, implement efficient waste management systems, and prioritize the use of eco-friendly materials in our construction and operations."
+#             },
+#             {
+#                 "h3": "What activities are available for guests?",
+#                 "p": "There are plenty of activities to choose from during your stay at our lodges. Explore the rainforest on guided nature walks, embark on thrilling wildlife safaris, or simply relax and rejuvenate in the serene surroundings. Our knowledgeable staff can assist in planning personalized itineraries based on your interests."
+#             },
+#             {
+#                 "h3": "How can I make a reservation?",
+#                 "p": "Making a reservation is easy. Simply visit our website or contact our friendly customer service team. We recommend booking in advance to secure your preferred dates as our lodges are in high demand."
+#             }
+#         ]
+#     }
+# }
 
-{
-    "banner": {
-        "image": "banner.jpg"},
-    "about": {
-        "image": "about.jpg"
-        },
-    "gallery": {
-        "image": ["gallery0.jpg",
-        "gallery1.jpg",
-        "gallery2.jpg",
-        "gallery3.jpg",
-        "gallery4.jpg",
-        "gallery5.jpg",
-        "gallery6.jpg",
-        "gallery7.jpg"  
-        ]
-    }
-}
+# {
+#     "banner": {
+#         "image": "banner.jpg"},
+#     "about": {
+#         "image": "about.jpg"
+#         },
+#     "gallery": {
+#         "image": ["gallery0.jpg",
+#         "gallery1.jpg",
+#         "gallery2.jpg",
+#         "gallery3.jpg",
+#         "gallery4.jpg",
+#         "gallery5.jpg",
+#         "gallery6.jpg",
+#         "gallery7.jpg"  
+#         ]
+#     }
+# }
         

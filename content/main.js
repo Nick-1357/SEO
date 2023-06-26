@@ -25,7 +25,10 @@ window.onload = function() {
         metaTag.content = meta.description;
 
         document.getElementById('banner').innerHTML = `
-        <section class="bg-blurrylights">
+        <section style='background-image: url("${banner.image}"); background-repeat: no-repeat; -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;'>
             <div class="banner__centered">
             <div class="banner__text">
                 <div class="d-flex flex-column">
