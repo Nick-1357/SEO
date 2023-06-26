@@ -432,7 +432,6 @@ def get_image_context(company_name: str,
     image_context = processjson(image_context)
     print(image_context)
     imagecontext = json.loads(image_context)
-    # imageurl = chat_with_dall_e("Close-up of a man working on a sofa photorealistic, unreal engine, from Vogue Magazine", imagecontext["size"], section)
     imageurl = chat_with_dall_e(imagecontext["description"], imagecontext["size"], section)
     return imageurl
 

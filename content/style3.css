@@ -282,7 +282,7 @@ button {
   border-width: 2px;
   box-shadow: rgba(0, 0, 0, .2) 15px 28px 25px -18px;
   box-sizing: border-box;
-  color: #fea900;
+  color: #100f0f;
   cursor: pointer;
   display: inline-block;
   font-family: Neucha, sans-serif;
@@ -1330,3 +1330,20 @@ aside {
 section:hover .toolbar {
   display: block;
 }
+.anim_gradient {
+  background: linear-gradient(180deg, rgb(7, 102, 255) 0%, rgb(255, 0, 195) 100%);
+          background-size: "400% 400%";
+          animation : "gradient 10s ease infinite";
+      }
+        
+  @keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  };
