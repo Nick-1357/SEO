@@ -421,6 +421,7 @@ def get_image_context(company_name: str,
 
     imagecontext = json.loads(image_context)
     imageurl = stabilityai_generate(imagecontext["context"], imagecontext["size"], section)
+    # imageurl = chat_with_dall_e(imagecontext["context"], imagecontext["size"], section)
     return imageurl
 
 
