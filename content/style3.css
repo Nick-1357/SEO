@@ -1331,9 +1331,9 @@ section:hover .toolbar {
   display: block;
 }
 .anim_gradient {
-  background: linear-gradient(180deg, rgb(7, 102, 255) 0%, rgb(255, 0, 195) 100%);
-          background-size: "400% 400%";
-          animation : "gradient 10s ease infinite";
+  background: linear-gradient(90deg, #DE26A0 0%, #068FF1 100%);
+  background-size : 400% 400%;
+  animation : gradient 25s ease infinite;
       }
         
   @keyframes gradient {
