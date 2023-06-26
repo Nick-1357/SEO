@@ -31,9 +31,9 @@ openai.api_key = openai_api_key
 openai.Model.list()
 
 
-#==================================================================================================
+# ==================================================================================================
 # API Interaction
-#==================================================================================================
+# ==================================================================================================
  
 
 def query(payload):
@@ -43,7 +43,7 @@ def query(payload):
 
 def stabilityai_generate(prompt: str,
                          size: str,
-                         section: str) -> None:
+                         section: str) -> str:
     print("Generating " + section + " image...")
     image_bytes = query({
         "inputs": f"{prompt}",
@@ -57,7 +57,7 @@ def stabilityai_generate(prompt: str,
         os.makedirs(directory)
     image.save(os.path.join(directory, f'{section}.jpg'))
     print("Done")
-    return (f'{section}.jpg')
+    return f'{section}.jpg'
     
 
 def generate_content_response(prompt: str,
@@ -106,7 +106,7 @@ def generate_content_response(prompt: str,
 def generate_image_response(prompt: str,
                             size: str,
                             retries: int,
-                            max_retries: int) -> list:
+                            max_retries: int) -> str:
     try:
         print("Generating image...")
         response = openai.Image.create(
@@ -153,10 +153,10 @@ def chat_with_gpt3(stage: str,
 
 def chat_with_dall_e(prompt: str,
                      size: str,
-                     section: str) -> list:
+                     section: str) -> str:
     max_retries = 5
     for retries in range(max_retries):
-        url: list = generate_image_response(prompt, size, retries, max_retries)
+        url: str = generate_image_response(prompt, size, retries, max_retries)
         if url is not None:   # If a response was successfully received
             return url
     raise Exception(f"Max retries exceeded. The API continues to respond with an error after " + str(max_retries) + " attempts.")
@@ -207,6 +207,7 @@ def deep_update(source, overrides):
             source[key] = value
     return source
 
+  
 def processjson(jsonf: str) -> str:
     startindex = jsonf.find("{")
     endindex = jsonf.rfind("}")
@@ -215,6 +216,8 @@ def processjson(jsonf: str) -> str:
     else:
         jsonf = jsonf[startindex:endindex+1]
     return jsonf
+
+
 
 def sanitize_filename(filename: str) -> str:
     """Remove special characters and replace spaces with underscores in a string to use as a filename."""
@@ -382,7 +385,7 @@ def content_generation(company_name: str,
                        keyword: str,
                        title: str) -> dict:
     description = generate_meta_description(company_name, topic, keyword)
-    print (description)
+    print(description)
     content = generate_content(company_name, topic, industry, keyword, title)
     content = processjson(content)
     contentjson = json.loads(content)
@@ -415,6 +418,7 @@ def get_image_context(company_name: str,
     """
     image_context = chat_with_gpt3("Image Context Generation", prompt, temp=0.7, p=0.8)
     image_context = processjson(image_context)
+
     imagecontext = json.loads(image_context)
     imageurl = stabilityai_generate(imagecontext["context"], imagecontext["size"], section)
     return imageurl
@@ -435,7 +439,8 @@ def generate_gallery_images(company_name: str,
             except Exception as e:
                 print(f"An exception occurred during execution: {e}")
     return gallery
-    
+
+
 def image_generation(company_name: str,
                      topic: str,
                      industry: str,
@@ -451,7 +456,8 @@ def image_generation(company_name: str,
                 "image": ""
             },
         "gallery": 
-            {"image": []
+            {
+                "image": []
             }
     }
 
@@ -503,6 +509,7 @@ def feature_function(company_name: str,
 # =======================================================================================================================
 # Main Function
 # =======================================================================================================================
+
 
 def main():
     # Get the company name and topic from the user
