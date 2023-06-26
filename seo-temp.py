@@ -161,9 +161,10 @@ def chat_with_dall_e(prompt: str,
             return url
     raise Exception(f"Max retries exceeded. The API continues to respond with an error after " + str(max_retries) + " attempts.")
 
-#=======================================================================================================================
+# =======================================================================================================================
 # CSV Functions
-#=======================================================================================================================
+# =======================================================================================================================
+
 
 def write_to_csv(data: tuple):
     file_exists = os.path.isfile('token_usage.csv')  # Check if file already exists
@@ -212,11 +213,10 @@ def processjson(jsonf: str) -> str:
     startindex = jsonf.find("{")
     endindex = jsonf.rfind("}")
     if startindex == -1 or endindex == -1:
-        return None
+        return ""
     else:
         jsonf = jsonf[startindex:endindex+1]
     return jsonf
-
 
 
 def sanitize_filename(filename: str) -> str:
@@ -421,6 +421,7 @@ def get_image_context(company_name: str,
 
     imagecontext = json.loads(image_context)
     imageurl = stabilityai_generate(imagecontext["context"], imagecontext["size"], section)
+    # imageurl = chat_with_dall_e(imagecontext["context"], imagecontext["size"], section)
     return imageurl
 
 
@@ -481,6 +482,7 @@ def image_generation(company_name: str,
     print("Images Generated")
     return image_json
 
+
 def feature_function(company_name: str,
                      topic: str,
                      industry: str,
@@ -501,7 +503,7 @@ def feature_function(company_name: str,
                     
                 if image_result is None or content_result is None:
                     print("Error: No results returned")
-                    return None
+                    return {}
                 else:
                     merged_dict = deep_update(content_result, image_result)
                     return merged_dict
@@ -524,7 +526,7 @@ def main():
         topic = input("Your Keywords: ")
     
     while flag:
-        try:   
+        try:
             # Open token.csv to track token usage
             write_to_csv(("Initial", 0, 0, 0, company_name, topic))
 
