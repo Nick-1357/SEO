@@ -1,11 +1,11 @@
 {
     "meta": {
-        "title": "Discover the Scoop on Malaysia's Most Unique and Flavorful Ice Creams with Time!",
-        "description": "Indulge in the best ice cream experience in Malaysia with our unique and flavorful ice cream flavors. Discover the perfect blend of taste and quality that will leave you craving for more. Visit us now and satisfy your sweet tooth!"
+        "title": "Crafting Your Dream Sofa: Discover Dynamic Brands, the Leading Custom-Made Sofa Manufacturer in Malaysia",
+        "description": "Dynamic Brands is a top custom-made sofa manufacturer in Malaysia, offering high-quality and stylish sofas tailored to meet your unique needs. Trust us to deliver exceptional craftsmanship and customer service."
     },
     "banner": {
-        "h1": "Discover the Scoop on Malaysia's Most Unique and Flavorful Ice Creams with Time!",
-        "h2": "Indulge in a World of Delicious and Unforgettable Ice Cream Experiences",
+        "h1": "Crafting Your Dream Sofa",
+        "h2": "Discover Dynamic Brands, the Leading Custom-Made Sofa Manufacturer in Malaysia",
         "button": [
             "About Us",
             "Learn More"
@@ -14,23 +14,23 @@
     },
     "about": {
         "h2": "About Us",
-        "p": "At Time, we believe that ice cream is more than just a dessert - it's an experience. We are dedicated to bringing you the best ice cream in Malaysia, with a focus on unique and flavorful flavors that will leave your taste buds craving for more. Our team of passionate ice cream enthusiasts constantly explores new and exciting combinations to create a truly extraordinary ice cream experience for our customers.",
+        "p": "Dynamic Brands is a renowned custom-made sofa manufacturer in Malaysia, specializing in crafting high-quality sofas that perfectly suit your style and preferences. With our team of skilled craftsmen and designers, we are dedicated to creating exceptional furniture pieces that elevate your living spaces. Whether you are looking for a modern and sleek design or a classic and timeless piece, Dynamic Brands has the expertise to bring your dream sofa to life.",
         "image": "about.jpg"
     },
     "blogs": {
-        "h2": "Explore Our Ice Cream Blog",
+        "h2": "Latest Articles",
         "post": [
             {
-                "h3": "The Best Ice Cream in Malaysia: A Journey of Flavor",
-                "p": "In this blog post, we take you on a journey through the vibrant and diverse ice cream scene in Malaysia. From traditional flavors that pay homage to local ingredients and culture to innovative creations that push the boundaries of taste, we showcase the best ice cream parlors and their signature flavors. Get ready to embark on a mouthwatering adventure!"
+                "h3": "Choosing the Right Fabric for Your Custom Sofa",
+                "p": "When it comes to custom-made sofas, one of the most important decisions you'll need to make is selecting the right fabric. In this article, we'll guide you through the different types of fabrics available and help you choose the perfect one that suits your lifestyle and preferences."
             },
             {
-                "h3": "Unleash Your Inner Foodie: Unique and Flavorful Ice Cream Flavors in Malaysia",
-                "p": "Calling all foodies! If you're tired of the same old vanilla and chocolate, this blog post is for you. We delve into the world of unique and flavorful ice cream flavors in Malaysia, from durian-infused delights to exotic tropical fruit concoctions. Discover the unexpected and tantalize your taste buds with these extraordinary ice cream creations."
+                "h3": "The Benefits of Custom-Made Sofas",
+                "p": "Are you tired of settling for mass-produced furniture that doesn't quite meet your expectations? Discover the numerous benefits of investing in a custom-made sofa. From personalized design options to superior quality craftsmanship, custom-made sofas offer unmatched value and comfort."
             },
             {
-                "h3": "Creating Memories, One Scoop at a Time",
-                "p": "Ice cream has a magical way of bringing people together and creating unforgettable memories. In this heartwarming blog post, we share stories from our customers about their most cherished ice cream moments. From first dates to family gatherings, these sweet tales will remind you of the joy and happiness that ice cream can bring. Join us in celebrating the power of ice cream to create lasting memories."
+                "h3": "Tips for Maintaining Your Custom Sofa's Longevity",
+                "p": "Your custom-made sofa is an investment that deserves proper care and maintenance. Learn some essential tips and tricks to keep your sofa looking and feeling as good as new for years to come. From regular cleaning routines to avoiding common mistakes, we've got you covered."
             }
         ]
     },
@@ -38,29 +38,29 @@
         "h2": "Frequently Asked Questions",
         "question": [
             {
-                "h3": "What makes Time's ice cream the best in Malaysia?",
-                "p": "At Time, we pride ourselves on using only the finest and freshest ingredients to create our ice cream. We source locally whenever possible, ensuring that our flavors are authentic and reflect the rich culinary heritage of Malaysia. Our commitment to quality and innovation sets us apart and makes our ice cream truly exceptional."
+                "h3": "How long does it take to manufacture a custom-made sofa?",
+                "p": "The manufacturing time for a custom-made sofa varies depending on the complexity of the design and the availability of materials. Typically, it takes around 4-8 weeks from the order confirmation to the delivery of your custom sofa."
             },
             {
-                "h3": "Are your ice cream flavors suitable for dietary restrictions?",
-                "p": "We understand that dietary restrictions are a common concern. That's why we offer a range of options to cater to different needs. From vegan-friendly flavors to gluten-free and dairy-free options, we strive to accommodate as many dietary restrictions as possible. Our goal is to ensure that everyone can enjoy our delicious ice cream, regardless of their dietary preferences."
+                "h3": "Can I choose the dimensions and specifications of my custom sofa?",
+                "p": "Absolutely! At Dynamic Brands, we understand that every space is unique, and we offer complete customization options for your sofa. From the dimensions to the cushion firmness, you can personalize every aspect of your sofa to ensure a perfect fit for your home."
             },
             {
-                "h3": "Where can I find Time's ice cream parlors?",
-                "p": "We have multiple ice cream parlors located across Malaysia. You can find our flagship store in the heart of Kuala Lumpur, as well as branches in major cities such as Penang and Johor Bahru. Check out our website for a complete list of locations and opening hours. We can't wait to serve you our delectable ice cream!"
+                "h3": "Do you offer warranty for your custom-made sofas?",
+                "p": "Yes, we provide a warranty for all our custom-made sofas. Our warranty covers manufacturing defects and ensures that you receive a high-quality product. If you encounter any issues with your sofa, simply reach out to our customer support, and we'll assist you accordingly."
             }
         ]
     },
     "gallery": {
         "image": [
-            "gallery 1.jpg",
-            "gallery 0.jpg",
-            "gallery 5.jpg",
-            "gallery 7.jpg",
-            "gallery 4.jpg",
-            "gallery 6.jpg",
             "gallery 3.jpg",
-            "gallery 2.jpg"
+            "gallery 1.jpg",
+            "gallery 6.jpg",
+            "gallery 4.jpg",
+            "gallery 5.jpg",
+            "gallery 2.jpg",
+            "gallery 7.jpg",
+            "gallery 0.jpg"
         ]
     }
 }
