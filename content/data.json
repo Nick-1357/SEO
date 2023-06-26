@@ -1,11 +1,11 @@
 {
     "meta": {
-        "title": "Crafting Your Dream Sofa: Discover Dynamic Brands, the Leading Custom-Made Sofa Manufacturer in Malaysia",
-        "description": "Dynamic Brands is a top custom-made sofa manufacturer in Malaysia, offering high-quality and stylish sofas tailored to meet your unique needs. Trust us to deliver exceptional craftsmanship and customer service."
+        "title": "Crunching the Numbers: Top Technology Companies in Malaysia According to Oreo",
+        "description": "Looking for the best technology companies in Malaysia? Look no further than Oreo! As a top tech company in Malaysia, we're dedicated to delivering cutting-edge solutions that meet your needs and exceed your expectations. From software development to hardware design, we've got you covered. So why wait? Contact us today to learn more about how we can help your business succeed!"
     },
     "banner": {
-        "h1": "Crafting Your Dream Sofa",
-        "h2": "Discover Dynamic Brands, the Leading Custom-Made Sofa Manufacturer in Malaysia",
+        "h1": "Crunching the Numbers: Top Technology Companies in Malaysia According to Oreo",
+        "h2": "Leading the Way in the Technology Industry",
         "button": [
             "About Us",
             "Learn More"
@@ -14,23 +14,23 @@
     },
     "about": {
         "h2": "About Us",
-        "p": "Dynamic Brands is a renowned custom-made sofa manufacturer in Malaysia, specializing in crafting high-quality sofas that perfectly suit your style and preferences. With our team of skilled craftsmen and designers, we are dedicated to creating exceptional furniture pieces that elevate your living spaces. Whether you are looking for a modern and sleek design or a classic and timeless piece, Dynamic Brands has the expertise to bring your dream sofa to life.",
+        "p": "At Oreo, we are passionate about technology and innovation. As a leading company in the technology industry, we strive to provide the best solutions and services to our clients. With our extensive experience and expertise, we have established ourselves as one of the top technology companies in Malaysia.",
         "image": "about.jpg"
     },
     "blogs": {
-        "h2": "Latest Articles",
+        "h2": "Insights from Oreo",
         "post": [
             {
-                "h3": "Choosing the Right Fabric for Your Custom Sofa",
-                "p": "When it comes to custom-made sofas, one of the most important decisions you'll need to make is selecting the right fabric. In this article, we'll guide you through the different types of fabrics available and help you choose the perfect one that suits your lifestyle and preferences."
+                "h3": "The Rise of Tech Startups in Malaysia",
+                "p": "In recent years, Malaysia has seen a significant growth in the number of tech startups. These startups are not only disrupting traditional industries but also driving economic growth. At Oreo, we have been closely monitoring this trend and have identified some of the most promising tech startups in Malaysia. In this blog post, we will share our insights and highlight the key players in the industry."
             },
             {
-                "h3": "The Benefits of Custom-Made Sofas",
-                "p": "Are you tired of settling for mass-produced furniture that doesn't quite meet your expectations? Discover the numerous benefits of investing in a custom-made sofa. From personalized design options to superior quality craftsmanship, custom-made sofas offer unmatched value and comfort."
+                "h3": "Unlocking the Potential of Artificial Intelligence in Malaysia",
+                "p": "Artificial Intelligence (AI) has become a game-changer in various industries, and Malaysia is no exception. At Oreo, we believe that AI has the power to transform businesses and improve the lives of people. In this blog post, we will explore the current state of AI in Malaysia and discuss how companies can leverage this technology to gain a competitive edge."
             },
             {
-                "h3": "Tips for Maintaining Your Custom Sofa's Longevity",
-                "p": "Your custom-made sofa is an investment that deserves proper care and maintenance. Learn some essential tips and tricks to keep your sofa looking and feeling as good as new for years to come. From regular cleaning routines to avoiding common mistakes, we've got you covered."
+                "h3": "The Future of E-commerce in Malaysia",
+                "p": "E-commerce has been on the rise in Malaysia, driven by factors such as increasing internet penetration and changing consumer behavior. At Oreo, we have been closely following the e-commerce landscape and have identified the key trends and challenges in the industry. In this blog post, we will share our insights and discuss the future of e-commerce in Malaysia."
             }
         ]
     },
@@ -38,29 +38,28 @@
         "h2": "Frequently Asked Questions",
         "question": [
             {
-                "h3": "How long does it take to manufacture a custom-made sofa?",
-                "p": "The manufacturing time for a custom-made sofa varies depending on the complexity of the design and the availability of materials. Typically, it takes around 4-8 weeks from the order confirmation to the delivery of your custom sofa."
+                "h3": "What sets Oreo apart from other technology companies in Malaysia?",
+                "p": "At Oreo, we differentiate ourselves through our commitment to innovation and customer satisfaction. We constantly strive to stay ahead of the curve and provide cutting-edge solutions to our clients. Our team of experts is dedicated to understanding our clients' unique needs and delivering tailored solutions that drive business growth."
             },
             {
-                "h3": "Can I choose the dimensions and specifications of my custom sofa?",
-                "p": "Absolutely! At Dynamic Brands, we understand that every space is unique, and we offer complete customization options for your sofa. From the dimensions to the cushion firmness, you can personalize every aspect of your sofa to ensure a perfect fit for your home."
+                "h3": "Can Oreo handle large-scale technology projects?",
+                "p": "Yes, we have a proven track record of successfully managing and executing large-scale technology projects. Our team of skilled professionals has the expertise and experience to handle complex projects and deliver results on time and within budget. Whether it's developing a custom software solution or implementing an enterprise-wide system, you can trust Oreo to deliver excellence."
             },
             {
-                "h3": "Do you offer warranty for your custom-made sofas?",
-                "p": "Yes, we provide a warranty for all our custom-made sofas. Our warranty covers manufacturing defects and ensures that you receive a high-quality product. If you encounter any issues with your sofa, simply reach out to our customer support, and we'll assist you accordingly."
+                "h3": "How can I get in touch with Oreo?",
+                "p": "We would love to hear from you! You can reach out to us through our website or give us a call at +123456789. Our friendly team is always ready to assist you and answer any questions you may have. We look forward to the opportunity to work with you and help you achieve your technology goals."
             }
         ]
     },
     "gallery": {
         "image": [
-            "gallery 3.jpg",
-            "gallery 1.jpg",
-            "gallery 6.jpg",
-            "gallery 4.jpg",
-            "gallery 5.jpg",
-            "gallery 2.jpg",
             "gallery 7.jpg",
-            "gallery 0.jpg"
+            "gallery 0.jpg",
+            "gallery 3.jpg",
+            "gallery 6.jpg",
+            "gallery 1.jpg",
+            "gallery 4.jpg",
+            "gallery 5.jpg"
         ]
     }
 }

@@ -520,13 +520,6 @@ def main():
         try:   
             # Open token.csv to track token usage
             write_to_csv(("Initial", 0, 0, 0, company_name, topic))
-            # file_exists = os.path.isfile('token_usage.csv')  # Check if file already exists
-            # with open('token_usage.csv', 'a', newline='') as csvfile:
-            #     fieldnames = ['Company Name', 'Keyword', 'Iteration', 'Stage', 'Prompt Tokens', 'Completion Tokens', 'Total Tokens', 'Price']
-            #     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-            #     if not file_exists:
-            #         writer.writeheader()
-            #     writer.writerow({'Company Name': company_name, 'Keyword': topic, 'Iteration': 0, 'Stage': 'Initial', 'Prompt Tokens': 0, 'Completion Tokens': 0, 'Total Tokens': 0, 'Price': 0})
 
             # Generate industry 
             industry = get_industry(topic)
@@ -562,12 +555,6 @@ def main():
                 
                 # End procedures
                 write_to_csv(("Complete", 0, 0, 0, company_name, topic))
-                # with open('token_usage.csv', 'a', newline='') as csvfile:
-                #     fieldnames = ['Company Name', 'Keyword', 'Iteration', 'Stage', 'Prompt Tokens', 'Completion Tokens', 'Total Tokens', 'Price']
-                #     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-                #     if not file_exists:
-                #         writer.writeheader()
-                #     writer.writerow({'Stage': 'Complete', 'Prompt Tokens': 0, 'Completion Tokens': 0, 'Total Tokens': 0, 'Price': 0})
                 
         except Exception as e:
             print(f"An exception occurred: {e}, retrying attempt {tries+1}")
