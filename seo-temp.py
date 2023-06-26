@@ -408,7 +408,7 @@ def get_image_context(company_name: str,
     context_json = """
         {
             "context":"..."
-            "size":"...(eg. 1024x1024)"
+            "size":"1024x1024"
         }
     """
     prompt = f"""
