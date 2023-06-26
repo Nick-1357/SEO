@@ -25,17 +25,18 @@ window.onload = function() {
         metaTag.content = meta.description;
 
         document.getElementById('banner').innerHTML = `
-        <section style='background-image: url("${banner.image}"); background-repeat: no-repeat; -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-        background-size: cover;'>
-            <div class="banner__centered">
+        <section style='
+            background-image: url("${banner.image}"); background-repeat: no-repeat; -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;'>
+            <div style='background-color: rgba(255, 255, 255, 0.5);' class="banner__centered">
             <div class="banner__text">
                 <div class="d-flex flex-column">
                 <h1 class="heading-1 text-center">${banner.h1}</h1>
                 <h2 class="heading-2 text-center">${banner.h2}</h2>
                 <div class="mx-auto">
-                    <button class="button-primary">${banner.button[0]}</button>
+                    <button class="learn-more" href="aboutus">${banner.button[0]}</button>
                     <button class="button-secondary ms-3">${banner.button[1]}</button>
                 </div>
                 </div>
@@ -52,7 +53,7 @@ window.onload = function() {
                 <div>
                     <h1 class="banner__heading">${about.h2}</h1>
                     <h5 class="banner_subheading">${about.p}</h5>
-                    <button class="button-primary">${banner.button[0]}</button>
+                    <button class="learn-more">About Us</button>
                 </div>
                 </div>
                 <div class="banner__image">

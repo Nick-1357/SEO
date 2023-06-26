@@ -49,8 +49,8 @@ def stabilityai_generate(prompt: str,
         "inputs": f"{prompt}",
         "size": size
     })
-
-    image = Image.open(io.BytesIO(image_bytes))
+    byteImgIO = io.BytesIO(image_bytes)
+    image = Image.open(byteImgIO)
     directory = os.path.join(os.getcwd(), "content")
     # Create the directory if it doesn't exist
     if not os.path.exists(directory):
@@ -268,7 +268,7 @@ def generate_long_tail_keywords(topic: str) -> List[str]:
 
 def generate_title(company_name: str,
                    keyword: str) -> str:
-    prompt = f"Suggest 1 catchy headline about '{keyword}' for the company {company_name}"
+    prompt = f"Suggest 1 SEO optimized headline about '{keyword}' for the company {company_name}"
     title = chat_with_gpt3("Title Generation", prompt, temp=0.7, p=0.8)
     title = title.replace('"', '')
     print("Titles Generated")
@@ -280,7 +280,7 @@ def generate_meta_description(company_name: str,
                               keywords: str) -> str:
     print("Generating meta description...")
     prompt = f"""
-    Generate a meta description for {company_name} based on this topic: '{topic}'.
+    Generate a meta description for a website based on this topic: '{topic}'.
     Use these keywords in the meta description: {keywords}
     """
     meta_description = chat_with_gpt3("Meta Description Generation", prompt, temp=0.7, p=0.8)
@@ -318,17 +318,14 @@ def generate_content(company_name: str,
         "banner": {
                 "h1": "...",
                 "h2": "...",
-                "button": [
-                    "About Us",
-                    "Learn More"
-                ]
+                "button": [] (Pick 2 from these: Learn More, Contact Us, Get Started, Sign Up, Subscribe, Shop Now, Book Now, Get Offer, Get Quote, Get Pricing, Get Estimate, Browse Now, Try It Free, Join Now, Download Now, Get Demo, Request Demo, Request Quote, Request Appointment, Request Information, Start Free Trial, Sign Up For Free, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation, Sign Up For Quote, Sign Up For Appointment, Sign Up For Information, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation, Sign Up For Quote, Sign Up For Appointment, Sign Up For Information, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation", "Sign Up For Quote", "Sign Up For Appointment", "Sign Up For Information", "Sign Up For Trial", "Sign Up For Demo", "Sign Up For Consultation", "Sign Up For Quote", "Sign Up For Appointment", "Sign Up For Information"])
         },
         "about": {
                 "h2": "About Us",
                 "p": "..."
         },
         "blogs":{
-            "h2": "..",
+            "h2": "... (Pick 1 from these: News, Articles, Insights, Resources, Customer Reviews)",
             "post": [{
                     "h3": "...",
                     "p": "...",
@@ -356,13 +353,21 @@ def generate_content(company_name: str,
                 {
                     "h3": "...",
                     "p": "...",
+                },
+                {
+                    "h3": "...",
+                    "p": "...",
+                },
+                {
+                    "h3": "...",
+                    "p": "...",
                 },...
             ]
         }
     }
     """
     prompt = f"""
-    Create website content for a company with the following specifications:
+    Createa SEO optimized website content with the following specifications:
     Company Name: {company_name}
     Title: {title}
     Industry: {industry}
@@ -372,8 +377,7 @@ def generate_content(company_name: str,
     Requirements:
     1) Make sure the content length is 700 words.
     2) The content should be engaging and unique.
-    3) Include headers and subheaders.
-    4) Don't include any conclusion
+    3) The FAQ section should follow the SERP and rich result guidelines
     """
     content = chat_with_gpt3("Content Generation", prompt, temp=0.7, p=0.8, model="gpt-3.5-turbo-16k")
     return content
@@ -407,20 +411,29 @@ def get_image_context(company_name: str,
                       industry: str) -> str:
     context_json = """
         {
-            "context":"..."
-            "size":"...(eg. 1024x1024)"
+            "description":"...",
+            "size":"1024x1024"
         }
     """
+    examples = """
+    1) Wide shot of a sleek and modern chair design that is currently trending on Artstation, sleek and modern design, artstation trending, highly detailed, beautiful setting in the background, art by wlop, greg rutkowski, thierry doizon, charlie bowater, alphonse mucha, golden hour lighting, ultra realistic.
+    2) Close-up of a modern designer handbag with beautiful background, photorealistic, unreal engine, from Vogue Magazine.
+    3) Vintage-inspired watch an elegant and timeless design with intricate details, and detailed lighting, trending on Artstation, unreal engine, smooth finish, looking towards the viewer.
+    4) Close-up of modern designer a minimalist and contemporary lamp design, with clean lines and detailed lighting, trending on Artstation, detailed lighting, perfect for any contemporary space.
+    5) Overhead view of a sleek and futuristic concept car with aerodynamic curves, and a glossy black finish driving on a winding road with mountains in the background, sleek and stylish design, highly detailed, ultra realistic, concept art, intricate textures, interstellar background, space travel, art by alphonse mucha, greg rutkowski, ross tran, leesha hannigan, ignacio fernandez rios, kai carpenter, perfect for any casual occasion.
+    6) Close-up of a designer hand-crafting a sofa with intricate details, and detailed lighting, trending on Artstation, unreal engine, smooth finish.
+    """
     prompt = f"""
-    Please generate a description of a background image about {keyword} and {topic}. 
-    The scope of the image is  {industry}
+    Generate a detailed description for an image about {keyword} and {topic}. 
+    Use these example descriptions: {examples}
     Format: {context_json}
     """
-    image_context = chat_with_gpt3("Image Context Generation", prompt, temp=0.7, p=0.8)
+    image_context = chat_with_gpt3("Image Description Generation", prompt, temp=0.7, p=0.8)
     image_context = processjson(image_context)
-
+    print(image_context)
     imagecontext = json.loads(image_context)
-    imageurl = stabilityai_generate(imagecontext["context"], imagecontext["size"], section)
+    # imageurl = chat_with_dall_e("Close-up of a man working on a sofa photorealistic, unreal engine, from Vogue Magazine", imagecontext["size"], section)
+    imageurl = chat_with_dall_e(imagecontext["description"], imagecontext["size"], section)
     return imageurl
 
 
