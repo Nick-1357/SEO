@@ -13,6 +13,7 @@ import torch
 import io
 import base64
 from PIL import Image
+from pathlib import Path
 from dotenv import load_dotenv
 from threading import Thread
 from typing import List, Dict
@@ -58,19 +59,16 @@ def query(query_parameters: Dict[str, str]) -> bytes:
 def stabilityai_generate(prompt: str,
                          size: str,
                          section: str) -> str:
-    print("Generating " + section + " image...")
+    print(f"Generating {section} image...")
     image_bytes = query({
         "inputs": f"{prompt}",
         "size": size
     })
     byteImgIO = io.BytesIO(image_bytes)
     image = Image.open(byteImgIO)
-
-    directory = os.path.join(workspace_path, "content")
-    # Create the directory if it doesn't exist
-    if not os.path.exists(directory):
-        os.makedirs(directory)
-    image.save(os.path.join(directory, f'{section}.jpg'))
+    directory = Path(workspace_path) / 'content'
+    os.makedirs(directory, exist_ok=True)
+    image.save(directory / f'{section}.jpg')
     print("Done")
     return f'{section}.jpg'
     
@@ -117,16 +115,15 @@ def generate_content_response(prompt: str,
         except openai.error.ServiceUnavailableError:
             num_retries += 1
             print("Server Overloaded. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+        except openai.error.InvalidRequestError as e:
+            num_retries += 1
+            print("Invalid Request. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+        except openai.error.APIConnectionError as e:
+            #Handle connection error here
+            print(f"Failed to connect to OpenAI API: {e}Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
         except openai.error.APIError as e:
             num_retries += 1
-            if hasattr(e, 'response') and e.response.status_code == 429:  # rate limit error
-                print("Rate limit reached. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
-            elif hasattr(e, 'response') and e.response.status_code == 502:  # bad gateway error
-                print("Bad Gateway. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
-            elif hasattr(e, 'response') and e.response.status_code == 600:  # read timeout error
-                print("Read Timeout. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
-            else:
-                raise e  # if it's not a rate limit error, re-raise the exception
+            print(f"OpenAI API returned an API Error: {e}. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
 
         # Increment the delay
         delay *= exponential_base * (1 + jitter * random.random())
@@ -168,17 +165,16 @@ def generate_image_response(prompt: str,
         except openai.error.ServiceUnavailableError:
             num_retries += 1
             print("Server Overloaded. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+        except openai.error.InvalidRequestError as e:
+            num_retries += 1
+            print("Invalid Request. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+        except openai.error.APIConnectionError as e:
+            #Handle connection error here
+            print(f"Failed to connect to OpenAI API: {e}Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
         except openai.error.APIError as e:
             num_retries += 1
-            if hasattr(e, 'response') and e.response.status_code == 429:  # rate limit error
-                print("Rate limit reached. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
-            elif hasattr(e, 'response') and e.response.status_code == 502:  # bad gateway error
-                print("Bad Gateway. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
-            elif hasattr(e, 'response') and e.response.status_code == 600:  # read timeout error
-                print("Read Timeout. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
-            else:
-                raise e  # if it's not a rate limit error, re-raise the exception
-
+            print(f"OpenAI API returned an API Error: {e}. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+            
         # Increment the delay
         delay *= exponential_base * (1 + jitter * random.random())
         print(f"Wait for {delay} seconds.")
