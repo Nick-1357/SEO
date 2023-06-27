@@ -59,7 +59,7 @@ window.onload = function() {
                 <div>
                     <h1 class="banner__heading">${about.h2}</h1>
                     <h5 class="banner_subheading">${about.p}</h5>
-                    <button class="button1">About Us</button>
+                    <button class="button1  ">About Us</button>
                 </div>
                 </div>
                 <div class="banner__image">

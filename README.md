@@ -1,4 +1,4 @@
-# SEO-Content-Generation
+# SEO
 ## Setup
 1) Create a new environtment for python
 2) Run ``` npm install -r requirements.txt ```
