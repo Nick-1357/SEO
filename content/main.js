@@ -24,6 +24,8 @@ window.onload = function() {
         }
         metaTag.content = meta.description;
 
+        document.title = `${meta.title}`
+
         document.getElementById('banner').innerHTML = `
         <section style='
             background-image: url("data:image/jpg;base64,${banner.image}"); background-repeat: no-repeat; -webkit-background-size: cover;

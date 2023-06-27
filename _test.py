@@ -131,5 +131,5 @@ class TestGenerateContentResponse:
         mocker.patch('openai.ChatCompletion.create', side_effect=openai.error.ServiceUnavailableError('Rate limit reached', {'status_code': 429}))
         response = generate_content_response('prompt', 0.5, 0.5, 0, 0, 2, 'model')
         assert response == (None, None, None, None)
-    
+   
     
