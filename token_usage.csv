@@ -6676,53 +6676,20 @@ Oreo,Best Hotel in Malaysia,0,Initial,0,0,0,0.0
 ,,14,Image Description Generation,419,275,694,0.001388
 ,,15,Content Generation,628,835,1463,0.0029259999999999998
 Oreo,Best Hotel in Malaysia,16,Complete,0,0,0,0.0
-Oreo,Best Biscuit Company in Malaysia,0,Initial,0,0,0,0.0
-,,1,Industry Identification,76,5,81,0.00016199999999999998
-,,2,Keyword Clusters Search,80,53,133,0.000266
-,,3,Title Generation,79,22,101,0.000202
-,,4,Image Description Generation,423,112,535,0.00107
-,,5,Image Description Generation,423,119,542,0.001084
-,,6,Image Description Generation,423,121,544,0.001088
-,,7,Image Description Generation,423,114,537,0.0010739999999999999
-,,8,Image Description Generation,423,140,563,0.001126
-,,9,Image Description Generation,423,156,579,0.001158
-,,10,Image Description Generation,423,160,583,0.001166
-,,11,Image Description Generation,423,148,571,0.001142
-,,12,Image Description Generation,423,173,596,0.001192
-,,13,Image Description Generation,423,119,542,0.001084
-,,14,Meta Description Generation,98,56,154,0.000308
-,,15,Content Generation,637,813,1450,0.0029
-NexMind,Sofa Manufacturing Company in Malaysia,0,Initial,0,0,0,0.0
-,,1,Industry Identification,74,4,78,0.000156
-,,2,Keyword Clusters Search,78,49,127,0.000254
-,,3,Title Generation,79,18,97,0.000194
-,,4,Meta Description Generation,97,48,145,0.00029
-,,5,Image Description Generation,420,88,508,0.001016
-,,6,Image Description Generation,420,96,516,0.001032
-,,7,Image Description Generation,420,104,524,0.0010479999999999999
-,,8,Image Description Generation,420,102,522,0.001044
-,,9,Image Description Generation,420,113,533,0.0010659999999999999
-,,10,Image Description Generation,420,134,554,0.001108
-,,11,Image Description Generation,420,129,549,0.001098
-,,12,Image Description Generation,420,135,555,0.0011099999999999999
-,,13,Image Description Generation,420,140,560,0.00112
-,,14,Image Description Generation,420,114,534,0.001068
-,,15,Content Generation,629,696,1325,0.00265
-NexMind,Sofa Manufacturing Company in Malaysia,16,Complete,0,0,0,0.0
-Google,Sofa Manufacturing Company in Malaysia,0,Initial,0,0,0,0.0
-,,1,Industry Identification,74,4,78,0.000156
-,,2,Keyword Clusters Search,78,49,127,0.000254
-,,3,Title Generation,78,15,93,0.000186
-,,4,Meta Description Generation,98,43,141,0.00028199999999999997
-,,5,Image Description Generation,421,116,537,0.0010739999999999999
-,,6,Image Description Generation,421,116,537,0.0010739999999999999
-,,7,Image Description Generation,421,118,539,0.001078
-,,8,Image Description Generation,421,113,534,0.001068
-,,9,Image Description Generation,421,126,547,0.001094
-,,10,Image Description Generation,421,117,538,0.001076
-,,11,Image Description Generation,421,127,548,0.001096
-,,12,Image Description Generation,421,122,543,0.001086
-,,13,Image Description Generation,421,139,560,0.00112
-,,14,Image Description Generation,421,141,562,0.001124
-,,15,Content Generation,626,925,1551,0.0031019999999999997
-Google,Sofa Manufacturing Company in Malaysia,16,Complete,0,0,0,0.0
+Nexus,Luxury Watch,0,Initial,0,0,0,0.0
+,,1,Industry Identification,71,5,76,0.00015199999999999998
+,,2,Keyword Clusters Search,75,53,128,0.000256
+,,3,Title Generation,77,21,98,0.000196
+,,4,Meta Description Generation,93,44,137,0.000274
+,,5,Image Description Generation,417,103,520,0.00104
+,,6,Image Description Generation,417,121,538,0.001076
+,,7,Image Description Generation,417,120,537,0.0010739999999999999
+,,8,Image Description Generation,417,107,524,0.0010479999999999999
+,,9,Image Description Generation,417,109,526,0.001052
+,,10,Image Description Generation,417,109,526,0.001052
+,,11,Image Description Generation,417,115,532,0.001064
+,,12,Image Description Generation,417,126,543,0.001086
+,,13,Image Description Generation,417,128,545,0.00109
+,,14,Image Description Generation,417,142,559,0.0011179999999999999
+,,15,Content Generation,629,799,1428,0.002856
+Nexus,Luxury Watch,16,Complete,0,0,0,0.0
