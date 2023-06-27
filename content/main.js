@@ -36,8 +36,14 @@ window.onload = function() {
                 <h1 class="heading-1 text-center">${banner.h1}</h1>
                 <h2 class="heading-2 text-center">${banner.h2}</h2>
                 <div class="mx-auto">
-                    <button class="learn-more" href="aboutus">${banner.button[0]}</button>
-                    <button class="button-secondary ms-3">${banner.button[1]}</button>
+                    <button class="button1" href="#aboutus">${banner.button[0]}</button>
+                    <button class="learn-more">
+                        <span class="circle" aria-hidden="true">
+                        <span class="icon arrow"></span>
+                        </span>
+                        <span class="button-text">${banner.button[1]}</span>
+                    </button>
+                    
                 </div>
                 </div>
             </div>
