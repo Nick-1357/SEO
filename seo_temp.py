@@ -85,8 +85,9 @@ def generate_content_response(prompt: str,
     while True:
         try:
             if num_retries > max_retries:
-                raise Exception(f"Max retries exceeded. The API continues to respond with an error after " + str(
+                print(f"Max retries exceeded. The API continues to respond with an error after " + str(
                     max_retries) + " attempts.")
+                return None, None, None, None  # return None if an exception was caught
 
             response = openai.ChatCompletion.create(
                 model=f"{model}",
@@ -127,7 +128,6 @@ def generate_content_response(prompt: str,
         print(f"Wait for {delay} seconds.")
 
         time.sleep(delay)  # wait for n seconds before retrying
-        return None, None, None, None  # return None if an exception was caught
 
 
 def generate_image_response(prompt: str,
@@ -141,8 +141,9 @@ def generate_image_response(prompt: str,
     while True:
         try:
             if num_retries > max_retries:
-                raise Exception(f"Max retries exceeded. The API continues to respond with an error after " + str(
+                print(f"Max retries exceeded. The API continues to respond with an error after " + str(
                     max_retries) + " attempts.")
+                return ""  # return "" if an exception was caught
 
             print("Generating image...")
             response = openai.Image.create(
