@@ -425,8 +425,9 @@ def get_image_context(company_name: str,
     """
     prompt = f"""
     Generate a detailed description for an image about {keyword} and {topic}. 
-    Use these example descriptions: {examples}
-    Format: {context_json}
+    i) Use these example descriptions: {examples}
+    ii) Don't include any words within the picture.
+    iii) Format: {context_json}
     """
     image_context = chat_with_gpt3("Image Description Generation", prompt, temp=0.7, p=0.8)
     image_context = processjson(image_context)
