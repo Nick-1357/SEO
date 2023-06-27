@@ -22,13 +22,21 @@ from diffusers import StableDiffusionPipeline, EulerDiscreteScheduler
 load_dotenv()
 
 # Get the API key
-openai_api_key = os.getenv("OPENAI_API_KEY")
+openai_api_key = os.getenv("OPENAI_API_KEY", "")
 API_URL = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2-1-base"
 headers = {"Authorization": f"Bearer {os.getenv('STABILITY_KEY')}"}
 
 # Use the API key
 openai.api_key = openai_api_key
 openai.Model.list()
+
+# load memory directory
+memory_dir = os.getenv("MEMORY_DIRECTORY", "local")
+workspace_path = "./"
+if memory_dir == "production":
+    workspace_path = "./tmp"
+elif memory_dir == "local":
+    workspace_path = "./"
 
 
 # ==================================================================================================
@@ -51,7 +59,8 @@ def stabilityai_generate(prompt: str,
     })
     byteImgIO = io.BytesIO(image_bytes)
     image = Image.open(byteImgIO)
-    directory = os.path.join(os.getcwd(), "content")
+
+    directory = os.path.join(workspace_path, "content")
     # Create the directory if it doesn't exist
     if not os.path.exists(directory):
         os.makedirs(directory)
@@ -65,74 +74,110 @@ def generate_content_response(prompt: str,
                               p: float,
                               freq: float,
                               presence: float,
-                              retries: int,
                               max_retries: int,
                               model: str) -> tuple:
-    try:
-        response = openai.ChatCompletion.create(
-            model=f"{model}",
-            messages=[
-                    {"role": "system", "content": "You are an web designer with the objective to identify search engine optimized long-tail keywords and generate contents, with the goal of generating website contents and enhance website's visibility, driving organic traffic, and improving online business performance."},
-                    {"role": "user", "content": prompt}
-                ],
-            temperature=temp,
-            # max_tokens=2500,
-            top_p=p,
-            frequency_penalty=freq,
-            presence_penalty=presence,
-        )
-        # print (response)
-        return response.choices[0].message['content'], response['usage']['prompt_tokens'], response['usage']['completion_tokens'], response['usage']['total_tokens']
+    delay: float = 1  # initial delay
+    exponential_base: float = 2
+    jitter: bool = True
+    num_retries: int = 0
 
-    except openai.error.RateLimitError as e:  # rate limit error
-        print("Rate limit reached. Retry attempt " + str(retries + 1) + " of " + str(max_retries) + "...")
-    except openai.error.Timeout as e:  # timeout error
-        print("Request timed out. Retry attempt " + str(retries + 1) + " of " + str(max_retries) + "...")
-    except openai.error.ServiceUnavailableError:
-        print("Server Overloaded. Retry attempt " + str(retries + 1) + " of " + str(max_retries) + "...")
-    except openai.error.APIError as e:
-        if hasattr(e, 'response') and e.response.status_code == 429:  # rate limit error
-            print("Rate limit reached. Retry attempt " + str(retries + 1) + " of " + str(max_retries) + "...")
-        elif hasattr(e, 'response') and e.response.status_code == 502:  # bad gateway error
-            print("Bad Gateway. Retry attempt " + str(retries + 1) + " of " + str(max_retries) + "...")
-        elif hasattr(e, 'response') and e.response.status_code == 600:  # read timeout error
-            print("Read Timeout. Retry attempt " + str(retries + 1) + " of " + str(max_retries) + "...")
-        else:
-            raise e  # if it's not a rate limit error, re-raise the exception
-    time.sleep(60)  # wait for 60 seconds before retrying
-    return None, None, None, None  # return None if an exception was caught
+    while True:
+        try:
+            if num_retries > max_retries:
+                raise Exception(f"Max retries exceeded. The API continues to respond with an error after " + str(
+                    max_retries) + " attempts.")
+
+            response = openai.ChatCompletion.create(
+                model=f"{model}",
+                messages=[
+                        {"role": "system", "content": "You are an web designer with the objective to identify search engine optimized long-tail keywords and generate contents, with the goal of generating website contents and enhance website's visibility, driving organic traffic, and improving online business performance."},
+                        {"role": "user", "content": prompt}
+                    ],
+                temperature=temp,
+                # max_tokens=2500,
+                top_p=p,
+                frequency_penalty=freq,
+                presence_penalty=presence,
+            )
+            # print (response)
+            return response.choices[0].message['content'], response['usage']['prompt_tokens'], response['usage']['completion_tokens'], response['usage']['total_tokens']
+
+        except openai.error.RateLimitError as e:  # rate limit error
+            num_retries += 1
+            print("Rate limit reached. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+        except openai.error.Timeout as e:  # timeout error
+            num_retries += 1
+            print("Request timed out. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+        except openai.error.ServiceUnavailableError:
+            num_retries += 1
+            print("Server Overloaded. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+        except openai.error.APIError as e:
+            num_retries += 1
+            if hasattr(e, 'response') and e.response.status_code == 429:  # rate limit error
+                print("Rate limit reached. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+            elif hasattr(e, 'response') and e.response.status_code == 502:  # bad gateway error
+                print("Bad Gateway. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+            elif hasattr(e, 'response') and e.response.status_code == 600:  # read timeout error
+                print("Read Timeout. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+            else:
+                raise e  # if it's not a rate limit error, re-raise the exception
+
+        # Increment the delay
+        delay *= exponential_base * (1 + jitter * random.random())
+        print(f"Wait for {delay} seconds.")
+
+        time.sleep(delay)  # wait for n seconds before retrying
+        return None, None, None, None  # return None if an exception was caught
 
 
 def generate_image_response(prompt: str,
                             size: str,
-                            retries: int,
                             max_retries: int) -> str:
-    try:
-        print("Generating image...")
-        response = openai.Image.create(
-            prompt=prompt,
-            n=1,
-            size=size,
-        )
-        # print (response)
-        return response['data'][0]['url']
+    delay: float = 1  # initial delay
+    exponential_base: float = 2
+    jitter: bool = True
+    num_retries: int = 0
 
-    except openai.error.RateLimitError as e:  # rate limit error
-        print("Rate limit reached. Retry attempt " + str(retries + 1) + " of " + str(max_retries) + "...")
-    except openai.error.Timeout as e:  # timeout error
-        print("Request timed out. Retry attempt " + str(retries + 1) + " of " + str(max_retries) + "...")
-    except openai.error.ServiceUnavailableError:
-        print("Server Overloaded. Retry attempt " + str(retries + 1) + " of " + str(max_retries) + "...")
-    except openai.error.APIError as e:
-        if hasattr(e, 'response') and e.response.status_code == 429:  # rate limit error
-            print("Rate limit reached. Retry attempt " + str(retries + 1) + " of " + str(max_retries) + "...")
-        elif hasattr(e, 'response') and e.response.status_code == 502:  # bad gateway error
-            print("Bad Gateway. Retry attempt " + str(retries + 1) + " of " + str(max_retries) + "...")
-        elif hasattr(e, 'response') and e.response.status_code == 600:  # read timeout error
-            print("Read Timeout. Retry attempt " + str(retries + 1) + " of " + str(max_retries) + "...")
-        else:
-            raise e  # if it's not a rate limit error, re-raise the exception
-    time.sleep(60)
+    while True:
+        try:
+            if num_retries > max_retries:
+                raise Exception(f"Max retries exceeded. The API continues to respond with an error after " + str(
+                    max_retries) + " attempts.")
+
+            print("Generating image...")
+            response = openai.Image.create(
+                prompt=prompt,
+                n=1,
+                size=size,
+            )
+            # print (response)
+            return response['data'][0]['url']
+
+        except openai.error.RateLimitError as e:  # rate limit error
+            num_retries += 1
+            print("Rate limit reached. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+        except openai.error.Timeout as e:  # timeout error
+            num_retries += 1
+            print("Request timed out. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+        except openai.error.ServiceUnavailableError:
+            num_retries += 1
+            print("Server Overloaded. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+        except openai.error.APIError as e:
+            num_retries += 1
+            if hasattr(e, 'response') and e.response.status_code == 429:  # rate limit error
+                print("Rate limit reached. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+            elif hasattr(e, 'response') and e.response.status_code == 502:  # bad gateway error
+                print("Bad Gateway. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+            elif hasattr(e, 'response') and e.response.status_code == 600:  # read timeout error
+                print("Read Timeout. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+            else:
+                raise e  # if it's not a rate limit error, re-raise the exception
+
+        # Increment the delay
+        delay *= exponential_base * (1 + jitter * random.random())
+        print(f"Wait for {delay} seconds.")
+
+        time.sleep(delay)  # wait for n seconds before retrying
 
 
 def chat_with_gpt3(stage: str,
@@ -143,23 +188,19 @@ def chat_with_gpt3(stage: str,
                    presence: float = 0,
                    model: str = "gpt-3.5-turbo") -> str:
     max_retries = 5
-    for retries in range(max_retries):
-        response, prompt_tokens, completion_tokens, total_tokens = generate_content_response(prompt, temp, p, freq, presence, retries, max_retries, model)
-        if response is not None:   # If a response was successfully received
-            write_to_csv((stage, prompt_tokens, completion_tokens, total_tokens, None, None))
-            return response
-    raise Exception(f"Max retries exceeded. The API continues to respond with an error after " + str(max_retries) + " attempts.")
+    response, prompt_tokens, completion_tokens, total_tokens = generate_content_response(prompt, temp, p, freq, presence, max_retries, model)
+    if response is not None:   # If a response was successfully received
+        write_to_csv((stage, prompt_tokens, completion_tokens, total_tokens, None, None))
+        return response
 
 
 def chat_with_dall_e(prompt: str,
                      size: str,
                      section: str) -> str:
     max_retries = 5
-    for retries in range(max_retries):
-        url: str = generate_image_response(prompt, size, retries, max_retries)
-        if url is not None:   # If a response was successfully received
-            return url
-    raise Exception(f"Max retries exceeded. The API continues to respond with an error after " + str(max_retries) + " attempts.")
+    url: str = generate_image_response(prompt, size, max_retries)
+    if url is not None:   # If a response was successfully received
+        return url
 
 # =======================================================================================================================
 # CSV Functions
