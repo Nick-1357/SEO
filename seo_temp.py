@@ -11,6 +11,7 @@ import sys
 import time
 import torch
 import io
+import base64
 from PIL import Image
 from dotenv import load_dotenv
 from threading import Thread
@@ -36,9 +37,14 @@ openai.Model.list()
 # ==================================================================================================
  
 
-def query(payload):
-    response = requests.post(API_URL, headers=headers, json=payload)
-    return response.content
+def query(query_parameters: Dict[str, str]) -> bytes:
+    try:
+        response = requests.post(API_URL, headers=headers, json=query_parameters, timeout=10)
+        response.raise_for_status()
+        return response.content
+    except requests.exceptions.RequestException as e:
+        print(f"An error occurred: {e}")
+        return b""
 
 
 def stabilityai_generate(prompt: str,
@@ -99,7 +105,7 @@ def generate_content_response(prompt: str,
             print("Read Timeout. Retry attempt " + str(retries + 1) + " of " + str(max_retries) + "...")
         else:
             raise e  # if it's not a rate limit error, re-raise the exception
-    time.sleep(60)  # wait for 60 seconds before retrying
+    time.sleep(2)  # wait for 60 seconds before retrying
     return None, None, None, None  # return None if an exception was caught
 
 
@@ -114,7 +120,6 @@ def generate_image_response(prompt: str,
             n=1,
             size=size,
         )
-        # print (response)
         return response['data'][0]['url']
 
     except openai.error.RateLimitError as e:  # rate limit error
@@ -132,7 +137,7 @@ def generate_image_response(prompt: str,
             print("Read Timeout. Retry attempt " + str(retries + 1) + " of " + str(max_retries) + "...")
         else:
             raise e  # if it's not a rate limit error, re-raise the exception
-    time.sleep(60)
+    time.sleep(2)
 
 
 def chat_with_gpt3(stage: str,
@@ -223,6 +228,18 @@ def sanitize_filename(filename: str) -> str:
     """Remove special characters and replace spaces with underscores in a string to use as a filename."""
     return re.sub(r'[^A-Za-z0-9]+', '_', filename)
 
+
+def url_to_base64(url: str) -> str:
+    response = requests.get(url)
+    if response.status_code == 200:
+        # Get the content of the response
+        image_data = response.content
+
+        # Convert the image data to a base64 string
+        base64_image = base64.b64encode(image_data).decode('utf-8')
+        return base64_image
+    else:
+        print("Unable to download image")
 
 # def fail_safe(website: str) -> str:
 #     if website.find('<!DOCTYPE html>') == -1:
@@ -422,6 +439,7 @@ def get_image_context(company_name: str,
     4) Close-up of modern designer a minimalist and contemporary lamp design, with clean lines and detailed lighting, trending on Artstation, detailed lighting, perfect for any contemporary space.
     5) Overhead view of a sleek and futuristic concept car with aerodynamic curves, and a glossy black finish driving on a winding road with mountains in the background, sleek and stylish design, highly detailed, ultra realistic, concept art, intricate textures, interstellar background, space travel, art by alphonse mucha, greg rutkowski, ross tran, leesha hannigan, ignacio fernandez rios, kai carpenter, perfect for any casual occasion.
     6) Close-up of a designer hand-crafting a sofa with intricate details, and detailed lighting, trending on Artstation, unreal engine, smooth finish.
+    7) Low angle shot of @mystyle sunglasses a modern and sleek design with reflective lenses, worn by a model standing on a city street corner with tall buildings in the background, sleek and stylish design, highly detailed, ultra realistic.
     """
     prompt = f"""
     Generate a detailed description for an image about {keyword} and {topic}. 
@@ -430,13 +448,16 @@ def get_image_context(company_name: str,
     iii) Format: {context_json}
     """
     image_context = chat_with_gpt3("Image Description Generation", prompt, temp=0.7, p=0.8)
-    image_context = processjson(image_context)
-    print(image_context)
-    imagecontext = json.loads(image_context)
+    image_cont = processjson(image_context)
+    # print(image_context)
+    # print(image_cont)
+    imagecontext = json.loads(image_cont)
     imageurl = chat_with_dall_e(imagecontext["description"], imagecontext["size"], section)
-    return imageurl
-
-
+    print(imageurl)
+    image_base64 = url_to_base64(imageurl)
+    return image_base64
+    
+    
 def generate_gallery_images(company_name: str,
                             keyword: str,
                             topic: str, 
@@ -448,6 +469,7 @@ def generate_gallery_images(company_name: str,
         for future in concurrent.futures.as_completed(futures):
             try:
                 result = future.result()  # Get the result of the future
+                # result_base64 = url_to_base64(result)
                 gallery.append(result)
             except Exception as e:
                 print(f"An exception occurred during execution: {e}")

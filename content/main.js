@@ -26,7 +26,7 @@ window.onload = function() {
 
         document.getElementById('banner').innerHTML = `
         <section style='
-            background-image: url("${banner.image}"); background-repeat: no-repeat; -webkit-background-size: cover;
+            background-image: url("data:image/jpg;base64,${banner.image}"); background-repeat: no-repeat; -webkit-background-size: cover;
             -moz-background-size: cover;
             -o-background-size: cover;
             background-size: cover;'>
@@ -59,12 +59,12 @@ window.onload = function() {
                 <div>
                     <h1 class="banner__heading">${about.h2}</h1>
                     <h5 class="banner_subheading">${about.p}</h5>
-                    <button class="learn-more">About Us</button>
+                    <button class="button1">About Us</button>
                 </div>
                 </div>
                 <div class="banner__image">
                 <div class="img-wrapper">
-                    <img src="${about.image}" alt="" />
+                    <img src="data:image/jpeg;base64,${about.image}" alt="" />
                 </div>
                 </div>
             </div>
@@ -91,7 +91,7 @@ window.onload = function() {
 
         gallery.image.forEach(img => {
             document.getElementById('gallery').innerHTML += `
-            <a href="#"><img class="img-fluid" src="${img}" alt="image.alt" /></a>
+            <a href="#"><img class="img-fluid" src="data:image/jpeg;base64,${img}" alt="image.alt" /></a>
             `;
         });
 

@@ -363,7 +363,7 @@ p{
  }
 
 
- .submit {
+ /* .submit {
   width: 220px;
   height: 50px;
   border: none;
@@ -419,7 +419,31 @@ p{
   left: 0;
   top: 0;
   border-radius: 10px;
-}
+} */
+ 
+ .submit {
+  width: 170px;
+  height: 60px;
+  font-size: 18px;
+  background: #f4f4f4;
+  border: none;
+  border-radius: 50px;
+  color: #000;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.4s;
+  
+ }
+ 
+ .submit:hover {
+  box-shadow: inset 0 0 0 4px #ef476f, 
+               inset 0 0 0 8px #ffd166, 
+               inset 0 0 0 12px #06d6a0,
+               inset 0 0 0 16px #118ab2;
+  background: #073b4c;
+  color: #fff;
+ }
+
 
 @keyframes glowing_54134 {
   0% {
