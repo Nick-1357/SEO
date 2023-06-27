@@ -1,6 +1,5 @@
 import csv
 import concurrent.futures
-import io
 import json
 import os
 import openai
@@ -9,13 +8,11 @@ import random
 import requests
 import sys
 import time
-import torch
 import io
 import base64
 from PIL import Image
 from pathlib import Path
 from dotenv import load_dotenv
-from threading import Thread
 from typing import List, Dict
 from concurrent.futures import ThreadPoolExecutor, wait
 from diffusers import StableDiffusionPipeline, EulerDiscreteScheduler
@@ -88,8 +85,9 @@ def generate_content_response(prompt: str,
     while True:
         try:
             if num_retries > max_retries:
-                raise Exception(f"Max retries exceeded. The API continues to respond with an error after " + str(
+                print(f"Max retries exceeded. The API continues to respond with an error after " + str(
                     max_retries) + " attempts.")
+                return None, None, None, None  # return None if an exception was caught
 
             response = openai.ChatCompletion.create(
                 model=f"{model}",
@@ -130,7 +128,6 @@ def generate_content_response(prompt: str,
         print(f"Wait for {delay} seconds.")
 
         time.sleep(delay)  # wait for n seconds before retrying
-        return None, None, None, None  # return None if an exception was caught
 
 
 def generate_image_response(prompt: str,
@@ -144,8 +141,9 @@ def generate_image_response(prompt: str,
     while True:
         try:
             if num_retries > max_retries:
-                raise Exception(f"Max retries exceeded. The API continues to respond with an error after " + str(
+                print(f"Max retries exceeded. The API continues to respond with an error after " + str(
                     max_retries) + " attempts.")
+                return ""  # return "" if an exception was caught
 
             print("Generating image...")
             response = openai.Image.create(
@@ -210,8 +208,9 @@ def chat_with_dall_e(prompt: str,
 
 
 def write_to_csv(data: tuple):
-    file_exists = os.path.isfile('token_usage.csv')  # Check if file already exists
-    with open('token_usage.csv', 'a+', newline='') as csvfile:
+    file_path = os.path.join(workspace_path, "token_usage.csv")
+    file_exists = os.path.isfile(file_path)  # Check if file already exists
+    with open(file_path, 'a+', newline='') as csvfile:
         fieldnames = ['Company Name', 'Keyword', 'Iteration', 'Stage', 'Prompt Tokens', 'Completion Tokens', 'Total Tokens', 'Price']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         if not file_exists:
@@ -366,7 +365,7 @@ def generate_content(company_name: str,
                      title: str) -> str:
 
     print("Generating Content...")
-    directory_path = "content"
+    directory_path = os.path.join(workspace_path, "content")
     os.makedirs(directory_path, exist_ok=True)
     json1 = """
     {
@@ -422,7 +421,7 @@ def generate_content(company_name: str,
     }
     """
     prompt = f"""
-    Createa SEO optimized website content with the following specifications:
+    Create a SEO optimized website content with the following specifications:
     Company Name: {company_name}
     Title: {title}
     Industry: {industry}
@@ -561,23 +560,23 @@ def feature_function(company_name: str,
                      selected_keyword: str,
                      title: str) -> Dict:
     with concurrent.futures.ThreadPoolExecutor() as executor:
-                image_future = executor.submit(image_generation, company_name, topic, industry, selected_keyword)
-                content_future = executor.submit(content_generation, company_name, topic, industry, selected_keyword, title)
-                futures = [image_future, content_future]
-                done, not_done = concurrent.futures.wait(futures, timeout=60, return_when=concurrent.futures.ALL_COMPLETED)
-                try:
-                    image_result = image_future.result()
-                    content_result = content_future.result()
-                except Exception as e:
-                    print("An exception occurred during execution: ", e)
-                    
-                if image_result is None or content_result is None:
-                    print("Error: No results returned")
-                    return {}
-                else:
-                    merged_dict = deep_update(content_result, image_result)
-                    return merged_dict
-            
+        image_future = executor.submit(image_generation, company_name, topic, industry, selected_keyword)
+        content_future = executor.submit(content_generation, company_name, topic, industry, selected_keyword, title)
+        futures = [image_future, content_future]
+        done, not_done = concurrent.futures.wait(futures, timeout=60, return_when=concurrent.futures.ALL_COMPLETED)
+        try:
+            image_result = image_future.result()
+            content_result = content_future.result()
+        except Exception as e:
+            print("An exception occurred during execution: ", e)
+
+        if image_result is None or content_result is None:
+            print("Error: No results returned")
+            return {}
+        else:
+            merged_dict = deep_update(content_result, image_result)
+            return merged_dict
+
 # =======================================================================================================================
 # Main Function
 # =======================================================================================================================
@@ -627,7 +626,7 @@ def main():
             else:
                 flag = False
                 # Write to JSON file
-                directory_path = "content"
+                directory_path = os.path.join(workspace_path, "content")
                 os.makedirs(directory_path, exist_ok=True)
                 with open(os.path.join(directory_path, f'data.json'), 'w', encoding='utf-8') as f:
                     json.dump(merged_dict, f, ensure_ascii=False, indent=4)
