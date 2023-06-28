@@ -33,7 +33,7 @@ openai.Model.list()
 memory_dir = os.getenv("MEMORY_DIRECTORY", "local")
 workspace_path = "./"
 if memory_dir == "production":
-    workspace_path = "./tmp"
+    workspace_path = "/tmp"
 elif memory_dir == "local":
     workspace_path = "./"
 
@@ -87,7 +87,6 @@ def generate_content_response(prompt: str,
                 print(f"Max retries exceeded. The API continues to respond with an error after " + str(
                     max_retries) + " attempts.")
                 return None, None, None, None  # return None if an exception was caught
-                raise Exception
         else:
             try:
                 response = openai.ChatCompletion.create(
