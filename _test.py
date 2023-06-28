@@ -24,7 +24,7 @@ import seo_temp
 memory_dir = os.getenv("MEMORY_DIRECTORY", "local")
 workspace_path = "./"
 if memory_dir == "production":
-    workspace_path = "./tmp"
+    workspace_path = "/tmp"
 elif memory_dir == "local":
     workspace_path = "./"
 """

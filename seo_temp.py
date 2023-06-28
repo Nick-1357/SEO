@@ -254,7 +254,6 @@ def deep_update(source, overrides):
             source[key] = value
     return source
 
-
   
 def processjson(jsonf: str) -> str:
     startindex = jsonf.find("{")
@@ -267,7 +266,6 @@ def processjson(jsonf: str) -> str:
             return jsonf[startindex:endindex+1]
         except ValueError:
             return ""
-        
 
 
 def sanitize_filename(filename: str) -> str:
