@@ -7217,6 +7217,31 @@ Apple,Car Delership in Malaysia,0,Initial,0,0,0,0.0
 ,,14,Image Description Generation,441,150,591,0.001773
 ,,15,Content Generation,626,782,1408,0.004224
 Apple,Car Delership in Malaysia,16,Complete,0,0,0,0.0
+<<<<<<< HEAD
+<<<<<<< HEAD
+Nexus,Underwater Hotel,0,Initial,0,0,0,0.0
+Nexus,Underwater Hotel,0,Initial,0,0,0,0.0
+Nexus,Underwater Hotel,0,Initial,0,0,0,0.0
+Nexus,Submarine Hotel,0,Initial,0,0,0,0.0
+,,1,Industry Identification,70,4,74,0.000222
+,,2,Keyword Clusters Search,74,39,113,0.000339
+,,3,Title Generation,73,18,91,0.000273
+,,4,Meta Description Generation,89,54,143,0.000429
+,,5,Image Description Generation,437,95,532,0.001596
+,,6,Image Description Generation,437,109,546,0.0016380000000000001
+,,7,Image Description Generation,437,104,541,0.001623
+,,8,Image Description Generation,437,144,581,0.001743
+,,9,Image Description Generation,437,128,565,0.0016950000000000001
+,,10,Image Description Generation,437,133,570,0.0017100000000000001
+,,11,Image Description Generation,437,150,587,0.001761
+,,12,Image Description Generation,437,126,563,0.001689
+,,13,Image Description Generation,437,147,584,0.001752
+,,14,Image Description Generation,437,165,602,0.001806
+,,15,Content Generation,624,728,1352,0.004056
+Nexus,Submarine Hotel,16,Complete,0,0,0,0.0
+=======
+=======
+>>>>>>> 256d85b683304d68b5a6dafb43b15415a39aca8b
 Time,Best Biscuit Company in Malaysia,0,Initial,0,0,0,0.0
 ,,1,Industry Identification,74,3,77,0.000231
 ,,2,Keyword Clusters Search,78,52,130,0.00039
@@ -7263,36 +7288,101 @@ Oreo,Car Rental Company in Malaysia,0,Initial,0,0,0,0.0
 ,,14,Image Description Generation,441,134,575,0.001725
 ,,15,Content Generation,664,991,1655,0.004965
 Oreo,Car Rental Company in Malaysia,16,Complete,0,0,0,0.0
-,,17,Content Generation,675,777,1452,0.0043560000000000005
-Hertz,Best Ice Cream in Malaysia,0,Initial,0,0,0,0.0
-,,1,Industry Identification,72,3,75,0.000225
-,,2,Keyword Clusters Search,76,60,136,0.000408
-,,3,Title Generation,79,19,98,0.000294
-,,4,Meta Description Generation,96,57,153,0.000459
-,,5,Image Description Generation,444,119,563,0.001689
-,,6,Image Description Generation,444,127,571,0.0017130000000000001
-,,7,Image Description Generation,444,119,563,0.001689
-,,8,Image Description Generation,444,137,581,0.001743
-,,9,Image Description Generation,444,122,566,0.001698
-,,10,Image Description Generation,444,134,578,0.001734
-,,11,Image Description Generation,444,162,606,0.001818
-,,12,Image Description Generation,444,135,579,0.001737
-,,13,Image Description Generation,444,143,587,0.001761
-,,14,Image Description Generation,444,155,599,0.001797
-,,15,Content Generation,668,909,1577,0.004731
-Hertz,Best Ice Cream in Malaysia,0,Initial,0,0,0,0.0
-,,1,Industry Identification,72,3,75,0.000225
-,,2,Keyword Clusters Search,76,60,136,0.000408
-,,3,Title Generation,79,19,98,0.000294
-,,4,Meta Description Generation,96,71,167,0.000501
-,,5,Image Description Generation,444,118,562,0.001686
-,,6,Image Description Generation,444,114,558,0.0016740000000000001
-,,7,Image Description Generation,444,107,551,0.001653
-,,8,Image Description Generation,444,130,574,0.001722
-,,9,Image Description Generation,444,136,580,0.00174
-,,10,Image Description Generation,444,135,579,0.001737
-,,11,Image Description Generation,444,141,585,0.001755
-,,12,Image Description Generation,444,136,580,0.00174
-,,13,Image Description Generation,444,145,589,0.0017670000000000001
-,,14,Image Description Generation,444,139,583,0.0017490000000000001
-,,15,Content Generation,668,877,1545,0.004635
+Nexus,Submarine Hotel,0,Initial,0,0,0,0.0
+,,1,Industry Identification,70,4,74,0.000222
+,,2,Keyword Clusters Search,74,39,113,0.000339
+,,3,Title Generation,73,27,100,0.00030000000000000003
+,,4,Meta Description Generation,89,53,142,0.000426
+,,5,Image Description Generation,437,98,535,0.001605
+,,6,Image Description Generation,437,126,563,0.001689
+,,7,Image Description Generation,437,114,551,0.001653
+,,8,Image Description Generation,437,125,562,0.001686
+,,9,Image Description Generation,437,120,557,0.001671
+,,10,Image Description Generation,437,139,576,0.001728
+,,11,Image Description Generation,437,110,547,0.001641
+,,12,Image Description Generation,437,132,569,0.001707
+,,13,Image Description Generation,437,131,568,0.001704
+,,14,Image Description Generation,437,202,639,0.001917
+,,15,Content Generation,668,838,1506,0.004518
+Nexus,submarine hotel,0,Initial,0,0,0,0.0
+,,1,Industry Identification,69,4,73,0.000219
+,,2,Keyword Clusters Search,73,42,115,0.000345
+,,3,Title Generation,74,17,91,0.000273
+,,4,Meta Description Generation,89,48,137,0.000411
+,,5,Image Description Generation,436,86,522,0.0015660000000000001
+,,6,Image Description Generation,436,102,538,0.001614
+,,7,Image Description Generation,436,92,528,0.0015840000000000001
+,,8,Image Description Generation,436,108,544,0.001632
+,,9,Image Description Generation,436,105,541,0.001623
+,,10,Image Description Generation,436,134,570,0.0017100000000000001
+,,11,Image Description Generation,436,127,563,0.001689
+,,12,Image Description Generation,436,102,538,0.001614
+,,13,Image Description Generation,436,118,554,0.001662
+,,14,Image Description Generation,436,158,594,0.001782
+,,15,Content Generation,657,755,1412,0.004236
+Nexus,submarine hotel,0,Initial,0,0,0,0.0
+,,1,Industry Identification,69,4,73,0.000219
+,,2,Keyword Clusters Search,73,42,115,0.000345
+,,3,Title Generation,72,18,90,0.00027
+,,4,Meta Description Generation,88,44,132,0.00039600000000000003
+,,5,Image Description Generation,435,90,525,0.001575
+,,6,Image Description Generation,435,116,551,0.001653
+,,7,Image Description Generation,435,126,561,0.001683
+,,8,Image Description Generation,435,141,576,0.001728
+,,9,Image Description Generation,435,118,553,0.001659
+,,10,Image Description Generation,435,138,573,0.001719
+,,11,Image Description Generation,435,132,567,0.001701
+,,12,Image Description Generation,435,154,589,0.0017670000000000001
+,,13,Image Description Generation,435,163,598,0.001794
+,,14,Image Description Generation,435,152,587,0.001761
+,,15,Content Generation,657,849,1506,0.004518
+Nexus,submarine hotel,0,Initial,0,0,0,0.0
+,,1,Industry Identification,69,4,73,0.000219
+,,2,Keyword Clusters Search,73,43,116,0.000348
+,,3,Title Generation,73,24,97,0.000291
+,,4,Meta Description Generation,89,42,131,0.000393
+,,5,Image Description Generation,436,100,536,0.001608
+,,6,Image Description Generation,436,96,532,0.001596
+,,7,Image Description Generation,436,103,539,0.001617
+,,8,Image Description Generation,436,111,547,0.001641
+,,9,Image Description Generation,436,104,540,0.0016200000000000001
+,,10,Image Description Generation,436,129,565,0.0016950000000000001
+,,11,Image Description Generation,436,130,566,0.001698
+,,12,Image Description Generation,436,135,571,0.0017130000000000001
+,,13,Image Description Generation,436,122,558,0.0016740000000000001
+,,14,Image Description Generation,436,146,582,0.001746
+,,15,Content Generation,664,801,1465,0.0043950000000000005
+Nexus,submarine hotel,0,Initial,0,0,0,0.0
+,,1,Industry Identification,69,4,73,0.000219
+,,2,Keyword Clusters Search,73,42,115,0.000345
+,,3,Title Generation,72,16,88,0.000264
+,,4,Meta Description Generation,88,33,121,0.000363
+,,5,Image Description Generation,435,95,530,0.00159
+,,6,Image Description Generation,435,91,526,0.001578
+,,7,Image Description Generation,435,108,543,0.001629
+,,8,Image Description Generation,435,107,542,0.001626
+,,9,Image Description Generation,435,124,559,0.001677
+,,10,Image Description Generation,435,116,551,0.001653
+,,11,Image Description Generation,435,133,568,0.001704
+,,12,Image Description Generation,435,129,564,0.0016920000000000001
+,,13,Image Description Generation,435,142,577,0.0017310000000000001
+,,14,Image Description Generation,435,139,574,0.001722
+,,15,Content Generation,655,821,1476,0.0044280000000000005
+Nexus,submarine hotel,16,Complete,0,0,0,0.0
+NexusX,submarine hotel,0,Initial,0,0,0,0.0
+,,1,Industry Identification,69,4,73,0.000219
+,,2,Keyword Clusters Search,73,42,115,0.000345
+,,3,Title Generation,73,22,95,0.000285
+,,4,Meta Description Generation,88,47,135,0.00040500000000000003
+,,5,Image Description Generation,435,83,518,0.001554
+,,6,Image Description Generation,435,97,532,0.001596
+,,7,Image Description Generation,435,106,541,0.001623
+,,8,Image Description Generation,435,97,532,0.001596
+,,9,Image Description Generation,435,118,553,0.001659
+,,10,Image Description Generation,435,110,545,0.001635
+,,11,Image Description Generation,435,129,564,0.0016920000000000001
+,,12,Image Description Generation,435,144,579,0.001737
+,,13,Image Description Generation,435,159,594,0.001782
+,,14,Image Description Generation,435,171,606,0.001818
+,,15,Content Generation,662,1473,2135,0.006405
+NexusX,submarine hotel,16,Complete,0,0,0,0.0
