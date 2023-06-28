@@ -7386,3 +7386,120 @@ NexusX,submarine hotel,0,Initial,0,0,0,0.0
 ,,14,Image Description Generation,435,171,606,0.001818
 ,,15,Content Generation,662,1473,2135,0.006405
 NexusX,submarine hotel,16,Complete,0,0,0,0.0
+NexusY,Glamping Seaside,0,Initial,0,0,0,0.0
+,,1,Industry Identification,71,3,74,0.000222
+,,2,Keyword Clusters Search,75,57,132,0.00039600000000000003
+,,3,Title Generation,76,21,97,0.000291
+,,4,Meta Description Generation,92,38,130,0.00039
+,,5,Image Description Generation,440,101,541,0.001623
+,,6,Image Description Generation,440,102,542,0.001626
+,,7,Image Description Generation,440,112,552,0.0016560000000000001
+,,8,Image Description Generation,440,124,564,0.0016920000000000001
+,,9,Image Description Generation,440,133,573,0.001719
+,,10,Image Description Generation,440,128,568,0.001704
+,,11,Image Description Generation,440,135,575,0.001725
+,,12,Image Description Generation,440,128,568,0.001704
+,,13,Image Description Generation,440,122,562,0.001686
+,,14,Content Generation,666,921,1587,0.0047610000000000005
+NexusY,Glamping seaside,0,Initial,0,0,0,0.0
+,,1,Industry Identification,70,3,73,0.000219
+,,2,Keyword Clusters Search,74,50,124,0.000372
+,,3,Title Generation,76,18,94,0.000282
+,,4,Meta Description Generation,91,53,144,0.000432
+,,5,Image Description Generation,439,110,549,0.001647
+,,6,Image Description Generation,439,89,528,0.0015840000000000001
+,,7,Image Description Generation,439,117,556,0.001668
+,,8,Image Description Generation,439,119,558,0.0016740000000000001
+,,9,Image Description Generation,439,122,561,0.001683
+,,10,Image Description Generation,439,130,569,0.001707
+,,11,Image Description Generation,439,135,574,0.001722
+,,12,Image Description Generation,439,132,571,0.0017130000000000001
+,,13,Image Description Generation,439,161,600,0.0018
+,,14,Image Description Generation,439,122,561,0.001683
+,,15,Content Generation,662,894,1556,0.004668
+NexusY,Glamping seaside,16,Complete,0,0,0,0.0
+NexusY,glamping seaside,0,Initial,0,0,0,0.0
+,,1,Industry Identification,70,3,73,0.000219
+,,2,Keyword Clusters Search,74,49,123,0.000369
+,,3,Title Generation,76,18,94,0.000282
+,,4,Meta Description Generation,90,45,135,0.00040500000000000003
+,,5,Image Description Generation,438,100,538,0.001614
+,,6,Image Description Generation,438,87,525,0.001575
+,,7,Image Description Generation,438,111,549,0.001647
+,,8,Image Description Generation,438,109,547,0.001641
+,,9,Image Description Generation,438,117,555,0.001665
+,,10,Image Description Generation,438,116,554,0.001662
+,,11,Image Description Generation,438,117,555,0.001665
+,,12,Image Description Generation,438,119,557,0.001671
+,,13,Image Description Generation,438,113,551,0.001653
+,,14,Image Description Generation,438,129,567,0.001701
+,,15,Content Generation,661,876,1537,0.0046110000000000005
+NexusY,glamping seaside,16,Complete,0,0,0,0.0
+Nexus,submarine hotel,0,Initial,0,0,0,0.0
+,,1,Industry Identification,69,4,73,0.000219
+,,2,Keyword Clusters Search,73,42,115,0.000345
+,,3,Title Generation,72,21,93,0.000279
+,,4,Meta Description Generation,88,38,126,0.000378
+,,5,Image Description Generation,435,118,553,0.001659
+,,6,Image Description Generation,435,125,560,0.00168
+,,7,Image Description Generation,435,126,561,0.001683
+,,8,Image Description Generation,435,121,556,0.001668
+,,9,Image Description Generation,435,136,571,0.0017130000000000001
+,,10,Image Description Generation,435,132,567,0.001701
+,,11,Image Description Generation,435,160,595,0.0017850000000000001
+,,12,Image Description Generation,435,152,587,0.001761
+,,13,Image Description Generation,435,188,623,0.001869
+,,14,Image Description Generation,435,131,566,0.001698
+,,15,Content Generation,660,810,1470,0.00441
+Nexus,submarine hotel,16,Complete,0,0,0,0.0
+Nexus Z,submarine hotel,0,Initial,0,0,0,0.0
+,,1,Industry Identification,69,4,73,0.000219
+,,2,Keyword Clusters Search,73,42,115,0.000345
+,,3,Title Generation,75,18,93,0.000279
+,,4,Meta Description Generation,89,61,150,0.00045
+,,5,Image Description Generation,436,81,517,0.001551
+,,6,Image Description Generation,436,97,533,0.001599
+,,7,Image Description Generation,436,108,544,0.001632
+,,8,Image Description Generation,436,114,550,0.00165
+,,9,Image Description Generation,436,123,559,0.001677
+,,10,Image Description Generation,436,122,558,0.0016740000000000001
+,,11,Image Description Generation,436,116,552,0.0016560000000000001
+,,12,Image Description Generation,436,111,547,0.001641
+,,13,Image Description Generation,436,135,571,0.0017130000000000001
+,,14,Image Description Generation,436,120,556,0.001668
+,,15,Content Generation,659,870,1529,0.004587
+Nexus Z,submarine hotel,16,Complete,0,0,0,0.0
+Maxis,Submarine Hotel,0,Initial,0,0,0,0.0
+,,1,Industry Identification,70,4,74,0.000222
+,,2,Keyword Clusters Search,74,39,113,0.000339
+,,3,Title Generation,73,17,90,0.00027
+,,4,Meta Description Generation,88,45,133,0.000399
+,,5,Image Description Generation,436,91,527,0.001581
+,,6,Image Description Generation,436,123,559,0.001677
+,,7,Image Description Generation,436,125,561,0.001683
+,,8,Image Description Generation,436,127,563,0.001689
+,,9,Image Description Generation,436,126,562,0.001686
+,,10,Image Description Generation,436,113,549,0.001647
+,,11,Image Description Generation,436,104,540,0.0016200000000000001
+,,12,Image Description Generation,436,114,550,0.00165
+,,13,Image Description Generation,436,162,598,0.001794
+,,14,Image Description Generation,436,144,580,0.00174
+,,15,Content Generation,658,787,1445,0.004335
+Maxis,Submarine Hotel,16,Complete,0,0,0,0.0
+Maxis,Wine and steak restaurant,0,Initial,0,0,0,0.0
+,,1,Industry Identification,71,3,74,0.000222
+,,2,Keyword Clusters Search,75,59,134,0.000402
+,,3,Title Generation,78,20,98,0.000294
+,,4,Meta Description Generation,95,59,154,0.000462
+,,5,Image Description Generation,442,102,544,0.001632
+,,6,Image Description Generation,442,101,543,0.001629
+,,7,Image Description Generation,442,102,544,0.001632
+,,8,Image Description Generation,442,131,573,0.001719
+,,9,Image Description Generation,442,133,575,0.001725
+,,10,Image Description Generation,442,132,574,0.001722
+,,11,Image Description Generation,442,121,563,0.001689
+,,12,Image Description Generation,442,134,576,0.001728
+,,13,Image Description Generation,442,132,574,0.001722
+,,14,Image Description Generation,442,116,558,0.0016740000000000001
+,,15,Content Generation,667,872,1539,0.0046170000000000004
+Maxis,Wine and steak restaurant,16,Complete,0,0,0,0.0

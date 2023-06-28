@@ -243,7 +243,7 @@ def write_to_csv(data: tuple):
 # ##==================================================================================================
 
 def deep_update(source, overrides):
-    if overrides is None:
+    if not overrides or not isinstance(overrides, dict):
         return source
     for key, value in overrides.items():
         if isinstance(value, dict):
