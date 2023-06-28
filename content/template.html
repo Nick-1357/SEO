@@ -11,18 +11,10 @@
         /* Put styles here */
     </style>
     
-    <script>
-      export default{
-      methods: {
-      toggleMenu() {
-        this.isExpanded = !this.isExpanded;
-      },
-    },
-    }</script>
+    
 </head>
-<body  data-aos="fade-in">
-  <div data-aos="fade-up"
-  data-aos-anchor-placement="top-center">
+<body>
+  <div data-aos="fade-up" data-aos-anchor-placement="top-center">
     <section>
       <header>
         <div class="header-wrapper">
@@ -140,17 +132,17 @@
 
 
     </div>
-    <div data-aos="fade-up" data-aos-anchor-placement="top-center">
+    <div>
       <section class="anim_gradient">
-        <div class="banner__sidebyside">
-          <div class="banner__text">
+        <div class="banner__sidebyside" data-aos="fade-in" data-aos-anchor-placement="top-center">
+          <div class="banner__text" data-aos="fade-in" data-aos-anchor-placement="top-center">
             <div>
-              <h1 class="contactus">Have a question?</h1>
-              <h4 class="contactus_sub">Contact us if you have any questions!</h4>
+              <h1 class="contactus" data-aos="fade-in" data-aos-anchor-placement="center-center">Have a question?</h1>
+              <h4 class="contactus_sub" data-aos="fade-in" data-aos-anchor-placement="center-center">Contact us if you have any questions!</h4>
             </div>
           </div>
           <div>
-            <div class="input-card">
+            <div class="input-card" data-aos="fade-in" data-aos-anchor-placement="bottom-bottom">
               <form action="">
                 <div class="input">
                   <input class="input__field" id="firstname" type="text" required />
@@ -187,6 +179,14 @@
 <script>
   AOS.init();
 </script>
+<script>
+  export default{
+  methods: {
+  toggleMenu() {
+    this.isExpanded = !this.isExpanded;
+  },
+},
+}</script>
 </body>
   
 </html>

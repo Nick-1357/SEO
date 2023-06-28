@@ -39,13 +39,7 @@ window.onload = function() {
                 <h2 class="heading-2 text-center">${banner.h2}</h2>
                 <div class="mx-auto">
                     <button class="button1" href="#aboutus">${banner.button[0]}</button>
-                    <button class="learn-more">
-                        <span class="circle" aria-hidden="true">
-                        <span class="icon arrow"></span>
-                        </span>
-                        <span class="button-text">${banner.button[1]}</span>
-                    </button>
-                    
+                    <button class="button1">${banner.button[1]}</button>
                 </div>
                 </div>
             </div>
@@ -61,7 +55,7 @@ window.onload = function() {
                     <div  data-aos="zoom-in-up" data-aos-anchor-placement="top-center">
                         <h1 class="banner__heading heading-1"  data-aos="zoom-in-up" data-aos-anchor-placement="top-center">${about.h2}</h1>
                         <h5 class="banner_subheading heading-5"  data-aos="zoom-in-up" data-aos-anchor-placement="top-center">${about.p}</h5>
-                        <button class="button1"  data-aos="zoom-in-up" data-aos-anchor-placement="top-center">About Us</button>
+                        <button class="learn-more"  data-aos="zoom-in-up" data-aos-anchor-placement="top-center">About Us</button>
                     </div>
                 </div>
                 <div class="banner__image" data-aos="flip-right" data-aos-anchor-placement="top-center">
