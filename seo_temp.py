@@ -243,7 +243,7 @@ def write_to_csv(data: tuple):
 # ##==================================================================================================
 
 def deep_update(source, overrides):
-    if overrides is None:
+    if overrides is None or type(overrides) != dict:
         return source
     for key, value in overrides.items():
         if isinstance(value, dict):
@@ -476,7 +476,7 @@ def get_image_context(company_name: str,
     Use these as an example descriptions: {examples}
     """
     image_context = chat_with_gpt3("Image Description Generation", prompt, temp=0.7, p=0.8)
-    # print(image_context)
+    print(image_context)
     imageurl = chat_with_dall_e(image_context, section)
     # print(imageurl)
     image_base64 = url_to_base64(imageurl)

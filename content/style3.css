@@ -28,7 +28,7 @@ p{
   margin-left: 0;
   margin-right: 0;
   font-weight: bold;
-  color: #232323;
+  color: #ffffff;
 }
 .heading-2 {
   display: block;
@@ -38,7 +38,7 @@ p{
   margin-left: 0;
   margin-right: 0;
   font-weight: bold;
-  color: #232323;
+  color: #ffffff;
 }
 .heading-5 {
   display: block;
@@ -144,7 +144,7 @@ p{
     text-align: center;
   }
   .banner_subheading {
-    text-align: center;
+    text-align: justify;
   }
 }
 @media (max-width: 480px) {
@@ -165,7 +165,7 @@ p{
     text-align: center;
   }
   .banner_subheading {
-    text-align: center;
+    text-align: justify;
   }
   .bg-blurrylights {
     background-size: cover;
@@ -268,11 +268,12 @@ p{
   color: #000;
   -webkit-box-shadow: rgb(153, 147, 40) 0px 7px 0px 0px;
           box-shadow: rgb(155, 149, 36) 0px 7px 0px 0px;
+  animation: ease-in;
  }
  
  .button1:active {
   background-color: rgb(45, 255, 4);
-  
+  animation: ease-out;
   /*50, 168, 80*/
   -webkit-box-shadow: rgb(201, 46, 70) 0px 0px 0px 0px;
           box-shadow: rgb(201, 46, 70) 0px 0px 0px 0px;
@@ -295,7 +296,7 @@ p{
   padding: 1px;;
   font-size: inherit;
   font-family: inherit;
-  margin:auto
+  padding-left: 10px;
  }
  
  .learn-more {
@@ -352,7 +353,7 @@ p{
   bottom: 0;
   padding: 0.75rem 0;
   margin: 0 0 0 1.85rem;
-  color: #282936;
+  color: #ffffff;
   font-weight: 700;
   line-height: 1.6;
   text-align: center;
@@ -668,6 +669,41 @@ section:hover .toolbar {
 /* .cell {
   border: 1px solid #333333;
 } */
+.blogpost{
+  align-items: auto;
+}
+.cell {
+  box-sizing: border-box;
+  align-self: center;
+  margin: auto;
+  justify-content: center;
+  width: 400px;
+  height: 380px;
+  background: rgba(217, 217, 217, 0.58);
+  border: 1px solid white;
+  box-shadow: 12px 17px 51px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(6px);
+  border-radius: 17px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.5s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  font-weight: bolder;
+  color: black;
+}
+
+.cell:hover {
+  border: 1px solid black;
+  transform: scale(1.05);
+}
+
+.cell:active {
+  transform: scale(0.95) rotateZ(1.7deg);
+}
+
 .article-section {
   margin: 0rem auto;
   padding: 2rem 3rem 3rem;
@@ -775,7 +811,7 @@ section:hover .toolbar {
   font-weight: normal;
   margin-bottom: 2rem;
   color: #282828;
-  text-align: start;
+  text-align: justify;
 }
 
 /* image */
@@ -957,7 +993,7 @@ input[type="checkbox"] {
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 4rem 0rem;
+  padding: 4rem 4rem;
   max-width: 1400px;
 }
 .bg-lightgray {
