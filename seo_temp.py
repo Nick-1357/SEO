@@ -563,7 +563,6 @@ def feature_function(company_name: str,
             return {}
         else:
             merged_dict = deep_update(content_result, image_result)
-            merged_dict = processjson(merged_dict)
             return merged_dict
 
 # =======================================================================================================================

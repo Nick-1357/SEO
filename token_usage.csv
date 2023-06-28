@@ -7218,6 +7218,7 @@ Apple,Car Delership in Malaysia,0,Initial,0,0,0,0.0
 ,,15,Content Generation,626,782,1408,0.004224
 Apple,Car Delership in Malaysia,16,Complete,0,0,0,0.0
 <<<<<<< HEAD
+<<<<<<< HEAD
 Nexus,Underwater Hotel,0,Initial,0,0,0,0.0
 Nexus,Underwater Hotel,0,Initial,0,0,0,0.0
 Nexus,Underwater Hotel,0,Initial,0,0,0,0.0
@@ -7239,6 +7240,8 @@ Nexus,Submarine Hotel,0,Initial,0,0,0,0.0
 ,,15,Content Generation,624,728,1352,0.004056
 Nexus,Submarine Hotel,16,Complete,0,0,0,0.0
 =======
+=======
+>>>>>>> 256d85b683304d68b5a6dafb43b15415a39aca8b
 Time,Best Biscuit Company in Malaysia,0,Initial,0,0,0,0.0
 ,,1,Industry Identification,74,3,77,0.000231
 ,,2,Keyword Clusters Search,78,52,130,0.00039
@@ -7285,7 +7288,6 @@ Oreo,Car Rental Company in Malaysia,0,Initial,0,0,0,0.0
 ,,14,Image Description Generation,441,134,575,0.001725
 ,,15,Content Generation,664,991,1655,0.004965
 Oreo,Car Rental Company in Malaysia,16,Complete,0,0,0,0.0
->>>>>>> cd4fe9809f6d7268cdc82fd0b81b04fb0952579a
 Nexus,Submarine Hotel,0,Initial,0,0,0,0.0
 ,,1,Industry Identification,70,4,74,0.000222
 ,,2,Keyword Clusters Search,74,39,113,0.000339
@@ -7350,3 +7352,20 @@ Nexus,submarine hotel,0,Initial,0,0,0,0.0
 ,,13,Image Description Generation,436,122,558,0.0016740000000000001
 ,,14,Image Description Generation,436,146,582,0.001746
 ,,15,Content Generation,664,801,1465,0.0043950000000000005
+Nexus,submarine hotel,0,Initial,0,0,0,0.0
+,,1,Industry Identification,69,4,73,0.000219
+,,2,Keyword Clusters Search,73,42,115,0.000345
+,,3,Title Generation,72,16,88,0.000264
+,,4,Meta Description Generation,88,33,121,0.000363
+,,5,Image Description Generation,435,95,530,0.00159
+,,6,Image Description Generation,435,91,526,0.001578
+,,7,Image Description Generation,435,108,543,0.001629
+,,8,Image Description Generation,435,107,542,0.001626
+,,9,Image Description Generation,435,124,559,0.001677
+,,10,Image Description Generation,435,116,551,0.001653
+,,11,Image Description Generation,435,133,568,0.001704
+,,12,Image Description Generation,435,129,564,0.0016920000000000001
+,,13,Image Description Generation,435,142,577,0.0017310000000000001
+,,14,Image Description Generation,435,139,574,0.001722
+,,15,Content Generation,655,821,1476,0.0044280000000000005
+Nexus,submarine hotel,16,Complete,0,0,0,0.0
