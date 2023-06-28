@@ -59,8 +59,8 @@ window.onload = function() {
             <div class="banner__sidebyside">
                 <div class="banner__text">
                 <div>
-                    <h1 class="banner__heading">${about.h2}</h1>
-                    <h5 class="banner_subheading">${about.p}</h5>
+                    <h1 class="banner__heading heading-1">${about.h2}</h1>
+                    <h5 class="banner_subheading heading-5">${about.p}</h5>
                     <button class="button1  ">About Us</button>
                 </div>
                 </div>
@@ -83,7 +83,7 @@ window.onload = function() {
             document.getElementById('blogpost').innerHTML += `
                 <div class="cell">
                     <div class="card p-4 h-100">
-                        <h5>${post.h3}</h5>
+                        <h5 class="heading-5">${post.h3}</h5>
                             <p>
                                 ${post.p}
                             </p>
@@ -93,7 +93,7 @@ window.onload = function() {
 
         gallery.image.forEach(img => {
             document.getElementById('gallery').innerHTML += `
-            <a href="#"><img class="img-fluid" src="data:image/jpeg;base64,${img}" alt="image.alt" /></a>
+            <img src="data:image/jpeg;base64,${img}" alt="image.alt" />
             `;
         });
 
@@ -101,8 +101,8 @@ window.onload = function() {
 
         faq.question.forEach(q => {
             document.getElementById('faq').innerHTML += `
-            <input :id="'collapsible' + n" class="toggle" type="checkbox" />
-            <label :for="'collapsible' + n" class="lbl-toggle">${q.h3}</label>
+            <input id="'collapsible${q.id}" class="toggle" type="checkbox" />
+            <label for="'collapsible${q.id}" class="lbl-toggle">${q.h3}</label>
             <div class="collapsible-content">
               <div class="content-inner">
                 <p>

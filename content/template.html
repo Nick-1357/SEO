@@ -19,15 +19,45 @@
     }</script>
 </head>
 <body>
-  <header>
-    <div class="header-wrapper">
-      <a href="#" class="header-logo-link">
-        <img class="header-logo" src="https://cdn.shopify.com/s/files/1/0097/2075/8332/files/logo_shoes_black.png?v=1676026182" alt="Logo" />
-      </a>
+  <div>
+    <section>
+      <header>
+        <div class="header-wrapper">
+          <a href="#" class="header-logo-link">
+            <img class="header-logo" src="https://cdn.shopify.com/s/files/1/0097/2075/8332/files/logo_shoes_black.png?v=1676026182" alt="Logo" />
+          </a>
+          <ul class="navigation">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Pricing</a></li>
+            <li><a href="#">Sign Up</a></li>
+            <li><a href="#">Contact Us</a></li>
+          </ul>
+          <button class="button-sidebar">
+            <div class="button-sidebar-icon"><span class="material-icons-outlined" @click="isExpanded = !isExpanded"> menu </span></div>
+          </button>
+        </div>
+      </header>
 
-    </div>
+      <aside :class="{ isExpanded: isExpanded }">
+        <div class="mobile-sidebar-content">
+          <button class="button-sidebar">
+            <div class="button-sidebar-icon"><span class="material-icons-outlined btn-close" @click="isExpanded = !isExpanded"> clear </span></div>
+          </button>
+          <ul class="navigation-mobile">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Pricing</a></li>
+            <li><a href="#">Sign Up</a></li>
+            <li><a href="#">Contact Us</a></li>
+          </ul>
+        </div>
+      </aside>
+      <div class="header-padding"></div>
 
-  </header>
+      <!-- <div class="toolbar">Toolbar</div> -->
+    </section>
+  </div>
 
   <div>
 
@@ -38,10 +68,10 @@
     </div>
     <div>
       
-      <section class="nex__articles " >
+      <section class="nex__articles">
         <div class="article-section section__width-xl">
           <div class="banner__text">
-            <h2 id="blogtitle" class="banner__heading"></h2>
+            <h2 id="blogtitle" class="heading-1"></h2>
           </div>
           <div id="blogpost" class="grid">
             
@@ -95,30 +125,22 @@
         <img src="https://via.placeholder.com/150" />
         <a class="lightbox-close" href="#"></a>
       </div>
-      <section class="bg-lightgray">
-        <div class="gallery-section section__width-xl">
+      <section class="bg-white">
+        <div class="gallery-section">
           <div class="banner__text">
             <h2 class="banner__heading">Gallery</h2>
           </div>
           <div class="gallery__section">
-            <!-- <a class="lightbox" href="#1"><img src="https://via.placeholder.com/150" /></a> -->
-  
-            <div class="lightbox-gallery">
-              <div class="container">
-                <div class="row">
-                  <div id="gallery" class="col-sm-6 col-md-4 col-lg-3">
-                      
-                  </div>
-                </div>
-              </div>
-            </div>
+            <div class="gallery" id="gallery"></div>
           </div>
         </div>
       </section>
     </div>
     <div>
-      <section class="bg-lightgray">
-        <div class="banner__centered">
+
+      <!--  -->
+      <!-- <section class="bg-lightgray">
+        <div class="py-5">
           <div class="banner__text">
             <h2 id="faqtitle" class="banner__heading"></h2>
           </div>
@@ -128,7 +150,33 @@
             </div>
           </div>
         </div>
+      </section> -->
+
+      <!--  -->
+
+      <section class="bg-lightgray">
+        <div class="banner__centered">
+          <div class="banner__text">
+            <h2 class="banner__heading" id="faqtitle"></h2>
+          </div>
+          <div class="collapsible__section">
+            <div class="faq-collabsible"  id="faq">
+              <!-- <input id="'collapsible1" class="toggle" type="checkbox" />
+              <label for="'collapsible1" class="lbl-toggle">Question 1</label>
+              <div class="collapsible-content">
+                <div class="content-inner">
+                  <p>
+                    Bacon ipsum dolor amet pork belly capicola ground round brisket. Shank pork belly cupim fatback. Flank porchetta chicken spare ribs. Ham prosciutto pork belly
+                    turkey beef picanha strip steak swine alcatra.
+                  </p>
+                </div>
+              </div> -->
+            </div>
+          </div>
+        </div>
       </section>
+
+
     </div>
   </div>
   
