@@ -83,55 +83,55 @@ def generate_content_response(prompt: str,
     num_retries: int = 0
 
     while True:
-        try:
-            if num_retries > max_retries:
+        if num_retries > max_retries:
                 print(f"Max retries exceeded. The API continues to respond with an error after " + str(
                     max_retries) + " attempts.")
                 return None, None, None, None  # return None if an exception was caught
+                raise Exception
+        else:
+            try:
+                response = openai.ChatCompletion.create(
+                    model=f"{model}",
+                    messages=[
+                            {"role": "system", "content": "You are an web designer with the objective to identify search engine optimized long-tail keywords and generate contents, with the goal of generating website contents and enhance website's visibility, driving organic traffic, and improving online business performance."},
+                            {"role": "user", "content": prompt}
+                        ],
+                    temperature=temp,
+                    # max_tokens=2500,
+                    top_p=p,
+                    frequency_penalty=freq,
+                    presence_penalty=presence,
+                )
+                # print (response)
+                return response.choices[0].message['content'], response['usage']['prompt_tokens'], response['usage']['completion_tokens'], response['usage']['total_tokens']
 
-            response = openai.ChatCompletion.create(
-                model=f"{model}",
-                messages=[
-                        {"role": "system", "content": "You are an web designer with the objective to identify search engine optimized long-tail keywords and generate contents, with the goal of generating website contents and enhance website's visibility, driving organic traffic, and improving online business performance."},
-                        {"role": "user", "content": prompt}
-                    ],
-                temperature=temp,
-                # max_tokens=2500,
-                top_p=p,
-                frequency_penalty=freq,
-                presence_penalty=presence,
-            )
-            # print (response)
-            return response.choices[0].message['content'], response['usage']['prompt_tokens'], response['usage']['completion_tokens'], response['usage']['total_tokens']
+            except openai.error.RateLimitError as e:  # rate limit error
+                num_retries += 1
+                print("Rate limit reached. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+            except openai.error.Timeout as e:  # timeout error
+                num_retries += 1
+                print("Request timed out. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+            except openai.error.ServiceUnavailableError:
+                num_retries += 1
+                print("Server Overloaded. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+            except openai.error.InvalidRequestError as e:
+                num_retries += 1
+                print("Invalid Chat Request. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+            except openai.error.APIConnectionError as e:
+                #Handle connection error here
+                print(f"Failed to connect to OpenAI API: {e}Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+            except openai.error.APIError as e:
+                num_retries += 1
+                print(f"OpenAI API returned an API Error: {e}. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
 
-        except openai.error.RateLimitError as e:  # rate limit error
-            num_retries += 1
-            print("Rate limit reached. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
-        except openai.error.Timeout as e:  # timeout error
-            num_retries += 1
-            print("Request timed out. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
-        except openai.error.ServiceUnavailableError:
-            num_retries += 1
-            print("Server Overloaded. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
-        except openai.error.InvalidRequestError as e:
-            num_retries += 1
-            print("Invalid Request. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
-        except openai.error.APIConnectionError as e:
-            #Handle connection error here
-            print(f"Failed to connect to OpenAI API: {e}Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
-        except openai.error.APIError as e:
-            num_retries += 1
-            print(f"OpenAI API returned an API Error: {e}. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
-
-        # Increment the delay
-        delay *= exponential_base * (1 + jitter * random.random())
-        print(f"Wait for {delay} seconds.")
+            # Increment the delay
+            delay *= exponential_base * (1 + jitter * random.random())
+            print(f"Wait for {delay} seconds.")
 
         time.sleep(delay)  # wait for n seconds before retrying
 
 
 def generate_image_response(prompt: str,
-                            size: str,
                             max_retries: int) -> str:
     delay: float = 1  # initial delay
     exponential_base: float = 2
@@ -139,45 +139,46 @@ def generate_image_response(prompt: str,
     num_retries: int = 0
 
     while True:
-        try:
-            if num_retries > max_retries:
-                print(f"Max retries exceeded. The API continues to respond with an error after " + str(
-                    max_retries) + " attempts.")
-                return ""  # return "" if an exception was caught
+        if num_retries > max_retries:
+            print(f"Max retries exceeded. The API continues to respond with an error after " + str(
+                max_retries) + " attempts.")
+            return ""  # return "" if an exception was caught
+        else:
+            try:
 
-            print("Generating image...")
-            response = openai.Image.create(
-                prompt=prompt,
-                n=1,
-                size=size,
-            )
-            # print (response)
-            return response['data'][0]['url']
+                print("Generating image...")
+                response = openai.Image.create(
+                    prompt=prompt,
+                    n=1,
+                    size="1024x1024",
+                )
+                # print (response)
+                return response['data'][0]['url']
 
-        except openai.error.RateLimitError as e:  # rate limit error
-            num_retries += 1
-            print("Rate limit reached. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
-        except openai.error.Timeout as e:  # timeout error
-            num_retries += 1
-            print("Request timed out. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
-        except openai.error.ServiceUnavailableError:
-            num_retries += 1
-            print("Server Overloaded. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
-        except openai.error.InvalidRequestError as e:
-            num_retries += 1
-            print("Invalid Request. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
-        except openai.error.APIConnectionError as e:
-            #Handle connection error here
-            print(f"Failed to connect to OpenAI API: {e}Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
-        except openai.error.APIError as e:
-            num_retries += 1
-            print(f"OpenAI API returned an API Error: {e}. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+            except openai.error.RateLimitError as e:  # rate limit error
+                num_retries += 1
+                print("Rate limit reached. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+            except openai.error.Timeout as e:  # timeout error
+                num_retries += 1
+                print("Request timed out. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+            except openai.error.ServiceUnavailableError:
+                num_retries += 1
+                print("Server Overloaded. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+            except openai.error.InvalidRequestError as e:
+                num_retries += 1
+                print("Invalid Image Request. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+            except openai.error.APIConnectionError as e:
+                #Handle connection error here
+                print(f"Failed to connect to OpenAI API: {e}Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+            except openai.error.APIError as e:
+                num_retries += 1
+                print(f"OpenAI API returned an API Error: {e}. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+                
+            # Increment the delay
+            delay *= exponential_base * (1 + jitter * random.random())
+            print(f"Wait for {delay} seconds.")
             
-        # Increment the delay
-        delay *= exponential_base * (1 + jitter * random.random())
-        print(f"Wait for {delay} seconds.")
-        
-        time.sleep(delay)  # wait for n seconds before retrying
+            time.sleep(delay)  # wait for n seconds before retrying
 
 
 def chat_with_gpt3(stage: str,
@@ -192,15 +193,18 @@ def chat_with_gpt3(stage: str,
     if response is not None:   # If a response was successfully received
         write_to_csv((stage, prompt_tokens, completion_tokens, total_tokens, None, None))
         return response
+    else:
+        return None
 
 
 def chat_with_dall_e(prompt: str,
-                     size: str,
                      section: str) -> str:
     max_retries = 5
-    url: str = generate_image_response(prompt, size, max_retries)
+    url: str = generate_image_response(prompt, max_retries)
     if url is not None:   # If a response was successfully received
         return url
+    else:
+        return None
 
 # =======================================================================================================================
 # CSV Functions
@@ -224,7 +228,7 @@ def write_to_csv(data: tuple):
             iteration = 0
         else:
             iteration = int(last_row['Iteration']) + 1 if last_row else 0  # If there is a last row, increment its 'Iteration' value by 1. Otherwise, start at 0
-        price = 0.000002 * data[3]  # Calculate the price of the request
+        price = 0.000003 * data[3]  # Calculate the price of the request
         writer.writerow({'Company Name': data[4], 'Keyword': data[5], 'Iteration': iteration, 'Stage': data[0], 'Prompt Tokens': data[1], 'Completion Tokens': data[2], 'Total Tokens': data[3], 'Price': float(price)})
 
     # file_exists = os.path.isfile('token_usage.csv')  # Check if file already exists
@@ -241,6 +245,8 @@ def write_to_csv(data: tuple):
 # ##==================================================================================================
 
 def deep_update(source, overrides):
+    if overrides is None:
+        return source
     for key, value in overrides.items():
         if isinstance(value, dict):
             # get node or create one
@@ -250,6 +256,7 @@ def deep_update(source, overrides):
             source[key] = value
     return source
 
+
   
 def processjson(jsonf: str) -> str:
     startindex = jsonf.find("{")
@@ -257,8 +264,12 @@ def processjson(jsonf: str) -> str:
     if startindex == -1 or endindex == -1:
         return ""
     else:
-        jsonf = jsonf[startindex:endindex+1]
-    return jsonf
+        try:
+            json.loads(jsonf[startindex:endindex+1])
+            return jsonf[startindex:endindex+1]
+        except ValueError:
+            return ""
+        
 
 
 def sanitize_filename(filename: str) -> str:
@@ -463,33 +474,24 @@ def get_image_context(company_name: str,
                       section: str,
                       topic: str,
                       industry: str) -> str:
-    context_json = """
-        {
-            "description":"...",
-            "size":"1024x1024"
-        }
-    """
+    print("Generating Context...")
     examples = """
-    1) Wide shot of a sleek and modern chair design that is currently trending on Artstation, sleek and modern design, artstation trending, highly detailed, beautiful setting in the background, art by wlop, greg rutkowski, thierry doizon, charlie bowater, alphonse mucha, golden hour lighting, ultra realistic.
-    2) Close-up of a modern designer handbag with beautiful background, photorealistic, unreal engine, from Vogue Magazine.
-    3) Vintage-inspired watch an elegant and timeless design with intricate details, and detailed lighting, trending on Artstation, unreal engine, smooth finish, looking towards the viewer.
-    4) Close-up of modern designer a minimalist and contemporary lamp design, with clean lines and detailed lighting, trending on Artstation, detailed lighting, perfect for any contemporary space.
-    5) Overhead view of a sleek and futuristic concept car with aerodynamic curves, and a glossy black finish driving on a winding road with mountains in the background, sleek and stylish design, highly detailed, ultra realistic, concept art, intricate textures, interstellar background, space travel, art by alphonse mucha, greg rutkowski, ross tran, leesha hannigan, ignacio fernandez rios, kai carpenter, perfect for any casual occasion.
-    6) Close-up of a designer hand-crafting a sofa with intricate details, and detailed lighting, trending on Artstation, unreal engine, smooth finish.
-    7) Low angle shot of @mystyle sunglasses a modern and sleek design with reflective lenses, worn by a model standing on a city street corner with tall buildings in the background, sleek and stylish design, highly detailed, ultra realistic.
+    Wide shot of a sleek and modern chair design that is currently trending on Artstation, sleek and modern design, artstation trending, highly detailed, beautiful setting in the background, art by wlop, greg rutkowski, thierry doizon, charlie bowater, alphonse mucha, golden hour lighting, ultra realistic./
+    Close-up of a modern designer handbag with beautiful background, photorealistic, unreal engine, from Vogue Magazine./
+    Vintage-inspired watch an elegant and timeless design with intricate details, and detailed lighting, trending on Artstation, unreal engine, smooth finish, looking towards the viewer./
+    Close-up of modern designer a minimalist and contemporary lamp design, with clean lines and detailed lighting, trending on Artstation, detailed lighting, perfect for any contemporary space./
+    Overhead view of a sleek and futuristic concept car with aerodynamic curves, and a glossy black finish driving on a winding road with mountains in the background, sleek and stylish design, highly detailed, ultra realistic, concept art, intricate textures, interstellar background, space travel, art by alphonse mucha, greg rutkowski, ross tran, leesha hannigan, ignacio fernandez rios, kai carpenter, perfect for any casual occasion./
+    Close-up of a designer hand-crafting a sofa with intricate details, and detailed lighting, trending on Artstation, unreal engine, smooth finish./
+    Low angle shot of @mystyle sunglasses a modern and sleek design with reflective lenses, worn by a model standing on a city street corner with tall buildings in the background, sleek and stylish design, highly detailed, ultra realistic./
     """
     prompt = f"""
-    Generate a detailed description for an image about {keyword} and {topic}. 
-    i) Use these example descriptions: {examples}
-    ii) Don't include any words within the picture.
-    iii) Format: {context_json}
+    Generate 1 paragraph of detailed description for an image about {keyword}.
+    The image should also be about {topic} 
+    Use these as an example descriptions: {examples}
     """
     image_context = chat_with_gpt3("Image Description Generation", prompt, temp=0.7, p=0.8)
-    image_cont = processjson(image_context)
-    # print(image_context)
-    # print(image_cont)
-    imagecontext = json.loads(image_cont)
-    imageurl = chat_with_dall_e(imagecontext["description"], imagecontext["size"], section)
+    print(image_context)
+    imageurl = chat_with_dall_e(image_context, section)
     print(imageurl)
     image_base64 = url_to_base64(imageurl)
     return image_base64
@@ -521,11 +523,11 @@ def image_generation(company_name: str,
     image_json = {
         "banner": 
             {
-                "image": ""
+                "image": "..."
             },
         "about": 
             {
-                "image": ""
+                "image": "..."
             },
         "gallery": 
             {
