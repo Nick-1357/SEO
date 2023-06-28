@@ -32,7 +32,7 @@ window.onload = function() {
             -moz-background-size: cover;
             -o-background-size: cover;
             background-size: cover;'>
-            <div style='background-color: rgba(255, 255, 255, 0.5);' class="banner__centered">
+            <div style='background-color: rgba(0,0,0, 0.5); margin: "auto"' class="banner__centered">
             <div class="banner__text">
                 <div class="d-flex flex-column">
                 <h1 class="heading-1 text-center">${banner.h1}</h1>
@@ -58,16 +58,16 @@ window.onload = function() {
         <section class="bg-lightgray">
             <div class="banner__sidebyside">
                 <div class="banner__text">
-                <div>
-                    <h1 class="banner__heading heading-1">${about.h2}</h1>
-                    <h5 class="banner_subheading heading-5">${about.p}</h5>
-                    <button class="button1  ">About Us</button>
+                    <div  data-aos="zoom-in-up" data-aos-anchor-placement="top-center">
+                        <h1 class="banner__heading heading-1"  data-aos="zoom-in-up" data-aos-anchor-placement="top-center">${about.h2}</h1>
+                        <h5 class="banner_subheading heading-5"  data-aos="zoom-in-up" data-aos-anchor-placement="top-center">${about.p}</h5>
+                        <button class="button1"  data-aos="zoom-in-up" data-aos-anchor-placement="top-center">About Us</button>
+                    </div>
                 </div>
-                </div>
-                <div class="banner__image" data-aos="flip-right">
-                <div class="img-wrapper">
-                    <img src="data:image/jpeg;base64,${about.image}" alt="" />
-                </div>
+                <div class="banner__image" data-aos="flip-right" data-aos-anchor-placement="top-center">
+                    <div class="img-wrapper">
+                        <img src="data:image/jpeg;base64,${about.image}" alt="" />
+                    </div>
                 </div>
             </div>
             <!-- <div class="toolbar">Toolbar</div> -->
@@ -84,7 +84,7 @@ window.onload = function() {
                 <div class="cell">
                     <div class="card p-4 h-100">
                         <h5 class="heading-5">${post.h3}</h5>
-                            <p>
+                            <p style="margin: auto; padding: 10px; text-align: justify">
                                 ${post.p}
                             </p>
                         </div>
@@ -93,7 +93,7 @@ window.onload = function() {
 
         gallery.image.forEach(img => {
             document.getElementById('gallery').innerHTML += `
-            <img src="data:image/jpeg;base64,${img}" alt="image.alt" />
+            <img src="data:image/jpeg;base64,${img}" alt="image.alt" data-aos="fade-in" data-aos-anchor-placement="top-center"/>
             `;
         });
 
@@ -101,9 +101,9 @@ window.onload = function() {
 
         faq.question.forEach(q => {
             document.getElementById('faq').innerHTML += `
-            <input id="'collapsible${q.id}" class="toggle" type="checkbox" />
-            <label for="'collapsible${q.id}" class="lbl-toggle">${q.h3}</label>
-            <div class="collapsible-content">
+            <input id="'collapsible${q.id}" class="toggle" type="checkbox" data-aos="fade-in" data-aos-anchor-placement="top-center"/>
+            <label for="'collapsible${q.id}" class="lbl-toggle" data-aos="fade-in" data-aos-anchor-placement="top-center">${q.h3}</label>
+            <div class="collapsible-content" data-aos="fade-in" data-aos-easing="ease-in" data-aos-anchor-placement="top-center">
               <div class="content-inner">
                 <p>
                 ${q.p}
