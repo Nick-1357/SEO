@@ -5,12 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="./style3.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
     <title></title>
     <style>
         /* Put styles here */
     </style>
-    <script src="main.js"></script>
-    <script>export default{
+    
+    <script>
+      export default{
       methods: {
       toggleMenu() {
         this.isExpanded = !this.isExpanded;
@@ -53,7 +55,6 @@
           </ul>
         </div>
       </aside>
-      <div class="header-padding"></div>
 
       <!-- <div class="toolbar">Toolbar</div> -->
     </section>
@@ -61,12 +62,12 @@
 
   <div>
 
-    <div id="banner">
+    <div id="banner" data-aos="zoom-in-up">
     </div>
-    <div id="aboutus">
+    <div id="aboutus" data-aos="zoom-in-up">
       
     </div>
-    <div>
+    <div data-aos="zoom-in-up">
       
       <section class="nex__articles">
         <div class="article-section section__width-xl">
@@ -179,7 +180,11 @@
 
     </div>
   </div>
-  
+<script src="main.js"></script>
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script>
+  AOS.init();
+</script>
 </body>
   
 </html>

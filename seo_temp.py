@@ -87,7 +87,6 @@ def generate_content_response(prompt: str,
                 print(f"Max retries exceeded. The API continues to respond with an error after " + str(
                     max_retries) + " attempts.")
                 return None, None, None, None  # return None if an exception was caught
-                raise Exception
         else:
             try:
                 response = openai.ChatCompletion.create(
@@ -145,7 +144,6 @@ def generate_image_response(prompt: str,
             return ""  # return "" if an exception was caught
         else:
             try:
-
                 print("Generating image...")
                 response = openai.Image.create(
                     prompt=prompt,
@@ -168,7 +166,7 @@ def generate_image_response(prompt: str,
                 num_retries += 1
                 print("Invalid Image Request. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
             except openai.error.APIConnectionError as e:
-                #Handle connection error here
+                num_retries += 1
                 print(f"Failed to connect to OpenAI API: {e}Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
             except openai.error.APIError as e:
                 num_retries += 1
@@ -199,7 +197,7 @@ def chat_with_gpt3(stage: str,
 
 def chat_with_dall_e(prompt: str,
                      section: str) -> str:
-    max_retries = 5
+    max_retries = 3
     url: str = generate_image_response(prompt, max_retries)
     if url is not None:   # If a response was successfully received
         return url
@@ -352,23 +350,6 @@ def generate_meta_description(company_name: str,
     return meta_description
 
 
-# def generate_outline(company_name: str,
-#                      topic: str,
-#                      industry: str,
-#                      keyword: str,
-#                      title: str,
-#                      index: int) -> None:
-#     prompt = f"""
-#     Please create a comprehensive content outline for a landing page dedicated to {company_name} that centers around the topic of '{title}' and the keyword '{keyword}'. Your outline should consist of no more than seven bullet points, each preceded by a dash ("-"). Please refrain from including any concluding statements in your outline.
-#     """
-#     outline = chat_with_gpt3("Outline Generation", prompt, temp=0.7, p=0.8)
-#     filename = f"Outline {index+1}"  # use the first keyword as the filename
-#     directorypath = "outline"
-#     os.makedirs(directorypath, exist_ok=True)
-#     with open(os.path.join(directorypath, f'{filename}.txt'), 'w') as f:
-#         f.write(outline)     
-
-
 def generate_content(company_name: str,
                      topic: str,
                      industry: str,
@@ -408,22 +389,27 @@ def generate_content(company_name: str,
         "faq":{
             "h2": "Frequently Asked Questions",
             "question": [{
+                    "id": 1,
                     "h3": "...",
                     "p": "...",
                 },
                 {
+                    "id": 2,
                     "h3": "...",
                     "p": "...",
                 },
                 {
+                    "id": 3,
                     "h3": "...",
                     "p": "...",
                 },
                 {
+                    "id": 4,
                     "h3": "...",
                     "p": "...",
                 },
                 {
+                    "id": 5,
                     "h3": "...",
                     "p": "...",
                 },...
@@ -490,9 +476,9 @@ def get_image_context(company_name: str,
     Use these as an example descriptions: {examples}
     """
     image_context = chat_with_gpt3("Image Description Generation", prompt, temp=0.7, p=0.8)
-    print(image_context)
+    # print(image_context)
     imageurl = chat_with_dall_e(image_context, section)
-    print(imageurl)
+    # print(imageurl)
     image_base64 = url_to_base64(imageurl)
     return image_base64
     
@@ -519,7 +505,7 @@ def image_generation(company_name: str,
                      topic: str,
                      industry: str,
                      keyword: str) -> Dict:
-    print("Generating Images...")
+    print("Starting Image Process...")
     image_json = {
         "banner": 
             {
@@ -577,6 +563,7 @@ def feature_function(company_name: str,
             return {}
         else:
             merged_dict = deep_update(content_result, image_result)
+            merged_dict = processjson(merged_dict)
             return merged_dict
 
 # =======================================================================================================================

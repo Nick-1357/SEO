@@ -64,7 +64,7 @@ window.onload = function() {
                     <button class="button1  ">About Us</button>
                 </div>
                 </div>
-                <div class="banner__image">
+                <div class="banner__image" data-aos="flip-right">
                 <div class="img-wrapper">
                     <img src="data:image/jpeg;base64,${about.image}" alt="" />
                 </div>
