@@ -33,7 +33,7 @@ openai.Model.list()
 memory_dir = os.getenv("MEMORY_DIRECTORY", "local")
 workspace_path = "./"
 if memory_dir == "production":
-    workspace_path = "./tmp"
+    workspace_path = "/tmp"
 elif memory_dir == "local":
     workspace_path = "./"
 
@@ -563,7 +563,6 @@ def feature_function(company_name: str,
             return {}
         else:
             merged_dict = deep_update(content_result, image_result)
-            merged_dict = processjson(merged_dict)
             return merged_dict
 
 # =======================================================================================================================

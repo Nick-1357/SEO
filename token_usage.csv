@@ -7263,3 +7263,36 @@ Oreo,Car Rental Company in Malaysia,0,Initial,0,0,0,0.0
 ,,14,Image Description Generation,441,134,575,0.001725
 ,,15,Content Generation,664,991,1655,0.004965
 Oreo,Car Rental Company in Malaysia,16,Complete,0,0,0,0.0
+,,17,Content Generation,675,777,1452,0.0043560000000000005
+Hertz,Best Ice Cream in Malaysia,0,Initial,0,0,0,0.0
+,,1,Industry Identification,72,3,75,0.000225
+,,2,Keyword Clusters Search,76,60,136,0.000408
+,,3,Title Generation,79,19,98,0.000294
+,,4,Meta Description Generation,96,57,153,0.000459
+,,5,Image Description Generation,444,119,563,0.001689
+,,6,Image Description Generation,444,127,571,0.0017130000000000001
+,,7,Image Description Generation,444,119,563,0.001689
+,,8,Image Description Generation,444,137,581,0.001743
+,,9,Image Description Generation,444,122,566,0.001698
+,,10,Image Description Generation,444,134,578,0.001734
+,,11,Image Description Generation,444,162,606,0.001818
+,,12,Image Description Generation,444,135,579,0.001737
+,,13,Image Description Generation,444,143,587,0.001761
+,,14,Image Description Generation,444,155,599,0.001797
+,,15,Content Generation,668,909,1577,0.004731
+Hertz,Best Ice Cream in Malaysia,0,Initial,0,0,0,0.0
+,,1,Industry Identification,72,3,75,0.000225
+,,2,Keyword Clusters Search,76,60,136,0.000408
+,,3,Title Generation,79,19,98,0.000294
+,,4,Meta Description Generation,96,71,167,0.000501
+,,5,Image Description Generation,444,118,562,0.001686
+,,6,Image Description Generation,444,114,558,0.0016740000000000001
+,,7,Image Description Generation,444,107,551,0.001653
+,,8,Image Description Generation,444,130,574,0.001722
+,,9,Image Description Generation,444,136,580,0.00174
+,,10,Image Description Generation,444,135,579,0.001737
+,,11,Image Description Generation,444,141,585,0.001755
+,,12,Image Description Generation,444,136,580,0.00174
+,,13,Image Description Generation,444,145,589,0.0017670000000000001
+,,14,Image Description Generation,444,139,583,0.0017490000000000001
+,,15,Content Generation,668,877,1545,0.004635
