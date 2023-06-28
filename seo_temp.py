@@ -243,7 +243,7 @@ def write_to_csv(data: tuple):
 # ##==================================================================================================
 
 def deep_update(source, overrides):
-    if overrides is None or type(overrides) != dict:
+    if not overrides or not isinstance(overrides, dict):
         return source
     for key, value in overrides.items():
         if isinstance(value, dict):
@@ -253,7 +253,6 @@ def deep_update(source, overrides):
         else:
             source[key] = value
     return source
-
 
   
 def processjson(jsonf: str) -> str:
@@ -267,7 +266,6 @@ def processjson(jsonf: str) -> str:
             return jsonf[startindex:endindex+1]
         except ValueError:
             return ""
-        
 
 
 def sanitize_filename(filename: str) -> str:
