@@ -7216,9 +7216,7 @@ Apple,Car Delership in Malaysia,0,Initial,0,0,0,0.0
 ,,13,Image Description Generation,441,131,572,0.001716
 ,,14,Image Description Generation,441,150,591,0.001773
 ,,15,Content Generation,626,782,1408,0.004224
-Apple,Car Delership in Malaysia,16,Complete,0,0,0,0.0
-<<<<<<< HEAD
-<<<<<<< HEAD
+Apple,Car Delership in Malaysia,16,Complete,0,0,0,0
 Nexus,Underwater Hotel,0,Initial,0,0,0,0.0
 Nexus,Underwater Hotel,0,Initial,0,0,0,0.0
 Nexus,Underwater Hotel,0,Initial,0,0,0,0.0
@@ -7239,9 +7237,6 @@ Nexus,Submarine Hotel,0,Initial,0,0,0,0.0
 ,,14,Image Description Generation,437,165,602,0.001806
 ,,15,Content Generation,624,728,1352,0.004056
 Nexus,Submarine Hotel,16,Complete,0,0,0,0.0
-=======
-=======
->>>>>>> 256d85b683304d68b5a6dafb43b15415a39aca8b
 Time,Best Biscuit Company in Malaysia,0,Initial,0,0,0,0.0
 ,,1,Industry Identification,74,3,77,0.000231
 ,,2,Keyword Clusters Search,78,52,130,0.00039
