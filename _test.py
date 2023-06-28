@@ -290,3 +290,53 @@ class TestDeepUpdate:
         with pytest.raises(TypeError):
             overrides = {'a': 1}
             seo_temp.deep_update(1, overrides)
+
+class TestProcessjson:
+    # Tests that seo_temp.processjson returns the input JSON string when it is valid and contains opening and closing curly braces
+    def test_valid_json(self):
+        input_json = '{"key": "value"}'
+        assert seo_temp.processjson(input_json) == input_json
+
+    # Tests that seo_temp.processjson returns an empty string when the input JSON string does not contain opening and closing curly braces
+    def test_no_curly_braces(self):
+        input_json = 'invalid json'
+        assert seo_temp.processjson(input_json) == ''
+
+    # Tests that seo_temp.processjson returns an empty string when the input JSON string contains only an opening curly brace
+    def test_only_opening_brace(self):
+        input_json = '{'
+        assert seo_temp.processjson(input_json) == ''
+
+    # Tests that seo_temp.processjson returns an empty string when the input JSON string contains only a closing curly brace
+    def test_only_closing_brace(self):
+        input_json = '}'
+        assert seo_temp.processjson(input_json) == ''
+
+    # Tests that seo_temp.processjson returns an empty string when the input JSON string contains opening and closing curly braces but no valid content
+    def test_invalid_content(self):
+        input_json = '{invalid content}'
+        assert seo_temp.processjson(input_json) == ''
+
+    # Tests that the function can correctly process a JSON string with nested objects and arrays
+    def test_nested_json(self):
+        json_str = '{"name": "John", "age": 30, "city": "New York", "pets": ["dog", "cat", {"name": "fluffy", "type": "hamster"}], "children": [{"name": "Sara", "age": 5, "hobbies": ["painting", "dancing"]}, {"name": "Mike", "age": 3, "hobbies": ["reading", "swimming"]}]}'
+        result = seo_temp.processjson(json_str)
+        assert result == json_str
+
+    # Tests that the function returns an empty string when a JSON string with special characters in the content is passed as input
+    def test_special_characters(self):
+        json_str = '{"name": "John", "age": 30, "city": "New York $%^&*()"}'
+        result = seo_temp.processjson(json_str)
+        assert result == json_str
+
+    # Tests that the function returns an empty string when a JSON string with multiple opening and closing curly braces is passed as input
+    def test_multiple_braces(self):
+        json_str = '{ { { } } }'
+        result = seo_temp.processjson(json_str)
+        assert result == ''
+
+    # Tests that the function returns an empty string when a JSON string with non-ASCII characters is passed as input
+    def test_non_ascii_characters(self):
+        json_str = '{"name": "Jöhn Döe"}'
+        result = seo_temp.processjson(json_str)
+        assert result == json_str
