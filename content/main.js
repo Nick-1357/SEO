@@ -75,14 +75,16 @@ window.onload = function() {
 
         blog.post.forEach(post => {
             document.getElementById('blogpost').innerHTML += `
-                <div class="cell">
-                    <div class="card p-4 h-100">
-                        <h5 class="heading-5">${post.h3}</h5>
-                            <p style="margin: auto; padding: 10px; text-align: justify">
+            <div class="cell">
+                <div class="first-content">
+                    <h5 class="heading-5">${post.h3}</h5>
+                </div>
+                <div class="second-content">
+                    <p>
                                 ${post.p}
-                            </p>
-                        </div>
-                </div>`;
+                    </p>
+                </div>
+            </div>`;
         });
 
         gallery.image.forEach(img => {
@@ -97,7 +99,7 @@ window.onload = function() {
             document.getElementById('faq').innerHTML += `
             <input id="'collapsible${q.id}" class="toggle" type="checkbox" data-aos="fade-in" data-aos-anchor-placement="top-center"/>
             <label for="'collapsible${q.id}" class="lbl-toggle" data-aos="fade-in" data-aos-anchor-placement="top-center">${q.h3}</label>
-            <div class="collapsible-content" data-aos="fade-in" data-aos-easing="ease-in" data-aos-anchor-placement="top-center">
+            <div class="collapsible-content">
               <div class="content-inner">
                 <p>
                 ${q.p}
