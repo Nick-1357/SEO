@@ -53,9 +53,9 @@ window.onload = function() {
             <div class="banner__sidebyside">
                 <div class="banner__text">
                     <div  data-aos="zoom-in-up" data-aos-anchor-placement="top-center">
-                        <h1 class="banner__heading heading-1"  data-aos="zoom-in-up" data-aos-anchor-placement="top-center">${about.h2}</h1>
-                        <h5 class="banner_subheading heading-5"  data-aos="zoom-in-up" data-aos-anchor-placement="top-center">${about.p}</h5>
-                        <button class="learn-more"  data-aos="zoom-in-up" data-aos-anchor-placement="top-center">About Us</button>
+                        <h1 class="banner__heading heading-1">${about.h2}</h1>
+                        <h5 class="banner_subheading heading-5">${about.p}</h5>
+                        <button class="learn-more">About Us</button>
                     </div>
                 </div>
                 <div class="banner__image" data-aos="flip-right" data-aos-anchor-placement="top-center">
@@ -89,7 +89,7 @@ window.onload = function() {
 
         gallery.image.forEach(img => {
             document.getElementById('gallery').innerHTML += `
-            <img src="data:image/jpeg;base64,${img}" alt="image.alt" data-aos="fade-in" data-aos-anchor-placement="top-center"/>
+            <img src="data:image/jpeg;base64,${img}" alt="image.alt"/>
             `;
         });
 
@@ -97,8 +97,8 @@ window.onload = function() {
 
         faq.question.forEach(q => {
             document.getElementById('faq').innerHTML += `
-            <input id="'collapsible${q.id}" class="toggle" type="checkbox" data-aos="fade-in" data-aos-anchor-placement="top-center"/>
-            <label for="'collapsible${q.id}" class="lbl-toggle" data-aos="fade-in" data-aos-anchor-placement="top-center">${q.h3}</label>
+            <input id="'collapsible${q.id}" class="toggle" type="checkbox"/>
+            <label for="'collapsible${q.id}" class="lbl-toggle">${q.h3}</label>
             <div class="collapsible-content">
               <div class="content-inner">
                 <p>

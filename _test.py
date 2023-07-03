@@ -340,3 +340,80 @@ class TestProcessjson:
         json_str = '{"name": "Jöhn Döe"}'
         result = seo_temp.processjson(json_str)
         assert result == json_str
+
+class TestSanitizeFileName:    
+    # Tests that the function can handle a simple filename containing only alphanumeric characters
+    def test_simple_filename(self):
+        assert seo_temp.sanitize_filename('simplefilename123') == 'simplefilename123'
+
+    # Tests that the function can handle a filename containing spaces
+    def test_filename_with_spaces(self):
+        assert seo_temp.sanitize_filename('filename with spaces') == 'filename_with_spaces'
+
+    # Tests that the function can handle a filename containing special characters
+    def test_filename_with_special_characters(self):
+        assert seo_temp.sanitize_filename('filename!@#$%^&*()') == 'filename_'
+
+    # Tests that the function can handle a filename containing a mix of alphanumeric characters, spaces, and special characters
+    def test_filename_with_mix_of_characters(self):
+        assert seo_temp.sanitize_filename('file name!@#$%^&*()') == 'file_name_' # modified assert statement
+
+    # Tests that the function can handle an empty filename
+    def test_empty_filename(self):
+        assert seo_temp.sanitize_filename('') == ''
+
+    # Tests that the function can handle a filename containing only spaces
+    def test_filename_with_only_spaces(self):
+        assert seo_temp.sanitize_filename('     ') == '_'
+        
+
+class TestURLtoBase64:
+    
+    # Tests that a valid URL is provided and image is downloaded successfully
+    def test_valid_url(self, mocker):
+        class MockResponse:
+            def __init__(self):
+                self.status_code = 200
+                self.content = b'test content'
+
+        url = 'https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png'
+        mocker.patch('requests.get', return_value=MockResponse())
+        assert seo_temp.url_to_base64(url) == 'dGVzdCBjb250ZW50'
+
+    # Tests that an invalid URL is provided and function returns None
+    def test_invalid_url(self, mocker):
+        url = 'invalid_url'
+        assert seo_temp.url_to_base64(url) == None
+
+    # Tests that function handles invalid image data and returns None
+    def test_invalid_image_data(self, mocker):
+        url = 'https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png'
+        class MockResponse:
+            def __init__(self, content):
+                self.content = content
+            def status_code(self):
+                return 404
+        mocker.patch('requests.get', return_value=MockResponse('invalid_image_data'))
+        assert seo_temp.url_to_base64(url) == None
+
+    # Tests that function handles invalid response content and returns None
+    def test_invalid_response_content(self, mocker):
+        from requests.models import Response
+        url = 'https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png'
+        mocker.patch('requests.get', return_value=Response())
+        assert seo_temp.url_to_base64(url) == None
+
+    # Tests that function handles invalid response status code and returns None
+    def test_invalid_response_status_code(self, mocker):
+        url = 'https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png'
+        mock_get = mocker.patch('requests.get')
+        mock_get.return_value.status_code = 404
+        assert seo_temp.url_to_base64(url) == None
+        
+
+class TestMain:
+        # Tests that the function handles invalid topic input
+    def test_invalid_topic_input(self, mocker):
+        mocker.patch('builtins.input', side_effect=['Test Company', ''])
+        seo_temp.main()
+        assert not os.path.exists('./content/data.json')

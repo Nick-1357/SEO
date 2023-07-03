@@ -84,7 +84,7 @@
           <div class="banner__text">
             <h2 class="banner__heading" data-aos="fade-in" data-aos-anchor-placement="top-center">Gallery</h2>
           </div>
-          <div class="gallery__section">
+          <div class="gallery__section" data-aos="fade-in" data-aos-anchor-placement="top-center">
             <div class="gallery" id="gallery"></div>
           </div>
         </div>
@@ -113,7 +113,7 @@
           <div class="banner__text"  data-aos="fade-in" data-aos-anchor-placement="top-center">
             <h2 class="banner__heading" id="faqtitle"></h2>
           </div>
-          <div class="collapsible__section">
+          <div class="collapsible__section" data-aos="fade-in" data-aos-anchor-placement="top-center">
             <div class="faq-collabsible"  id="faq">
               <!-- <input id="'collapsible1" class="toggle" type="checkbox" />
               <label for="'collapsible1" class="lbl-toggle">Question 1</label>
@@ -177,7 +177,10 @@
 <script src="main.js"></script>
 <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
 <script>
-  AOS.init();
+  AOS.init({
+    
+    once: true
+  });
 </script>
 <script>
   export default{
