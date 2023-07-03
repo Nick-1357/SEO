@@ -468,7 +468,7 @@ def get_image_context(company_name: str,
     Saw and sawdust, blurred workshop background, 3D, digital art.
     Easy bake oven, fisher-price, toy, bright colors, blurred playroom background, natural-lighting.
     Fine acoustic guitar, side angle, natural lighting, bioluminescence.
-    tained glass window of fish, side angle, rubble, dramatic-lighting, light rays, digital art.
+    Tained glass window of fish, side angle, rubble, dramatic-lighting, light rays, digital art.
     Wide shot of a sleek and modern chair design that is currently trending on Artstation, sleek and modern design, artstation trending, highly detailed, beautiful setting in the background, art by wlop, greg rutkowski, thierry doizon, charlie bowater, alphonse mucha, golden hour lighting, ultra realistic./
     Close-up of a modern designer handbag with beautiful background, photorealistic, unreal engine, from Vogue Magazine./
     Vintage-inspired watch an elegant and timeless design with intricate details, and detailed lighting, trending on Artstation, unreal engine, smooth finish, looking towards the viewer./
