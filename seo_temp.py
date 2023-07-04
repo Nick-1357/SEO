@@ -13,7 +13,7 @@ import base64
 from PIL import Image
 from pathlib import Path
 from dotenv import load_dotenv
-from typing import List, Dict
+from typing import List, Dict, TypedDict
 from concurrent.futures import ThreadPoolExecutor, wait
 from diffusers import StableDiffusionPipeline, EulerDiscreteScheduler
 
@@ -38,10 +38,14 @@ elif memory_dir == "local":
     workspace_path = "./"
 
 
+class Message(TypedDict):
+    role: str
+    content: str
+
 # ==================================================================================================
 # API Interaction
 # ==================================================================================================
- 
+
 
 def query(query_parameters: Dict[str, str]) -> bytes:
     try:
@@ -70,7 +74,7 @@ def stabilityai_generate(prompt: str,
     return f'{section}.jpg'
     
 
-def generate_content_response(prompt: str,
+def generate_content_response(prompt: str | List[Message],
                               temp: float,
                               p: float,
                               freq: float,
@@ -89,20 +93,34 @@ def generate_content_response(prompt: str,
             return None, None, None, None  # return None if an exception was caught
         else:
             try:
-                response = openai.ChatCompletion.create(
-                    model=f"{model}",
-                    messages=[
-                            {"role": "system", "content": "You are an web designer with the objective to identify search engine optimized long-tail keywords and generate contents, with the goal of generating website contents and enhance website's visibility, driving organic traffic, and improving online business performance."},
-                            {"role": "user", "content": prompt}
-                        ],
-                    temperature=temp,
-                    # max_tokens=2500,
-                    top_p=p,
-                    frequency_penalty=freq,
-                    presence_penalty=presence,
-                )
-                # print (response)
-                return response.choices[0].message['content'], response['usage']['prompt_tokens'], response['usage']['completion_tokens'], response['usage']['total_tokens']
+                if isinstance(prompt, str):
+                    response = openai.ChatCompletion.create(
+                        model=f"{model}",
+                        messages=[
+                                {"role": "system", "content": "You are an web designer with the objective to identify search engine optimized long-tail keywords and generate contents, with the goal of generating website contents and enhance website's visibility, driving organic traffic, and improving online business performance."},
+                                {"role": "user", "content": prompt}
+                            ],
+                        temperature=temp,
+                        # max_tokens=2500,
+                        top_p=p,
+                        frequency_penalty=freq,
+                        presence_penalty=presence,
+                    )
+                    # print (response)
+                    return response.choices[0].message['content'], response['usage']['prompt_tokens'], response['usage']['completion_tokens'], response['usage']['total_tokens']
+                elif isinstance(prompt, List):
+                    # print("Prompt: ", prompt)
+                    response = openai.ChatCompletion.create(
+                        model=f"{model}",
+                        messages=prompt,
+                        temperature=temp,
+                        # max_tokens=2500,
+                        top_p=p,
+                        frequency_penalty=freq,
+                        presence_penalty=presence,
+                    )
+                    # print (response)
+                    return response.choices[0].message['content'], response['usage']['prompt_tokens'], response['usage']['completion_tokens'], response['usage']['total_tokens']
 
             except openai.error.RateLimitError as e:  # rate limit error
                 num_retries += 1
@@ -181,7 +199,7 @@ def generate_image_response(prompt: str,
 
 
 def chat_with_gpt3(stage: str,
-                   prompt: str,
+                   prompt: str | List[Message],
                    temp: float = 0.5,
                    p: float = 0.5,
                    freq: float = 0,
@@ -483,7 +501,59 @@ def get_image_context(company_name: str,
     The image should also be about {topic} 
     Use these as example descriptions: {examples}
     """
-    image_context = chat_with_gpt3("Image Description Generation", prompt, temp=0.7, p=0.8)
+
+    prompt_messages: List[Message] = [
+        {"role": "system",
+         "content": "You are an web designer with the objective to identify search engine optimized long-tail keywords and generate contents, with the goal of generating website contents and enhance website's visibility, driving organic traffic, and improving online business performance."},
+        {"role": "user",
+         "content": "Generate 1 detailed description of an image about wood cutting carpentry workshop. The image should also be about carpentry workshop."},
+        {"role": "assistant",
+         "content": "Saw and sawdust, blurred workshop background, 3D, digital art."},
+        {"role": "user",
+         "content": "Generate 1 detailed description of an image about affordable toy oven for children. The image should also be about toy oven."},
+        {"role": "assistant",
+         "content": "Easy bake oven, fisher-price, toy, bright colors, blurred playroom background, natural-lighting."},
+        {"role": "user",
+         "content": "Generate 1 detailed description of an image about top acoustic guitar brands for professionals. The image should also be about acoustic guitar."},
+        {"role": "assistant",
+         "content": "Fine acoustic guitar, side angle, natural lighting, bioluminescence."},
+        {"role": "user",
+         "content": "Generate 1 detailed description of an image about Fish aquarium digital art gallery. The image should also be about fish aquarium digital art."},
+        {"role": "assistant",
+         "content": "Tained glass window of fish, side angle, rubble, dramatic-lighting, light rays, digital art."},
+        {"role": "user",
+         "content": "Generate 1 detailed description of an image about Contemporary ergonomic chair design. The image should also be about modern chair."},
+        {"role": "assistant",
+         "content": "Wide shot of a sleek and modern chair design that is currently trending on Artstation, sleek and modern design, artstation trending, highly detailed, beautiful setting in the background, art by wlop, greg rutkowski, thierry doizon, charlie bowater, alphonse mucha, golden hour lighting, ultra realistic."},
+        {"role": "user",
+         "content": "Generate 1 detailed description of an image about Trendy modern designer handbags for women. The image should also be about modern designer handbag."},
+        {"role": "assistant",
+         "content": "Close-up of a modern designer handbag with beautiful background, photorealistic, unreal engine, from Vogue Magazine."},
+        {"role": "user",
+         "content": "Generate 1 detailed description of an image about Luxury vintage-inspired and timeless watch. The image should also be about vintage-inspired timeless design watch."},
+        {"role": "assistant",
+         "content": "Vintage-inspired watch an elegant and timeless design with intricate details, and detailed lighting, trending on Artstation, unreal engine, smooth finish, looking towards the viewer."},
+        {"role": "user",
+         "content": "Generate 1 detailed description of an image about best modern designers lamp design. The image should also be about electrical lightings store."},
+        {"role": "assistant",
+         "content": "Close-up of modern designer a minimalist and contemporary lamp design, with clean lines and detailed lighting, trending on Artstation, detailed lighting, perfect for any contemporary space."},
+        {"role": "user",
+         "content": "Generate 1 detailed description of an image about award winning artistic design for a futuristic concept car. The image should also be about futuristic concept car."},
+        {"role": "assistant",
+         "content": "Overhead view of a sleek and futuristic concept car with aerodynamic curves, and a glossy black finish driving on a winding road with mountains in the background, sleek and stylish design, highly detailed, ultra realistic, concept art, intricate textures, interstellar background, space travel, art by alphonse mucha, greg rutkowski, ross tran, leesha hannigan, ignacio fernandez rios, kai carpenter, perfect for any casual occasion."},
+        {"role": "user",
+         "content": "Generate 1 detailed description of an image about finest hand-crafted quality sofa. The image should also be about sofa manufacturer."},
+        {"role": "assistant",
+         "content": "Close-up of a designer hand-crafting a sofa with intricate details, and detailed lighting, trending on Artstation, unreal engine, smooth finish."},
+        {"role": "user",
+         "content": "Generate 1 detailed description of an image about Trendy designer sunglasses for summer. The image should also be about sunglasses."},
+        {"role": "assistant",
+         "content": "Low angle shot of a modern and sleek design with reflective lenses, worn by a model standing on a city street corner with tall buildings in the background, sleek and stylish design, highly detailed, ultra realistic."},
+        {"role": "user",
+         "content": f"Generate 1 detailed description of an image about {keyword}. The image should also be about {topic} "}
+    ]
+
+    image_context = chat_with_gpt3("Image Description Generation", prompt_messages, temp=0.7, p=0.8)
     print(image_context)
     imageurl = chat_with_dall_e(image_context, section)
     # print(imageurl)
