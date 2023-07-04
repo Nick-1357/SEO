@@ -83,10 +83,10 @@ def generate_content_response(prompt: str,
     num_retries: int = 0
 
     while True:
-        if num_retries > max_retries:
-                print(f"Max retries exceeded. The API continues to respond with an error after " + str(
-                    max_retries) + " attempts.")
-                return None, None, None, None  # return None if an exception was caught
+        if num_retries >= max_retries:
+            print(f"Max retries exceeded. The API continues to respond with an error after " + str(
+                max_retries) + " attempts.")
+            return None, None, None, None  # return None if an exception was caught
         else:
             try:
                 response = openai.ChatCompletion.create(
@@ -106,22 +106,22 @@ def generate_content_response(prompt: str,
 
             except openai.error.RateLimitError as e:  # rate limit error
                 num_retries += 1
-                print("Rate limit reached. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+                print("Rate limit reached. Retry attempt " + str(num_retries) + " of " + str(max_retries) + "...")
             except openai.error.Timeout as e:  # timeout error
                 num_retries += 1
-                print("Request timed out. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+                print("Request timed out. Retry attempt " + str(num_retries) + " of " + str(max_retries) + "...")
             except openai.error.ServiceUnavailableError:
                 num_retries += 1
-                print("Server Overloaded. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+                print("Server Overloaded. Retry attempt " + str(num_retries) + " of " + str(max_retries) + "...")
             except openai.error.InvalidRequestError as e:
                 num_retries += 1
-                print("Invalid Chat Request. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+                print("Invalid Chat Request. Retry attempt " + str(num_retries) + " of " + str(max_retries) + "...")
             except openai.error.APIConnectionError as e:
                 #Handle connection error here
-                print(f"Failed to connect to OpenAI API: {e}Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+                print(f"Failed to connect to OpenAI API: {e}Retry attempt " + str(num_retries) + " of " + str(max_retries) + "...")
             except openai.error.APIError as e:
                 num_retries += 1
-                print(f"OpenAI API returned an API Error: {e}. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+                print(f"OpenAI API returned an API Error: {e}. Retry attempt " + str(num_retries) + " of " + str(max_retries) + "...")
 
             # Increment the delay
             delay *= exponential_base * (1 + jitter * random.random())
@@ -138,7 +138,7 @@ def generate_image_response(prompt: str,
     num_retries: int = 0
 
     while True:
-        if num_retries > max_retries:
+        if num_retries >= max_retries:
             print(f"Max retries exceeded. The API continues to respond with an error after " + str(
                 max_retries) + " attempts.")
             return ""  # return "" if an exception was caught
@@ -155,22 +155,23 @@ def generate_image_response(prompt: str,
 
             except openai.error.RateLimitError as e:  # rate limit error
                 num_retries += 1
-                print("Rate limit reached. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+                print("Rate limit reached. Retry attempt " + str(num_retries) + " of " + str(max_retries) + "...")
             except openai.error.Timeout as e:  # timeout error
                 num_retries += 1
-                print("Request timed out. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+                print("Request timed out. Retry attempt " + str(num_retries) + " of " + str(max_retries) + "...")
             except openai.error.ServiceUnavailableError:
                 num_retries += 1
-                print("Server Overloaded. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+                print("Server Overloaded. Retry attempt " + str(num_retries) + " of " + str(max_retries) + "...")
             except openai.error.InvalidRequestError as e:
                 num_retries += 1
-                print("Invalid Image Request. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+                print("Invalid Image Request. Retry attempt " + str(num_retries) + " of " + str(max_retries) + "...")
+                # print("Prompt: ", prompt)
             except openai.error.APIConnectionError as e:
                 num_retries += 1
-                print(f"Failed to connect to OpenAI API: {e}Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+                print(f"Failed to connect to OpenAI API: {e}Retry attempt " + str(num_retries) + " of " + str(max_retries) + "...")
             except openai.error.APIError as e:
                 num_retries += 1
-                print(f"OpenAI API returned an API Error: {e}. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+                print(f"OpenAI API returned an API Error: {e}. Retry attempt " + str(num_retries) + " of " + str(max_retries) + "...")
                 
             # Increment the delay
             delay *= exponential_base * (1 + jitter * random.random())
