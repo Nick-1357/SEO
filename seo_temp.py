@@ -645,7 +645,7 @@ def get_image_context(company_name: str,
     imageurl = chat_with_dall_e(image_context, section)
     # print(imageurl)
     image_base64 = url_to_base64(imageurl)
-    return imageurl
+    return image_base64
     
     
 def generate_gallery_images(company_name: str,
