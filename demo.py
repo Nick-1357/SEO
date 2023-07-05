@@ -1,5 +1,3 @@
-
-
 import csv
 import concurrent.futures
 import json
@@ -15,7 +13,7 @@ import base64
 from PIL import Image
 from pathlib import Path
 from dotenv import load_dotenv
-from typing import List, Dict
+from typing import List, Dict, TypedDict
 from concurrent.futures import ThreadPoolExecutor, wait
 from diffusers import StableDiffusionPipeline, EulerDiscreteScheduler
 
@@ -40,10 +38,14 @@ elif memory_dir == "local":
     workspace_path = "./"
 
 
+class Message(TypedDict):
+    role: str
+    content: str
+
 # ==================================================================================================
 # API Interaction
 # ==================================================================================================
- 
+
 
 def query(query_parameters: Dict[str, str]) -> bytes:
     try:
@@ -72,7 +74,7 @@ def stabilityai_generate(prompt: str,
     return f'{section}.jpg'
     
 
-def generate_content_response(prompt: str,
+def generate_content_response(prompt: str | List[Message],
                               temp: float,
                               p: float,
                               freq: float,
@@ -85,45 +87,59 @@ def generate_content_response(prompt: str,
     num_retries: int = 0
 
     while True:
-        if num_retries > max_retries:
-                print(f"Max retries exceeded. The API continues to respond with an error after " + str(
-                    max_retries) + " attempts.")
-                return None, None, None, None  # return None if an exception was caught
+        if num_retries >= max_retries:
+            print(f"Max retries exceeded. The API continues to respond with an error after " + str(
+                max_retries) + " attempts.")
+            return None, None, None, None  # return None if an exception was caught
         else:
             try:
-                response = openai.ChatCompletion.create(
-                    model=f"{model}",
-                    messages=[
-                            {"role": "system", "content": "You are an web designer with the objective to identify search engine optimized long-tail keywords and generate contents, with the goal of generating website contents and enhance website's visibility, driving organic traffic, and improving online business performance."},
-                            {"role": "user", "content": prompt}
-                        ],
-                    temperature=temp,
-                    # max_tokens=2500,
-                    top_p=p,
-                    frequency_penalty=freq,
-                    presence_penalty=presence,
-                )
-                # print (response)
-                return response.choices[0].message['content'], response['usage']['prompt_tokens'], response['usage']['completion_tokens'], response['usage']['total_tokens']
+                if isinstance(prompt, str):
+                    response = openai.ChatCompletion.create(
+                        model=f"{model}",
+                        messages=[
+                                {"role": "system", "content": "You are an web designer with the objective to identify search engine optimized long-tail keywords and generate contents, with the goal of generating website contents and enhance website's visibility, driving organic traffic, and improving online business performance."},
+                                {"role": "user", "content": prompt}
+                            ],
+                        temperature=temp,
+                        # max_tokens=2500,
+                        top_p=p,
+                        frequency_penalty=freq,
+                        presence_penalty=presence,
+                    )
+                    # print (response)
+                    return response.choices[0].message['content'], response['usage']['prompt_tokens'], response['usage']['completion_tokens'], response['usage']['total_tokens']
+                elif isinstance(prompt, List):
+                    # print("Prompt: ", prompt)
+                    response = openai.ChatCompletion.create(
+                        model=f"{model}",
+                        messages=prompt,
+                        temperature=temp,
+                        # max_tokens=2500,
+                        top_p=p,
+                        frequency_penalty=freq,
+                        presence_penalty=presence,
+                    )
+                    # print (response)
+                    return response.choices[0].message['content'], response['usage']['prompt_tokens'], response['usage']['completion_tokens'], response['usage']['total_tokens']
 
             except openai.error.RateLimitError as e:  # rate limit error
                 num_retries += 1
-                print("Rate limit reached. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+                print("Rate limit reached. Retry attempt " + str(num_retries) + " of " + str(max_retries) + "...")
             except openai.error.Timeout as e:  # timeout error
                 num_retries += 1
-                print("Request timed out. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+                print("Request timed out. Retry attempt " + str(num_retries) + " of " + str(max_retries) + "...")
             except openai.error.ServiceUnavailableError:
                 num_retries += 1
-                print("Server Overloaded. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+                print("Server Overloaded. Retry attempt " + str(num_retries) + " of " + str(max_retries) + "...")
             except openai.error.InvalidRequestError as e:
                 num_retries += 1
-                print("Invalid Chat Request. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+                print("Invalid Chat Request. Retry attempt " + str(num_retries) + " of " + str(max_retries) + "...")
             except openai.error.APIConnectionError as e:
                 #Handle connection error here
-                print(f"Failed to connect to OpenAI API: {e}Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+                print(f"Failed to connect to OpenAI API: {e}Retry attempt " + str(num_retries) + " of " + str(max_retries) + "...")
             except openai.error.APIError as e:
                 num_retries += 1
-                print(f"OpenAI API returned an API Error: {e}. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+                print(f"OpenAI API returned an API Error: {e}. Retry attempt " + str(num_retries) + " of " + str(max_retries) + "...")
 
             # Increment the delay
             delay *= exponential_base * (1 + jitter * random.random())
@@ -140,7 +156,7 @@ def generate_image_response(prompt: str,
     num_retries: int = 0
 
     while True:
-        if num_retries > max_retries:
+        if num_retries >= max_retries:
             print(f"Max retries exceeded. The API continues to respond with an error after " + str(
                 max_retries) + " attempts.")
             return ""  # return "" if an exception was caught
@@ -157,22 +173,23 @@ def generate_image_response(prompt: str,
 
             except openai.error.RateLimitError as e:  # rate limit error
                 num_retries += 1
-                print("Rate limit reached. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+                print("Rate limit reached. Retry attempt " + str(num_retries) + " of " + str(max_retries) + "...")
             except openai.error.Timeout as e:  # timeout error
                 num_retries += 1
-                print("Request timed out. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+                print("Request timed out. Retry attempt " + str(num_retries) + " of " + str(max_retries) + "...")
             except openai.error.ServiceUnavailableError:
                 num_retries += 1
-                print("Server Overloaded. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+                print("Server Overloaded. Retry attempt " + str(num_retries) + " of " + str(max_retries) + "...")
             except openai.error.InvalidRequestError as e:
                 num_retries += 1
-                print("Invalid Image Request. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+                print("Invalid Image Request. Retry attempt " + str(num_retries) + " of " + str(max_retries) + "...")
+                # print("Prompt: ", prompt)
             except openai.error.APIConnectionError as e:
                 num_retries += 1
-                print(f"Failed to connect to OpenAI API: {e}Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+                print(f"Failed to connect to OpenAI API: {e}Retry attempt " + str(num_retries) + " of " + str(max_retries) + "...")
             except openai.error.APIError as e:
                 num_retries += 1
-                print(f"OpenAI API returned an API Error: {e}. Retry attempt " + str(num_retries + 1) + " of " + str(max_retries) + "...")
+                print(f"OpenAI API returned an API Error: {e}. Retry attempt " + str(num_retries) + " of " + str(max_retries) + "...")
                 
             # Increment the delay
             delay *= exponential_base * (1 + jitter * random.random())
@@ -182,7 +199,7 @@ def generate_image_response(prompt: str,
 
 
 def chat_with_gpt3(stage: str,
-                   prompt: str,
+                   prompt: str | List[Message],
                    temp: float = 0.5,
                    p: float = 0.5,
                    freq: float = 0,
@@ -374,7 +391,7 @@ def generate_content(company_name: str,
                 "p": "..."
         },
         "blogs":{
-            "h2": "... (Pick 1 from these: Customer Reviews, News, Articles, Insights, Resources)",
+            "h2": "... (e.g.: News, Customer Reviews, Insights, Resources, Articles)",
             "post": [{
                     "h3": "...",
                     "p": "...",
@@ -467,20 +484,76 @@ def get_image_context(company_name: str,
                       industry: str) -> str:
     print("Generating Context...")
     examples = """
+    Saw and sawdust, blurred workshop background, 3D, digital art.
+    Easy bake oven, fisher-price, toy, bright colors, blurred playroom background, natural-lighting.
+    Fine acoustic guitar, side angle, natural lighting, bioluminescence.
+    Tained glass window of fish, side angle, rubble, dramatic-lighting, light rays, digital art.
     Wide shot of a sleek and modern chair design that is currently trending on Artstation, sleek and modern design, artstation trending, highly detailed, beautiful setting in the background, art by wlop, greg rutkowski, thierry doizon, charlie bowater, alphonse mucha, golden hour lighting, ultra realistic./
     Close-up of a modern designer handbag with beautiful background, photorealistic, unreal engine, from Vogue Magazine./
     Vintage-inspired watch an elegant and timeless design with intricate details, and detailed lighting, trending on Artstation, unreal engine, smooth finish, looking towards the viewer./
     Close-up of modern designer a minimalist and contemporary lamp design, with clean lines and detailed lighting, trending on Artstation, detailed lighting, perfect for any contemporary space./
     Overhead view of a sleek and futuristic concept car with aerodynamic curves, and a glossy black finish driving on a winding road with mountains in the background, sleek and stylish design, highly detailed, ultra realistic, concept art, intricate textures, interstellar background, space travel, art by alphonse mucha, greg rutkowski, ross tran, leesha hannigan, ignacio fernandez rios, kai carpenter, perfect for any casual occasion./
     Close-up of a designer hand-crafting a sofa with intricate details, and detailed lighting, trending on Artstation, unreal engine, smooth finish./
-    Low angle shot of @mystyle sunglasses a modern and sleek design with reflective lenses, worn by a model standing on a city street corner with tall buildings in the background, sleek and stylish design, highly detailed, ultra realistic./
+    Low angle shot of a modern and sleek design with reflective lenses, worn by a model standing on a city street corner with tall buildings in the background, sleek and stylish design, highly detailed, ultra realistic./
     """
     prompt = f"""
-    Generate 1 paragraph of detailed description for an image about {keyword}.
+    Generate 1 detailed description of an image about {keyword}.
     The image should also be about {topic} 
-    Use these as an example descriptions: {examples}
+    Use these as example descriptions: {examples}
     """
-    image_context = chat_with_gpt3("Image Description Generation", prompt, temp=0.7, p=0.8)
+
+    prompt_messages: List[Message] = [
+        {"role": "system",
+         "content": "You are an web designer with the objective to identify search engine optimized long-tail keywords and generate contents, with the goal of generating website contents and enhance website's visibility, driving organic traffic, and improving online business performance."},
+        {"role": "user",
+         "content": "Generate 1 detailed description of an image about wood cutting carpentry workshop. The image should also be about carpentry workshop."},
+        {"role": "assistant",
+         "content": "Saw and sawdust, blurred workshop background, 3D, digital art."},
+        {"role": "user",
+         "content": "Generate 1 detailed description of an image about affordable toy oven for children. The image should also be about toy oven."},
+        {"role": "assistant",
+         "content": "Easy bake oven, fisher-price, toy, bright colors, blurred playroom background, natural-lighting."},
+        {"role": "user",
+         "content": "Generate 1 detailed description of an image about top acoustic guitar brands for professionals. The image should also be about acoustic guitar."},
+        {"role": "assistant",
+         "content": "Fine acoustic guitar, side angle, natural lighting, bioluminescence."},
+        {"role": "user",
+         "content": "Generate 1 detailed description of an image about Fish aquarium digital art gallery. The image should also be about fish aquarium digital art."},
+        {"role": "assistant",
+         "content": "Tained glass window of fish, side angle, rubble, dramatic-lighting, light rays, digital art."},
+        {"role": "user",
+         "content": "Generate 1 detailed description of an image about Contemporary ergonomic chair design. The image should also be about modern chair."},
+        {"role": "assistant",
+         "content": "Wide shot of a sleek and modern chair design that is currently trending on Artstation, sleek and modern design, artstation trending, highly detailed, beautiful setting in the background, art by wlop, greg rutkowski, thierry doizon, charlie bowater, alphonse mucha, golden hour lighting, ultra realistic."},
+        {"role": "user",
+         "content": "Generate 1 detailed description of an image about Trendy modern designer handbags for women. The image should also be about modern designer handbag."},
+        {"role": "assistant",
+         "content": "Close-up of a modern designer handbag with beautiful background, photorealistic, unreal engine, from Vogue Magazine."},
+        {"role": "user",
+         "content": "Generate 1 detailed description of an image about Luxury vintage-inspired and timeless watch. The image should also be about vintage-inspired timeless design watch."},
+        {"role": "assistant",
+         "content": "Vintage-inspired watch an elegant and timeless design with intricate details, and detailed lighting, trending on Artstation, unreal engine, smooth finish, looking towards the viewer."},
+        {"role": "user",
+         "content": "Generate 1 detailed description of an image about best modern designers lamp design. The image should also be about electrical lightings store."},
+        {"role": "assistant",
+         "content": "Close-up of modern designer a minimalist and contemporary lamp design, with clean lines and detailed lighting, trending on Artstation, detailed lighting, perfect for any contemporary space."},
+        {"role": "user",
+         "content": "Generate 1 detailed description of an image about award winning artistic design for a futuristic concept car. The image should also be about futuristic concept car."},
+        {"role": "assistant",
+         "content": "Overhead view of a sleek and futuristic concept car with aerodynamic curves, and a glossy black finish driving on a winding road with mountains in the background, sleek and stylish design, highly detailed, ultra realistic, concept art, intricate textures, interstellar background, space travel, art by alphonse mucha, greg rutkowski, ross tran, leesha hannigan, ignacio fernandez rios, kai carpenter, perfect for any casual occasion."},
+        {"role": "user",
+         "content": "Generate 1 detailed description of an image about finest hand-crafted quality sofa. The image should also be about sofa manufacturer."},
+        {"role": "assistant",
+         "content": "Close-up of a designer hand-crafting a sofa with intricate details, and detailed lighting, trending on Artstation, unreal engine, smooth finish."},
+        {"role": "user",
+         "content": "Generate 1 detailed description of an image about Trendy designer sunglasses for summer. The image should also be about sunglasses."},
+        {"role": "assistant",
+         "content": "Low angle shot of a modern and sleek design with reflective lenses, worn by a model standing on a city street corner with tall buildings in the background, sleek and stylish design, highly detailed, ultra realistic."},
+        {"role": "user",
+         "content": f"Generate 1 detailed description of an image about {keyword}. The image should also be about {topic} "}
+    ]
+
+    image_context = chat_with_gpt3("Image Description Generation", prompt_messages, temp=0.7, p=0.8)
     print(image_context)
     imageurl = chat_with_dall_e(image_context, section)
     # print(imageurl)
@@ -776,50 +849,3 @@ if __name__ == "__main__":
 #     }
 # }
         
-
-
-# Generated by CodiumAI
-
-# Dependencies:
-# pip install pytest-mock
-import pytest
-
-"""
-Code Analysis
-
-Objective:
-The objective of the "get_image_context" function is to generate a context for an image by using GPT-3 to generate a paragraph of detailed description for the image and DALL-E to generate the image itself. The function is part of a larger image generation process that generates images for different sections of a website.
-
-Inputs:
-- company_name: a string representing the name of the company
-- keyword: a string representing the keyword for the image
-- section: a string representing the section of the website for which the image is being generated
-- topic: a string representing the topic of the image
-- industry: a string representing the industry of the company
-
-Flow:
-1. The function generates a prompt for GPT-3 to generate a paragraph of detailed description for the image.
-2. The function uses the "chat_with_gpt3" function to generate the paragraph of detailed description.
-3. The function uses the "chat_with_dall_e" function to generate the image based on the paragraph of detailed description.
-4. The function uses the "url_to_base64" function to convert the image URL to a base64 string.
-5. The function returns the base64 string representing the image.
-
-Outputs:
-- image_base64: a string representing the image in base64 format
-
-Additional aspects:
-- The function is part of a larger image generation process that generates images for different sections of a website.
-- The function uses GPT-3 and DALL-E to generate the image and its context, respectively.
-- The function uses the "chat_with_gpt3" and "chat_with_dall_e" functions to generate the image context and the image, respectively.
-- The function uses the "url_to_base64" function to convert the image URL to a base64 string.
-"""
-class TestGetImageContext:
-    # Tests that the function handles an empty company name
-    def test_empty_company_name(self, mocker):
-        mocker.patch('requests.get', return_value=MockResponse())
-        mocker.patch('openai.Completion.create', return_value=MockCompletion())
-        mocker.patch('openai.CompletionResult.choices', return_value=MockChoices())
-        mocker.patch('openai.api_resources.ApiResource.request', return_value=MockApiResource())
-        mocker.patch('builtins.open', mocker.mock_open())
-        with pytest.raises(ValueError):
-            get_image_context('', 'keyword', 'section', 'topic', 'industry')

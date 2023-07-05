@@ -738,7 +738,8 @@ section:hover .toolbar {
   text-align: justify;
   border-radius: 15px;
   transition: all 0.4s;
-  font-size: 0px;
+  font-size: 15px;
+  padding: 10 10 10 10;
 }
 
 .cell:hover .second-content {
