@@ -186,7 +186,7 @@ def chat_with_gpt3(stage: str,
                    freq: float = 0,
                    presence: float = 0,
                    model: str = "gpt-3.5-turbo") -> str:
-    max_retries = 5
+    max_retries = 5       
     response, prompt_tokens, completion_tokens, total_tokens = generate_content_response(prompt, temp, p, freq, presence, max_retries, model)
     if response is not None:   # If a response was successfully received
         write_to_csv((stage, prompt_tokens, completion_tokens, total_tokens, None, None))
@@ -254,6 +254,164 @@ def deep_update(source, overrides):
             source[key] = value
     return source
 
+def update_json(json1):
+    # convert the JSON strings to Python dictionaries:
+    t2wjson = """
+    [
+        {
+        "layout": "LayoutHeader",
+        "value": {
+            "logo": "...",
+            "position": 0
+            }
+        },
+        {
+        "layout": "LayoutBanner_CenteredTextFullImage",
+        "value": {
+            "position": 1,
+            "h1": "...",
+            "h2": "...",
+            "button": [],
+            "image":"..."
+            }
+        },
+        {
+        "layout": "LayoutBanner_ImageRight",
+        "value": {
+            "position": 2,
+            "h2": "About Us",
+            "paragraph": "...",
+            "image":"..."
+            }
+        },
+        {
+        "layout": "LayoutCards_3Columns",
+        "value": {
+            "position": 3,
+            "h2": "...",
+            "blogs": [
+                    {
+                        "h2": "...",
+                        "paragraph": "..."
+                    },
+                    {
+                        "h2": "...",
+                        "paragraph": "..."
+                    },
+                    {
+                        "h2": "...",
+                        "paragraph": "..."
+                    }
+                ]
+            }
+        },
+        {
+        "layout": "LayoutForm_ContactUs",
+        "value": {
+            "position": 4,
+            "h1": "Have a question?",
+            "h4": "Contact us if you have any questions!",
+            "image":"..."
+            }
+        },
+        {
+        "layout": "LayoutForm_FAQ",
+        "value": {
+            "position": 5,
+            "h2": "Frequently Asked Questions",
+            "Faq": [
+                    {
+                        "h3": "...",
+                        "paragraph": "..."
+                    },
+                    {
+                        "h3": "...",
+                        "paragraph": "..."
+                    },
+                    {
+                        "h3": "...",
+                        "paragraph": "..."
+                    },
+                    {
+                        "h3": "...",
+                        "paragraph": "..."
+                    },
+                    {
+                        "h3": "...",
+                        "paragraph": "..."
+                    }
+                ]
+            }
+        },
+
+        {
+        "layout": "LayoutGallery_4Columns",
+        "value": {
+            "position": 6,
+            "images": [
+                    { "url": "...", "alt": "..." },
+                    { "url": "...", "alt": "..." },
+                    { "url": "...", "alt": "..." },
+                    { "url": "...", "alt": "..." },
+                    { "url": "...", "alt": "..." },
+                    { "url": "...", "alt": "..." },
+                    { "url": "...", "alt": "..." },
+                    { "url": "...", "alt": "..." }
+                ]
+            }
+        },
+        {
+        "layout": "LayoutBanner_ImageRight",
+        "value": {
+            "position": 7,
+            "h2": "...",
+            "paragraph": "...",
+            "image": "..."
+            }
+        },
+        {
+        "layout": "LayoutMap",
+        "value": {
+            "position": 8,
+            "map_src":
+            "https://maps.google.com/maps?q=Scotland&t=&z=10&ie=UTF8&iwloc=&output=embed"
+            }
+        },
+        {
+        "layout": "LayoutFooter",
+        "value": {
+            "position": 9,
+            "h1": "Contact Info",
+            "p_1": "...",
+            "p_2": "...",
+            "p_3": "....",
+            "logo": "..."
+            }
+        }
+    ]
+    """
+    
+    data1 = json1
+    data2 = json.loads(t2wjson)  
+    # update the second JSON data with the data from the first JSON:
+    data2[1]['value']['h1'] = data1['banner']['h1']
+    data2[1]['value']['h2'] = data1['banner']['h2']
+    data2[1]['value']['button'] = data1['banner']['button']
+
+    data2[2]['value']['h2'] = data1['about']['h2']
+    data2[2]['value']['paragraph'] = data1['about']['p']
+
+    data2[3]['value']['h2'] = data1['blogs']['h2']
+    data2[3]['value']['blogs'] = [{'h2': post['h3'], 'paragraph': post['p']} for post in data1['blogs']['post']]
+
+    data2[5]['value']['h2'] = data1['faq']['h2']
+    data2[5]['value']['Faq'] = [{'h3': q['h3'], 'paragraph': q['p']} for q in data1['faq']['question']]
+
+    data2[6]['value']['images'] = [{'url': img, 'alt': ''} for img in data1['gallery']['image']]
+
+    # convert the updated data back to a JSON string:
+    # updated_json = json.dumps(data2)
+    return data2
   
 def processjson(jsonf: str) -> str:
     startindex = jsonf.find("{")
@@ -365,7 +523,7 @@ def generate_content(company_name: str,
         "banner": {
                 "h1": "...",
                 "h2": "...",
-                "button": [] (Pick 2 from these: Learn More, Contact Us, Get Started, Sign Up, Subscribe, Shop Now, Book Now, Get Offer, Get Quote, Get Pricing, Get Estimate, Browse Now, Try It Free, Join Now, Download Now, Get Demo, Request Demo, Request Quote, Request Appointment, Request Information, Start Free Trial, Sign Up For Free, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation, Sign Up For Quote, Sign Up For Appointment, Sign Up For Information, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation, Sign Up For Quote, Sign Up For Appointment, Sign Up For Information, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation", "Sign Up For Quote", "Sign Up For Appointment", "Sign Up For Information", "Sign Up For Trial", "Sign Up For Demo", "Sign Up For Consultation", "Sign Up For Quote", "Sign Up For Appointment", "Sign Up For Information"])
+                "button": [] (Pick 2 from these: Learn More, Contact Us, Get Started, Sign Up, Subscribe, Shop Now, Book Now, Get Offer, Get Quote, Get Pricing, Get Estimate, Browse Now, Try It Free, Join Now, Download Now, Get Demo, Request Demo, Request Quote, Request Appointment, Request Information, Start Free Trial, Sign Up For Free, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation, Sign Up For Quote, Sign Up For Appointment, Sign Up For Information, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation, Sign Up For Quote, Sign Up For Appointment, Sign Up For Information, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation, Sign Up For Quote, Sign Up For Appointment, Sign Up For Information, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation,  Sign Up For Quote, Sign Up For Appointment, Sign Up For Information)
         },
         "about": {
                 "h2": "About Us",
@@ -465,10 +623,6 @@ def get_image_context(company_name: str,
                       industry: str) -> str:
     print("Generating Context...")
     examples = """
-    Saw and sawdust, blurred workshop background, 3D, digital art.
-    Easy bake oven, fisher-price, toy, bright colors, blurred playroom background, natural-lighting.
-    Fine acoustic guitar, side angle, natural lighting, bioluminescence.
-    Tained glass window of fish, side angle, rubble, dramatic-lighting, light rays, digital art.
     Wide shot of a sleek and modern chair design that is currently trending on Artstation, sleek and modern design, artstation trending, highly detailed, beautiful setting in the background, art by wlop, greg rutkowski, thierry doizon, charlie bowater, alphonse mucha, golden hour lighting, ultra realistic./
     Close-up of a modern designer handbag with beautiful background, photorealistic, unreal engine, from Vogue Magazine./
     Vintage-inspired watch an elegant and timeless design with intricate details, and detailed lighting, trending on Artstation, unreal engine, smooth finish, looking towards the viewer./
@@ -476,9 +630,13 @@ def get_image_context(company_name: str,
     Overhead view of a sleek and futuristic concept car with aerodynamic curves, and a glossy black finish driving on a winding road with mountains in the background, sleek and stylish design, highly detailed, ultra realistic, concept art, intricate textures, interstellar background, space travel, art by alphonse mucha, greg rutkowski, ross tran, leesha hannigan, ignacio fernandez rios, kai carpenter, perfect for any casual occasion./
     Close-up of a designer hand-crafting a sofa with intricate details, and detailed lighting, trending on Artstation, unreal engine, smooth finish./
     Low angle shot of a modern and sleek design with reflective lenses, worn by a model standing on a city street corner with tall buildings in the background, sleek and stylish design, highly detailed, ultra realistic./
+    Saw and sawdust, blurred workshop background, 3D, digital art./
+    Easy bake oven, fisher-price, toy, bright colors, blurred playroom background, natural-lighting./
+    Fine acoustic guitar, side angle, natural lighting, bioluminescence./
+    Tained glass window of fish, side angle, rubble, dramatic-lighting, light rays, digital art.
     """
     prompt = f"""
-    Generate 1 detailed description of an image about {keyword}.
+    Generate 1 short paragraph about the detailed description of an image about {keyword}.
     The image should also be about {topic} 
     Use these as example descriptions: {examples}
     """
@@ -487,7 +645,7 @@ def get_image_context(company_name: str,
     imageurl = chat_with_dall_e(image_context, section)
     # print(imageurl)
     image_base64 = url_to_base64(imageurl)
-    return image_base64
+    return imageurl
     
     
 def generate_gallery_images(company_name: str,
@@ -534,7 +692,6 @@ def image_generation(company_name: str,
         futures = {executor.submit(get_image_context, company_name, keyword, section, topic, industry): section for section in ["banner", "about"]}
 
         # Add the gallery futures
-        image_json["gallery"]["image"] = (generate_gallery_images(company_name, keyword, topic, industry))
 
         for future in concurrent.futures.as_completed(futures):
             section = futures[future]
@@ -545,6 +702,9 @@ def image_generation(company_name: str,
             else:
                 if image_url:
                     image_json[section]["image"] = image_url
+                    
+    image_json["gallery"]["image"] = (generate_gallery_images(company_name, keyword, topic, industry))            
+        
     print("Images Generated")
     return image_json
 
@@ -570,7 +730,9 @@ def feature_function(company_name: str,
             return {}
         else:
             merged_dict = deep_update(content_result, image_result)
-            return merged_dict
+            final_result = update_json(merged_dict)
+            print(json.dumps(final_result, indent=4))
+            return final_result
 
 # =======================================================================================================================
 # Main Function
@@ -777,4 +939,430 @@ if __name__ == "__main__":
 #         ]
 #     }
 # }
-        
+
+
+# {
+#         {
+#           "layout": "LayoutHeader",
+#           "value": {
+#             "logo": "...",
+#             "position": 0,
+#           },
+#         },
+#         {
+#           "layout": "LayoutBanner_CenteredTextFullImage",
+#           "value": {
+#             "position": 1,
+#             "h1": "...",
+#             "h2": "...",
+#             "button": [] (Pick 2 from these: Learn More, Contact Us, Get Started, Sign Up, Subscribe, Shop Now, Book Now, Get Offer, Get Quote, Get Pricing, Get Estimate, Browse Now, Try It Free, Join Now, Download Now, Get Demo, Request Demo, Request Quote, Request Appointment, Request Information, Start Free Trial, Sign Up For Free, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation, Sign Up For Quote, Sign Up For Appointment, Sign Up For Information, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation, Sign Up For Quote, Sign Up For Appointment, Sign Up For Information, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation, Sign Up For Quote, Sign Up For Appointment, Sign Up For Information, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation,  Sign Up For Quote, Sign Up For Appointment, Sign Up For Information)
+#             "image":"...",
+#           }
+#         },
+#         {
+#           "layout": "LayoutBanner_ImageRight",
+#           "value": {
+#             "position": 2,
+#             "h2": "About Us",
+#             "paragraph": "...",
+#             "image":"...",
+#           },
+#         },
+#         {
+#           "layout": "LayoutCards_3Columns",
+#           "value": {
+#             "position": 3,
+#             "h2": "..." (e.g.: News, Customer Reviews, Insights, Resources, Articles),
+#             "blogs": [
+#               {
+#                 "h2": "...",
+#                 "paragraph":
+#                   "...",
+#               },
+#               {
+#                 "h2": "...",
+#                 "paragraph":
+#                   "...",
+#               },
+#               {
+#                 "h2": "...",
+#                 "paragraph":
+#                   "...",
+#               },
+#             ],
+#           },
+#         },
+#         {
+#           "layout": "LayoutForm_ContactUs",
+#           "value": {
+#             "position": 4,
+#             "h1": "Have a question?",
+#             "h4": "Contact us if you have any questions!",
+#             "image":"...",
+#           },
+#         },
+#         {
+#           "layout": "LayoutForm_FAQ",
+#           "value": {
+#             "position": 5,
+#             "h2": "Frequently Asked Questions",
+#             "Faq": [
+#               {
+#                 "h3": "...",
+#                 "paragraph": "...",
+#               },
+#               {
+#                 "h3": "...",
+#                 "paragraph": "...",
+#               },
+#               {
+#                 "h3": "...",
+#                 "paragraph": "...",
+#               },
+#               {
+#                 "h3": "...",
+#                 "paragraph": "...",
+#               },
+#               {
+#                 "h3": "...",
+#                 "paragraph": "...",
+#               },...
+#             ],
+#           },
+#         },
+
+#         {
+#           "layout": "LayoutGallery_4Columns",
+#           "value": {
+#             "position": 6,
+#             "images": [
+#               { "url": "...", "alt": "..." },
+#               { "url": "...", "alt": "..." },
+#               { "url": "...", "alt": "..." },
+#               { "url": "...", "alt": "..." },
+#               { "url": "...", "alt": "..." },
+#               { "url": "...", "alt": "..." },
+#               { "url": "...", "alt": "..." },
+#               { "url": "...", "alt": "..." },
+#             ],
+#           },
+#         },
+#         {
+#           "layout": "LayoutBanner_ImageRight",
+#           "value": {
+#             "position": 7,
+#             "h2": "...",
+#             "paragraph": "...",
+#             "image": "...",
+#           },
+#         },
+#         {
+#           "layout": "LayoutMap",
+#           "value": {
+#             "position": 8,
+#             "map_src":
+#               "https://maps.google.com/maps?q=Scotland&t=&z=10&ie=UTF8&iwloc=&output=embed",
+#           },
+#         },
+#         {
+#           "layout": "LayoutFooter",
+#           "value": {
+#             position: 9,
+#             h1: "Contact Info",
+#             "p_1": "...",
+#             "p_2": "...",
+#             "p_3": "....",
+#             "logo": "...",
+#           },
+#         },
+# }
+
+
+
+# {
+#     "banner": {
+#             "h1": "...",
+#             "h2": "...",
+#             "button": [] (Pick 2 from these: Learn More, Contact Us, Get Started, Sign Up, Subscribe, Shop Now, Book Now, Get Offer, Get Quote, Get Pricing, Get Estimate, Browse Now, Try It Free, Join Now, Download Now, Get Demo, Request Demo, Request Quote, Request Appointment, Request Information, Start Free Trial, Sign Up For Free, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation, Sign Up For Quote, Sign Up For Appointment, Sign Up For Information, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation, Sign Up For Quote, Sign Up For Appointment, Sign Up For Information, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation, Sign Up For Quote, Sign Up For Appointment, Sign Up For Information, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation,  Sign Up For Quote, Sign Up For Appointment, Sign Up For Information)
+#     },
+#     "about": {
+#             "h2": "About Us",
+#             "p": "..."
+#     },
+#     "blogs":{
+#         "h2": "... (e.g.: News, Customer Reviews, Insights, Resources, Articles)",
+#         "post": [{
+#                 "h3": "...",
+#                 "p": "...",
+#             },
+#             {
+#                 "h3": "...",
+#                 "p": "...",
+#             },
+#             {
+#                 "h3": "...",
+#                 "p": "...",
+#             }
+#         ]
+#     },
+#     "faq":{
+#         "h2": "Frequently Asked Questions",
+#         "question": [{
+#                 "id": 1,
+#                 "h3": "...",
+#                 "p": "...",
+#             },
+#             {
+#                 "id": 2,
+#                 "h3": "...",
+#                 "p": "...",
+#             },
+#             {
+#                 "id": 3,
+#                 "h3": "...",
+#                 "p": "...",
+#             },
+#             {
+#                 "id": 4,
+#                 "h3": "...",
+#                 "p": "...",
+#             },
+#             {
+#                 "id": 5,
+#                 "h3": "...",
+#                 "p": "...",
+#             },...
+#         ]
+#     }
+# }
+
+
+
+# {
+#         "LayoutBanner_CenteredTextFullImage": {
+#           "value": {
+#             "position": 1,
+#             "h1": "...",
+#             "h2": "...",
+#             "button": [] (Pick 2 from these: Learn More, Contact Us, Get Started, Sign Up, Subscribe, Shop Now, Book Now, Get Offer, Get Quote, Get Pricing, Get Estimate, Browse Now, Try It Free, Join Now, Download Now, Get Demo, Request Demo, Request Quote, Request Appointment, Request Information, Start Free Trial, Sign Up For Free, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation, Sign Up For Quote, Sign Up For Appointment, Sign Up For Information, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation, Sign Up For Quote, Sign Up For Appointment, Sign Up For Information, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation, Sign Up For Quote, Sign Up For Appointment, Sign Up For Information, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation,  Sign Up For Quote, Sign Up For Appointment, Sign Up For Information)
+#           }
+#         },
+#         "LayoutBanner_ImageRight": {
+#           "value": {
+#             "position": 2,
+#             "h2": "About Us",
+#             "paragraph": "...",
+#           }
+#         },
+#         "LayoutCards_3Columns": {
+#           "value": {
+#             "position": 3,
+#             "h2": "..." (e.g.: News, Customer Reviews, Insights, Resources, Articles),
+#             "blogs": [
+#               {
+#                 "h2": "...",
+#                 "paragraph":
+#                   "...",
+#               },
+#               {
+#                 "h2": "...",
+#                 "paragraph":
+#                   "...",
+#               },
+#               {
+#                 "h2": "...",
+#                 "paragraph":
+#                   "...",
+#               }
+#             ]
+#           }
+#         },
+#         "LayoutForm_ContactUs": {
+#           "layout": "",
+#           "value": {
+#             "position": 4,
+#             "h1": "Have a question?",
+#             "h4": "Contact us today!",
+#           }
+#         },
+#         "LayoutForm_FAQ": {
+#           "layout": "",
+#           "value": {
+#             "position": 5,
+#             "h2": "Frequently Asked Questions",
+#             "Faq": [
+#               {
+#                 "h3": "...",
+#                 "paragraph": "...",
+#               },
+#               {
+#                 "h3": "...",
+#                 "paragraph": "...",
+#               },
+#               {
+#                 "h3": "...",
+#                 "paragraph": "...",
+#               },
+#               {
+#                 "h3": "...",
+#                 "paragraph": "...",
+#               },
+#               {
+#                 "h3": "...",
+#                 "paragraph": "...",
+#               },...
+#             ]
+#           }
+#         },
+#         "LayoutBanner_ImageRight": {
+#           "value": {
+#             "position": 7,
+#             "h2": "...",
+#             "paragraph": "...",
+#           }
+#         },
+#         "LayoutFooter": {
+#           "value": {
+#             position: 9,
+#             h1: "Contact Info",
+#             "p_1": "...",
+#             "p_2": "...",
+#             "p_3": "....",
+#             "logo": "...",
+#           },
+#         },
+# }
+
+
+[
+    {
+      "layout": "LayoutHeader",
+      "value": {
+        "logo": "...",
+        "position": 0
+      }
+    },
+    {
+      "layout": "LayoutBanner_CenteredTextFullImage",
+      "value": {
+        "position": 1,
+        "h1": "...",
+        "h2": "...",
+        "button": [],
+        "image":"..."
+      }
+    },
+    {
+      "layout": "LayoutBanner_ImageRight",
+      "value": {
+        "position": 2,
+        "h2": "About Us",
+        "paragraph": "...",
+        "image":"..."
+      },
+    },
+    {
+      "layout": "LayoutCards_3Columns",
+      "value": {
+        "position": 3,
+        "h2": "...",
+        "blogs": [
+          {
+            "h2": "...",
+            "paragraph": "..."
+          },
+          {
+            "h2": "...",
+            "paragraph": "..."
+          },
+          {
+            "h2": "...",
+            "paragraph": "..."
+          }
+        ]
+      }
+    },
+    {
+      "layout": "LayoutForm_ContactUs",
+      "value": {
+        "position": 4,
+        "h1": "Have a question?",
+        "h4": "Contact us if you have any questions!",
+        "image":"..."
+      }
+    },
+    {
+      "layout": "LayoutForm_FAQ",
+      "value": {
+        "position": 5,
+        "h2": "Frequently Asked Questions",
+        "Faq": [
+          {
+            "h3": "...",
+            "paragraph": "..."
+          },
+          {
+            "h3": "...",
+            "paragraph": "..."
+          },
+          {
+            "h3": "...",
+            "paragraph": "..."
+          },
+          {
+            "h3": "...",
+            "paragraph": "..."
+          },
+          {
+            "h3": "...",
+            "paragraph": "..."
+          }
+        ]
+      }
+    },
+
+    {
+      "layout": "LayoutGallery_4Columns",
+      "value": {
+        "position": 6,
+        "images": [
+          { "url": "...", "alt": "..." },
+          { "url": "...", "alt": "..." },
+          { "url": "...", "alt": "..." },
+          { "url": "...", "alt": "..." },
+          { "url": "...", "alt": "..." },
+          { "url": "...", "alt": "..." },
+          { "url": "...", "alt": "..." },
+          { "url": "...", "alt": "..." }
+        ]
+      }
+    },
+    {
+      "layout": "LayoutBanner_ImageRight",
+      "value": {
+        "position": 7,
+        "h2": "...",
+        "paragraph": "...",
+        "image": "..."
+      }
+    },
+    {
+      "layout": "LayoutMap",
+      "value": {
+        "position": 8,
+        "map_src":
+          "https://maps.google.com/maps?q=Scotland&t=&z=10&ie=UTF8&iwloc=&output=embed"
+      }
+    },
+    {
+      "layout": "LayoutFooter",
+      "value": {
+        "position": 9,
+        "h1": "Contact Info",
+        "p_1": "...",
+        "p_2": "...",
+        "p_3": "....",
+        "logo": "..."
+      }
+    }
+]
