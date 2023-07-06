@@ -273,127 +273,130 @@ def deep_update(source, overrides):
             source[key] = value
     return source
 
+
 def update_json(data1):
     # convert the JSON strings to Python dictionaries:
     data2 = {
         "layouts": [
-                {
+            {
                 "layout": "Layout_header_1",
                 "value": {
-                    "image": "...",
+                    "image": "",
                     "position": 0
-                    }
-                },
-                {
+                }
+            },
+            {
                 "layout": "Layout_centered_image_1",
                 "value": {
                     "position": 1,
                     "button": [
                         {
-                            "name": "...", 
+                            "name": "",
                             "layout": 1
                         },
                         {
-                            "name": "...",
+                            "name": "",
                             "layout": 2
                         }
                     ],
-                    "image":"...",
-                    "h1": "...",
-                    "h2": "..."
-                    }
-                },
-                {
+                    "image": "",
+                    "h1": "",
+                    "h2": ""
+                }
+            },
+            {
                 "layout": "Layout_right_image_1",
                 "value": {
                     "position": 2,
                     "h2": "About Us",
-                    "paragraph": "...",
-                    "image":"..."
-                    }
-                },
-                {
+                    "paragraph": "",
+                    "image": ""
+                }
+            },
+            {
                 "layout": "Layout_three_blogs_1",
                 "value": {
                     "position": 3,
-                    "h2": "...",
+                    "h2": "",
                     "blogs": [
-                            {
-                                "h2": "...",
-                                "paragraph": "..."
-                            },
-                            {
-                                "h2": "...",
-                                "paragraph": "..."
-                            },
-                            {
-                                "h2": "...",
-                                "paragraph": "..."
-                            }
-                        ]
-                    }
-                },
-                {
+                        {
+                            "h2": "",
+                            "paragraph": ""
+                        },
+                        {
+                            "h2": "",
+                            "paragraph": ""
+                        },
+                        {
+                            "h2": "",
+                            "paragraph": ""
+                        }
+                    ]
+                }
+            },
+            {
                 "layout": "Layout_contact_us_1",
                 "value": {
                     "position": 4,
                     "h1": "Have a question?",
                     "h4": "Contact us today!",
-                    "image":"..."
-                    }
-                },
-                {
+                    "image": ""
+                }
+            },
+            {
                 "layout": "Layout_frequently_asked_questions_1",
                 "value": {
                     "position": 5,
                     "h2": "Frequently Asked Questions",
                     "Faq": [
-                            {
-                                "h3": "...",
-                                "paragraph": "..."
-                            }
-                        ]
-                    }
-                },
-
-                {
+                        {
+                            "h3": "",
+                            "paragraph": ""
+                        }
+                    ]
+                }
+            },
+            {
                 "layout": "Layout_gallery_1",
                 "value": {
                     "position": 6,
                     "images": [
-                            { "url": "...", "alt": "..." }
-                        ]
-                    }
-                },
-                {
+                        {
+                            "url": "",
+                            "alt": ""
+                        }
+                    ]
+                }
+            },
+            {
                 "layout": "Layout_right_image_2",
                 "value": {
                     "position": 7,
-                    "h2": "...",
-                    "paragraph": "...",
-                    "image": "..."
-                    }
-                },
-                {
+                    "h2": "",
+                    "paragraph": "",
+                    "image": ""
+                }
+            },
+            {
                 "layout": "Layout_map_1",
                 "value": {
                     "position": 8,
-                    "map_src":""
-                    }
-                },
-                {
+                    "map_src": ""
+                }
+            },
+            {
                 "layout": "Layout_footer_1",
                 "value": {
                     "position": 9,
                     "h1": "Contact Info",
                     "paragraph": ["", "", ""],
-                    "image": "..."
-                    }
+                    "image": ""
                 }
+            }
         ],
-        "meta_data":{
-            "title": "..." ,
-            "description": "..."
+        "meta_data": {
+            "title": "",
+            "description": ""
         }
     }
 
@@ -433,7 +436,8 @@ def update_json(data1):
     # convert the updated data back to a JSON string:
     updated_json = json.dumps(data2)
     return data2
-  
+
+
 def processjson(jsonf: str) -> str:
     startindex = jsonf.find("{")
     endindex = jsonf.rfind("}")
@@ -451,11 +455,13 @@ def sanitize_filename(filename: str) -> str:
     """Remove special characters and replace spaces with underscores in a string to use as a filename."""
     return re.sub(r'[^A-Za-z0-9]+', '_', filename)
 
+
 def sanitize_location(location: str) -> str:
     url_safe_address = location.replace(" ", "%20")
     url_safe_address = url_safe_address.replace(",", "%2C")
     return url_safe_address
-    
+
+
 def url_to_base64(url: str) -> str:
     try:
         response = requests.get(url)
@@ -500,6 +506,7 @@ def get_audience(topic: str) -> List[str]:
     print("Target Audience Generated")
     return audienceList
 
+
 def get_location(topic: str) -> str:
     print("Identifying Location..")
     prompt = f"Generate an address (Building number, Street name, Postal Code, City/Town name, State, Country) in one line for this keywords, no explanation is needed: {topic}"
@@ -540,6 +547,7 @@ def generate_meta_description(company_name: str,
     meta_description = chat_with_gpt3("Meta Description Generation", prompt, temp=0.7, p=0.8)
     return meta_description
 
+
 def generate_footer(company_name: str, location: str):
     print("Generating footer")
     start = random.choice(["+601", "+603"])
@@ -561,6 +569,7 @@ def generate_footer(company_name: str, location: str):
     footer_json['map']['map_src'] = mapurl
     footer_json['footer']['info'].extend([number, email, address])
     return footer_json
+
 
 def generate_content(company_name: str,
                      topic: str,
@@ -717,51 +726,51 @@ def get_image_context(company_name: str,
         {"role": "system",
          "content": "You are an web designer with the objective to identify search engine optimized long-tail keywords and generate contents, with the goal of generating website contents and enhance website's visibility, driving organic traffic, and improving online business performance."},
         {"role": "user",
-         "content": "Generate 1 detailed description of an image about wood cutting carpentry workshop. The image should also be about carpentry workshop."},
+         "content": "Generate 1 short paragraph about the detailed description of an image about wood cutting carpentry workshop. The image should also be about carpentry workshop."},
         {"role": "assistant",
          "content": "Saw and sawdust, blurred workshop background, 3D, digital art."},
         {"role": "user",
-         "content": "Generate 1 detailed description of an image about affordable toy oven for children. The image should also be about toy oven."},
+         "content": "Generate 1 short paragraph about the detailed description of an image about affordable toy oven for children. The image should also be about toy oven."},
         {"role": "assistant",
          "content": "Easy bake oven, fisher-price, toy, bright colors, blurred playroom background, natural-lighting."},
         {"role": "user",
-         "content": "Generate 1 detailed description of an image about top acoustic guitar brands for professionals. The image should also be about acoustic guitar."},
+         "content": "Generate 1 short paragraph about the detailed description of an image about top acoustic guitar brands for professionals. The image should also be about acoustic guitar."},
         {"role": "assistant",
          "content": "Fine acoustic guitar, side angle, natural lighting, bioluminescence."},
         {"role": "user",
-         "content": "Generate 1 detailed description of an image about Fish aquarium digital art gallery. The image should also be about fish aquarium digital art."},
+         "content": "Generate 1 short paragraph about the detailed description of an image about Fish aquarium digital art gallery. The image should also be about fish aquarium digital art."},
         {"role": "assistant",
          "content": "Tained glass window of fish, side angle, rubble, dramatic-lighting, light rays, digital art."},
         {"role": "user",
-         "content": "Generate 1 detailed description of an image about Contemporary ergonomic chair design. The image should also be about modern chair."},
+         "content": "Generate 1 short paragraph about the detailed description of an image about Contemporary ergonomic chair design. The image should also be about modern chair."},
         {"role": "assistant",
          "content": "Wide shot of a sleek and modern chair design that is currently trending on Artstation, sleek and modern design, artstation trending, highly detailed, beautiful setting in the background, art by wlop, greg rutkowski, thierry doizon, charlie bowater, alphonse mucha, golden hour lighting, ultra realistic."},
         {"role": "user",
-         "content": "Generate 1 detailed description of an image about Trendy modern designer handbags for women. The image should also be about modern designer handbag."},
+         "content": "Generate 1 short paragraph about the detailed description of an image about Trendy modern designer handbags for women. The image should also be about modern designer handbag."},
         {"role": "assistant",
          "content": "Close-up of a modern designer handbag with beautiful background, photorealistic, unreal engine, from Vogue Magazine."},
         {"role": "user",
-         "content": "Generate 1 detailed description of an image about Luxury vintage-inspired and timeless watch. The image should also be about vintage-inspired timeless design watch."},
+         "content": "Generate 1 short paragraph about the detailed description of an image about Luxury vintage-inspired and timeless watch. The image should also be about vintage-inspired timeless design watch."},
         {"role": "assistant",
          "content": "Vintage-inspired watch an elegant and timeless design with intricate details, and detailed lighting, trending on Artstation, unreal engine, smooth finish, looking towards the viewer."},
         {"role": "user",
-         "content": "Generate 1 detailed description of an image about best modern designers lamp design. The image should also be about electrical lightings store."},
+         "content": "Generate 1 short paragraph about the detailed description of an image about best modern designers lamp design. The image should also be about electrical lightings store."},
         {"role": "assistant",
          "content": "Close-up of modern designer a minimalist and contemporary lamp design, with clean lines and detailed lighting, trending on Artstation, detailed lighting, perfect for any contemporary space."},
         {"role": "user",
-         "content": "Generate 1 detailed description of an image about award winning artistic design for a futuristic concept car. The image should also be about futuristic concept car."},
+         "content": "Generate 1 short paragraph about the detailed description of an image about award winning artistic design for a futuristic concept car. The image should also be about futuristic concept car."},
         {"role": "assistant",
          "content": "Overhead view of a sleek and futuristic concept car with aerodynamic curves, and a glossy black finish driving on a winding road with mountains in the background, sleek and stylish design, highly detailed, ultra realistic, concept art, intricate textures, interstellar background, space travel, art by alphonse mucha, greg rutkowski, ross tran, leesha hannigan, ignacio fernandez rios, kai carpenter, perfect for any casual occasion."},
         {"role": "user",
-         "content": "Generate 1 detailed description of an image about finest hand-crafted quality sofa. The image should also be about sofa manufacturer."},
+         "content": "Generate 1 short paragraph about the detailed description of an image about finest hand-crafted quality sofa. The image should also be about sofa manufacturer."},
         {"role": "assistant",
          "content": "Close-up of a designer hand-crafting a sofa with intricate details, and detailed lighting, trending on Artstation, unreal engine, smooth finish."},
         {"role": "user",
-         "content": "Generate 1 detailed description of an image about Trendy designer sunglasses for summer. The image should also be about sunglasses."},
+         "content": "Generate 1 short paragraph about the detailed description of an image about Trendy designer sunglasses for summer. The image should also be about sunglasses."},
         {"role": "assistant",
          "content": "Low angle shot of a modern and sleek design with reflective lenses, worn by a model standing on a city street corner with tall buildings in the background, sleek and stylish design, highly detailed, ultra realistic."},
         {"role": "user",
-         "content": f"Generate 1 detailed description of an image about {keyword}. The image should also be about {topic} "}
+         "content": f"Generate 1 short paragraph about the detailed description of an image about {keyword}. The image should also be about {topic} "}
     ]
 
     image_context = chat_with_gpt3("Image Description Generation", prompt_messages, temp=0.7, p=0.8)
@@ -770,6 +779,7 @@ def get_image_context(company_name: str,
     # print(imageurl)
     image_base64 = url_to_base64(imageurl)
     return image_base64
+
 
 def generate_logo(company_name: str,
                   topic: str,
@@ -815,7 +825,7 @@ def image_generation(company_name: str,
                      keyword: str) -> Dict:
     print("Starting Image Process...")
     image_json = {
-        "logo":{
+        "logo": {
             
         },
         "banner": 
@@ -919,7 +929,6 @@ def main():
             
             location = get_location(topic)
             print(location)
-            
 
             # Generate SEO keywords
             long_tail_keywords = generate_long_tail_keywords(topic)
