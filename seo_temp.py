@@ -787,10 +787,11 @@ def generate_logo(company_name: str,
                   industry: str,) -> str:
     print("Generating Logo")
     prompt = f"""
-    Generate a few sentences to describe a logo for the company {company_name} that is about {topic} in {industry}.
-    Examples:
-    A 2d, symmetrical, flat logo for a blockchain company that is sleek and simple. It should be of black shade and should be subtle.
+    Generate 1 logo concept for my {company_name} that incorporates sleek looking geometric shapes and modern sleek style, reflecting {topic} and {industry}. What color scheme would best complement this design?
+    Write it in a few sentences
     """
+    # A 2d, symmetrical, flat logo for a blockchain company that is sleek and simple. It should be of black shade and should be subtle.
+    # Generate a sentence to describe the details and design of a logo for the company {company_name} that provides {topic}.
     logo_context = chat_with_gpt3("Logo Description Generation", prompt, temp=0.7, p=0.8)
     print(logo_context)
     imageurl = chat_with_dall_e(logo_context, "Logo")
