@@ -826,23 +826,23 @@ def image_generation(company_name: str,
     print("Starting Image Process...")
     image_json = {
         "logo": {
-            
+            "image": ""
         },
         "banner": 
             {
-                "image": "..."
+                "image": ""
             },
         "about": 
             {
-                "image": "..."
+                "image": ""
             },
         "contactus":
             {
-                "image": "..."
+                "image": ""
             },
         "blog2":
             {
-                "image": "..."
+                "image": ""
             },
         "gallery": 
             {
@@ -861,7 +861,7 @@ def image_generation(company_name: str,
         for future in concurrent.futures.as_completed(futures):
             section = futures[future]
             try:
-                image_url: list = future.result()
+                image_url: str = future.result()
             except Exception as exc:
                 print('%r generated an exception: %s' % (section, exc))
             else:
