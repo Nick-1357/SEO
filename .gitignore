@@ -171,3 +171,4 @@ cython_debug/
 #.idea/
 /token_usage.csv
 content/data.json
+demo/data.json
