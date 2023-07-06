@@ -245,7 +245,7 @@ def write_to_csv(data: tuple):
             iteration = 0
         else:
             iteration = int(last_row['Iteration']) + 1 if last_row else 0  # If there is a last row, increment its 'Iteration' value by 1. Otherwise, start at 0
-        price = 0.000003 * data[3]  # Calculate the price of the request
+        price = 0.000004 * data[3]  # Calculate the price of the request
         writer.writerow({'Company Name': data[4], 'Keyword': data[5], 'Iteration': iteration, 'Stage': data[0], 'Prompt Tokens': data[1], 'Completion Tokens': data[2], 'Total Tokens': data[3], 'Price': float(price)})
 
     # file_exists = os.path.isfile('token_usage.csv')  # Check if file already exists
@@ -273,163 +273,167 @@ def deep_update(source, overrides):
             source[key] = value
     return source
 
-def update_json(json1):
+def update_json(data1):
     # convert the JSON strings to Python dictionaries:
-    t2wjson = """
-    [
-        {
-        "layout": "LayoutHeader",
-        "value": {
-            "logo": "...",
-            "position": 0
-            }
-        },
-        {
-        "layout": "LayoutBanner_CenteredTextFullImage",
-        "value": {
-            "position": 1,
-            "h1": "...",
-            "h2": "...",
-            "button": [],
-            "image":"..."
-            }
-        },
-        {
-        "layout": "LayoutBanner_ImageRight",
-        "value": {
-            "position": 2,
-            "h2": "About Us",
-            "paragraph": "...",
-            "image":"..."
-            }
-        },
-        {
-        "layout": "LayoutCards_3Columns",
-        "value": {
-            "position": 3,
-            "h2": "...",
-            "blogs": [
-                    {
-                        "h2": "...",
-                        "paragraph": "..."
-                    },
-                    {
-                        "h2": "...",
-                        "paragraph": "..."
-                    },
-                    {
-                        "h2": "...",
-                        "paragraph": "..."
+    data2 = {
+        "layouts": [
+                {
+                "layout": "Layout_header_1",
+                "value": {
+                    "image": "...",
+                    "position": 0
                     }
-                ]
-            }
-        },
-        {
-        "layout": "LayoutForm_ContactUs",
-        "value": {
-            "position": 4,
-            "h1": "Have a question?",
-            "h4": "Contact us if you have any questions!",
-            "image":"..."
-            }
-        },
-        {
-        "layout": "LayoutForm_FAQ",
-        "value": {
-            "position": 5,
-            "h2": "Frequently Asked Questions",
-            "Faq": [
-                    {
-                        "h3": "...",
-                        "paragraph": "..."
-                    },
-                    {
-                        "h3": "...",
-                        "paragraph": "..."
-                    },
-                    {
-                        "h3": "...",
-                        "paragraph": "..."
-                    },
-                    {
-                        "h3": "...",
-                        "paragraph": "..."
-                    },
-                    {
-                        "h3": "...",
-                        "paragraph": "..."
+                },
+                {
+                "layout": "Layout_centered_image_1",
+                "value": {
+                    "position": 1,
+                    "button": [
+                        {
+                            "name": "...", 
+                            "layout": 1
+                        },
+                        {
+                            "name": "...",
+                            "layout": 2
+                        }
+                    ],
+                    "image":"...",
+                    "h1": "...",
+                    "h2": "..."
                     }
-                ]
-            }
-        },
+                },
+                {
+                "layout": "Layout_right_image_1",
+                "value": {
+                    "position": 2,
+                    "h2": "About Us",
+                    "paragraph": "...",
+                    "image":"..."
+                    }
+                },
+                {
+                "layout": "Layout_three_blogs_1",
+                "value": {
+                    "position": 3,
+                    "h2": "...",
+                    "blogs": [
+                            {
+                                "h2": "...",
+                                "paragraph": "..."
+                            },
+                            {
+                                "h2": "...",
+                                "paragraph": "..."
+                            },
+                            {
+                                "h2": "...",
+                                "paragraph": "..."
+                            }
+                        ]
+                    }
+                },
+                {
+                "layout": "Layout_contact_us_1",
+                "value": {
+                    "position": 4,
+                    "h1": "Have a question?",
+                    "h4": "Contact us today!",
+                    "image":"..."
+                    }
+                },
+                {
+                "layout": "Layout_frequently_asked_questions_1",
+                "value": {
+                    "position": 5,
+                    "h2": "Frequently Asked Questions",
+                    "Faq": [
+                            {
+                                "h3": "...",
+                                "paragraph": "..."
+                            }
+                        ]
+                    }
+                },
 
-        {
-        "layout": "LayoutGallery_4Columns",
-        "value": {
-            "position": 6,
-            "images": [
-                    { "url": "...", "alt": "..." },
-                    { "url": "...", "alt": "..." },
-                    { "url": "...", "alt": "..." },
-                    { "url": "...", "alt": "..." },
-                    { "url": "...", "alt": "..." },
-                    { "url": "...", "alt": "..." },
-                    { "url": "...", "alt": "..." },
-                    { "url": "...", "alt": "..." }
-                ]
-            }
-        },
-        {
-        "layout": "LayoutBanner_ImageRight",
-        "value": {
-            "position": 7,
-            "h2": "...",
-            "paragraph": "...",
-            "image": "..."
-            }
-        },
-        {
-        "layout": "LayoutMap",
-        "value": {
-            "position": 8,
-            "map_src":
-            "https://maps.google.com/maps?q=Scotland&t=&z=10&ie=UTF8&iwloc=&output=embed"
-            }
-        },
-        {
-        "layout": "LayoutFooter",
-        "value": {
-            "position": 9,
-            "h1": "Contact Info",
-            "p_1": "...",
-            "p_2": "...",
-            "p_3": "....",
-            "logo": "..."
-            }
+                {
+                "layout": "Layout_gallery_1",
+                "value": {
+                    "position": 6,
+                    "images": [
+                            { "url": "...", "alt": "..." }
+                        ]
+                    }
+                },
+                {
+                "layout": "Layout_right_image_2",
+                "value": {
+                    "position": 7,
+                    "h2": "...",
+                    "paragraph": "...",
+                    "image": "..."
+                    }
+                },
+                {
+                "layout": "Layout_map_1",
+                "value": {
+                    "position": 8,
+                    "map_src":""
+                    }
+                },
+                {
+                "layout": "Layout_footer_1",
+                "value": {
+                    "position": 9,
+                    "h1": "Contact Info",
+                    "paragraph": ["", "", ""],
+                    "image": "..."
+                    }
+                }
+        ],
+        "meta_data":{
+            "title": "..." ,
+            "description": "..."
         }
-    ]
-    """
-    
-    data1 = json1
-    data2 = json.loads(t2wjson)  
+    }
+
     # update the second JSON data with the data from the first JSON:
-    data2[1]['value']['h1'] = data1['banner']['h1']
-    data2[1]['value']['h2'] = data1['banner']['h2']
-    data2[1]['value']['button'] = data1['banner']['button']
+    data2['layouts'][0]['value']['image'] = data1['logo']['image']
+    
+    
+    data2['layouts'][1]['value']['h1'] = data1['banner']['h1']
+    data2['layouts'][1]['value']['h2'] = data1['banner']['h2']
+    data2['layouts'][1]['value']['button'] = data1['banner']['button']
+    data2['layouts'][1]['value']['image'] = data1['banner']['image']
 
-    data2[2]['value']['h2'] = data1['about']['h2']
-    data2[2]['value']['paragraph'] = data1['about']['p']
+    data2['layouts'][2]['value']['h2'] = data1['about']['h2']
+    data2['layouts'][2]['value']['paragraph'] = data1['about']['p']
+    data2['layouts'][2]['value']['image'] = data1['about']['image']
 
-    data2[3]['value']['h2'] = data1['blogs']['h2']
-    data2[3]['value']['blogs'] = [{'h2': post['h3'], 'paragraph': post['p']} for post in data1['blogs']['post']]
+    data2['layouts'][3]['value']['h2'] = data1['blogs']['h2']
+    data2['layouts'][3]['value']['blogs'] = [{'h2': post['h3'], 'paragraph': post['p']} for post in data1['blogs']['post']]
 
-    data2[5]['value']['h2'] = data1['faq']['h2']
-    data2[5]['value']['Faq'] = [{'h3': q['h3'], 'paragraph': q['p']} for q in data1['faq']['question']]
+    data2["layouts"][4]['value']['image'] = data1['contactus']['image']
+    
+    data2['layouts'][5]['value']['h2'] = data1['faq']['h2']
+    data2['layouts'][5]['value']['Faq'] = [{'h3': q['h3'], 'paragraph': q['p']} for q in data1['faq']['question']]
 
-    data2[6]['value']['images'] = [{'url': img, 'alt': ''} for img in data1['gallery']['image']]
+    data2["layouts"][7]['value']['h2'] = data1['blog2']['h2']
+    data2["layouts"][7]['value']['paragraph'] = data1['blog2']['p']
+    data2["layouts"][7]['value']['image'] = data1['blog2']['image']
+    
+    
+    data2['layouts'][6]['value']['images'] = [{'url': img, 'alt': ''} for img in data1['gallery']['image']]
 
+    data2['layouts'][8]['value']['map_src'] = data1['map']['map_src']
+    
+    data2['layouts'][9]['value']['paragraph'] = data1['footer']['info']
+    data2['layouts'][9]['value']['image'] = data1['logo']['image']
+    
+    data2['meta_data']['title'] = data1['meta']['title']
+    data2['meta_data']['description'] = data1['meta']['description']
     # convert the updated data back to a JSON string:
-    # updated_json = json.dumps(data2)
+    updated_json = json.dumps(data2)
     return data2
   
 def processjson(jsonf: str) -> str:
@@ -449,7 +453,11 @@ def sanitize_filename(filename: str) -> str:
     """Remove special characters and replace spaces with underscores in a string to use as a filename."""
     return re.sub(r'[^A-Za-z0-9]+', '_', filename)
 
-
+def sanitize_location(location: str) -> str:
+    url_safe_address = location.replace(" ", "%20")
+    url_safe_address = url_safe_address.replace(",", "%2C")
+    return url_safe_address
+    
 def url_to_base64(url: str) -> str:
     try:
         response = requests.get(url)
@@ -494,6 +502,13 @@ def get_audience(topic: str) -> List[str]:
     print("Target Audience Generated")
     return audienceList
 
+def get_location(topic: str) -> str:
+    print("Identifying Location..")
+    prompt = f"Generate an address (Building number, Street name, Postal Code, City/Town name, State, Country) in one line for this keywords, no explanation is needed: {topic}"
+    location = chat_with_gpt3("Location Identification", prompt, temp=0.2, p=0.1)
+    print("Location Found")
+    return location
+
 
 def generate_long_tail_keywords(topic: str) -> List[str]:
     keyword_clusters = []
@@ -527,6 +542,27 @@ def generate_meta_description(company_name: str,
     meta_description = chat_with_gpt3("Meta Description Generation", prompt, temp=0.7, p=0.8)
     return meta_description
 
+def generate_footer(company_name: str, location: str):
+    print("Generating footer")
+    start = random.choice(["+601", "+603"])
+    rest = "".join(random.choice("0123456789") for _ in range(8))  # we generate 8 more digits since we already have 2
+    number = start + rest
+    email = "info@" + company_name.lower().replace(" ", "") + ".com"
+    address = location.replace("1. ", "", 1)
+    url_location = sanitize_location(address)
+    mapurl = f"https://maps.google.com/maps?q={url_location}&t=&z=10&ie=UTF8&iwloc=&output=embed"
+    
+    footer_json = {
+        "map": {
+            "map_src": ""
+        },
+        "footer": {
+            "info": []
+        }
+    }
+    footer_json['map']['map_src'] = mapurl
+    footer_json['footer']['info'].extend([number, email, address])
+    return footer_json
 
 def generate_content(company_name: str,
                      topic: str,
@@ -542,14 +578,23 @@ def generate_content(company_name: str,
         "banner": {
                 "h1": "...",
                 "h2": "...",
-                "button": [] (Pick 2 from these: Learn More, Contact Us, Get Started, Sign Up, Subscribe, Shop Now, Book Now, Get Offer, Get Quote, Get Pricing, Get Estimate, Browse Now, Try It Free, Join Now, Download Now, Get Demo, Request Demo, Request Quote, Request Appointment, Request Information, Start Free Trial, Sign Up For Free, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation, Sign Up For Quote, Sign Up For Appointment, Sign Up For Information, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation, Sign Up For Quote, Sign Up For Appointment, Sign Up For Information, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation, Sign Up For Quote, Sign Up For Appointment, Sign Up For Information, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation,  Sign Up For Quote, Sign Up For Appointment, Sign Up For Information)
+                "button": [
+                    {
+                        "name": "...", 
+                        "layout": 1
+                    },
+                    {
+                        "name": "...",
+                        "layout": 2
+                    }...
+                ] (Pick from these: Learn More, Contact Us, Get Started, Sign Up, Subscribe, Shop Now, Book Now, Get Offer, Get Quote, Get Pricing, Get Estimate, Browse Now, Try It Free, Join Now, Download Now, Get Demo, Request Demo, Request Quote, Request Appointment, Request Information, Start Free Trial, Sign Up For Free, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation, Sign Up For Quote, Sign Up For Appointment, Sign Up For Information, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation, Sign Up For Quote, Sign Up For Appointment, Sign Up For Information, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation, Sign Up For Quote, Sign Up For Appointment, Sign Up For Information, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation,  Sign Up For Quote, Sign Up For Appointment, Sign Up For Information)
         },
         "about": {
                 "h2": "About Us",
                 "p": "..."
         },
         "blogs":{
-            "h2": "... (e.g.: News, Customer Reviews, Insights, Resources, Articles)",
+            "h2": "... (e.g.: Our Services, Customer Reviews, Insights, Resources)",
             "post": [{
                     "h3": "...",
                     "p": "...",
@@ -592,6 +637,10 @@ def generate_content(company_name: str,
                     "p": "...",
                 },...
             ]
+        },
+        "blog2": {
+                "h2": "Our Mission",
+                "p": "..."
         }
     }
     """
@@ -616,16 +665,19 @@ def content_generation(company_name: str,
                        topic: str,
                        industry: str,
                        keyword: str,
-                       title: str) -> dict:
+                       title: str,
+                       location: str) -> dict:
     try:
         description = generate_meta_description(company_name, topic, keyword)
         content = generate_content(company_name, topic, industry, keyword, title)
+        footer = generate_footer(company_name, location)
     except Exception as e:
         return {'error': str(e)}
     content = processjson(content)
     contentjson = json.loads(content)
     updated_json = {"meta": {"title": title, "description": description}}
     updated_json.update(contentjson)
+    updated_json.update(footer)
     print("Content Generated")
     # print(json.dumps(updated_json, indent=4))
     return updated_json
@@ -652,7 +704,10 @@ def get_image_context(company_name: str,
     Saw and sawdust, blurred workshop background, 3D, digital art./
     Easy bake oven, fisher-price, toy, bright colors, blurred playroom background, natural-lighting./
     Fine acoustic guitar, side angle, natural lighting, bioluminescence./
-    Tained glass window of fish, side angle, rubble, dramatic-lighting, light rays, digital art.
+    Tained glass window of fish, side angle, rubble, dramatic-lighting, light rays, digital art./
+    Photo angles – a macro shot of the subject, or an overhead shot or a drone shot./
+    Lighting – studio lighting, indoor lighting, outdoor lighting, backlit shots. /
+    Photo lens effects – fisheye lens, double exposure /
     """
     prompt = f"""
     Generate 1 short paragraph about the detailed description of an image about {keyword}.
@@ -712,11 +767,28 @@ def get_image_context(company_name: str,
     ]
 
     image_context = chat_with_gpt3("Image Description Generation", prompt_messages, temp=0.7, p=0.8)
-    print(image_context)
+    # print(image_context)
     imageurl = chat_with_dall_e(image_context, section)
     # print(imageurl)
     image_base64 = url_to_base64(imageurl)
     return image_base64
+
+def generate_logo(company_name: str,
+                  topic: str,
+                  keyword: str,
+                  industry: str,) -> str:
+    print("Generating Logo")
+    prompt = f"""
+    Generate a paragraph about a logo for {company_name} that is about {topic} and {industry}.
+    Examples:
+    A 2d, symmetrical, flat logo for a blockchain company that is sleek and simple. It should be of black shade and should be subtle.
+    """
+    logo_context = chat_with_gpt3("Logo Description Generation", prompt, temp=0.7, p=0.8)
+    print(logo_context)
+    imageurl = chat_with_dall_e(logo_context, "Logo")
+    print(imageurl)
+    image_base = url_to_base64(imageurl)
+    return image_base
     
     
 def generate_gallery_images(company_name: str,
@@ -724,6 +796,7 @@ def generate_gallery_images(company_name: str,
                             topic: str, 
                             industry: str) -> List[str]:
     gallery = []
+    
     with concurrent.futures.ThreadPoolExecutor() as executor:
         futures = {executor.submit(get_image_context, company_name, keyword, f"gallery {i}", topic, industry): i for i in range(8)}
 
@@ -743,6 +816,9 @@ def image_generation(company_name: str,
                      keyword: str) -> Dict:
     print("Starting Image Process...")
     image_json = {
+        "logo":{
+            
+        },
         "banner": 
             {
                 "image": "..."
@@ -751,16 +827,25 @@ def image_generation(company_name: str,
             {
                 "image": "..."
             },
+        "contactus":
+            {
+                "image": "..."
+            },
+        "blog2":
+            {
+                "image": "..."
+            },
         "gallery": 
             {
                 "image": []
             }
+        
     }
-
+    image_json["logo"]["image"] = generate_logo(company_name, topic, keyword, industry)
     with concurrent.futures.ThreadPoolExecutor() as executor:
         # Start the threads and collect the futures for non-gallery sections
        
-        futures = {executor.submit(get_image_context, company_name, keyword, section, topic, industry): section for section in ["banner", "about"]}
+        futures = {executor.submit(get_image_context, company_name, keyword, section, topic, industry): section for section in ["banner", "about", "contactus", "blog2"]}
 
         # Add the gallery futures
 
@@ -784,10 +869,11 @@ def feature_function(company_name: str,
                      topic: str,
                      industry: str,
                      selected_keyword: str,
-                     title: str) -> Dict:
+                     title: str,
+                     location: str) -> Dict:
     with concurrent.futures.ThreadPoolExecutor() as executor:
         image_future = executor.submit(image_generation, company_name, topic, industry, selected_keyword)
-        content_future = executor.submit(content_generation, company_name, topic, industry, selected_keyword, title)
+        content_future = executor.submit(content_generation, company_name, topic, industry, selected_keyword, title, location)
         futures = [image_future, content_future]
         done, not_done = concurrent.futures.wait(futures, timeout=60, return_when=concurrent.futures.ALL_COMPLETED)
         try:
@@ -801,8 +887,9 @@ def feature_function(company_name: str,
             return {}
         else:
             merged_dict = deep_update(content_result, image_result)
+            # print(json.dumps(merged_dict, indent=4))
             final_result = update_json(merged_dict)
-            print(json.dumps(final_result, indent=4))
+            # print(json.dumps(final_result, indent=4))
             return final_result
 
 # =======================================================================================================================
@@ -830,6 +917,10 @@ def main():
             # Generate industry 
             industry = get_industry(topic)
             print(industry)
+            
+            location = get_location(topic)
+            print(location)
+            
 
             # Generate SEO keywords
             long_tail_keywords = generate_long_tail_keywords(topic)
@@ -842,7 +933,7 @@ def main():
             title = generate_title(company_name, selected_keyword)
             print(title)
             
-            merged_dict = feature_function(company_name, topic, industry, selected_keyword, title)
+            merged_dict = feature_function(company_name, topic, industry, selected_keyword, title, location)
             if merged_dict is None:
                 print("Error: No results returned")
                 if tries < max_tries:
@@ -863,9 +954,10 @@ def main():
                 write_to_csv(("Complete", 0, 0, 0, company_name, topic))
                 
         except Exception as e:
-            print(f"An exception occurred: {e}, retrying attempt {tries+1}")
-            if tries < max_tries:
-                tries += 1
+            tries += 1
+            print(f"An exception occurred: {e}, retrying attempt {tries}")
+            if tries <= max_tries:
+                continue
             else:
                 print(f"Maximum tries exceeded. Exiting the program.")
                 flag = False
@@ -938,7 +1030,7 @@ if __name__ == "__main__":
 #     },
 # }
 
-
+# Content JSON
 # {
 #     "meta": {
 #         "title": "Experience Sustainable Luxury: Hertz's Eco-Friendly Lodges in the Heart of Malaysian Rainforest",
@@ -992,6 +1084,7 @@ if __name__ == "__main__":
 #     }
 # }
 
+# Image JSON
 # {
 #     "banner": {
 #         "image": "banner.jpg"},
@@ -1009,143 +1102,6 @@ if __name__ == "__main__":
 #         "gallery7.jpg"  
 #         ]
 #     }
-# }
-
-
-# {
-#         {
-#           "layout": "LayoutHeader",
-#           "value": {
-#             "logo": "...",
-#             "position": 0,
-#           },
-#         },
-#         {
-#           "layout": "LayoutBanner_CenteredTextFullImage",
-#           "value": {
-#             "position": 1,
-#             "h1": "...",
-#             "h2": "...",
-#             "button": [] (Pick 2 from these: Learn More, Contact Us, Get Started, Sign Up, Subscribe, Shop Now, Book Now, Get Offer, Get Quote, Get Pricing, Get Estimate, Browse Now, Try It Free, Join Now, Download Now, Get Demo, Request Demo, Request Quote, Request Appointment, Request Information, Start Free Trial, Sign Up For Free, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation, Sign Up For Quote, Sign Up For Appointment, Sign Up For Information, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation, Sign Up For Quote, Sign Up For Appointment, Sign Up For Information, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation, Sign Up For Quote, Sign Up For Appointment, Sign Up For Information, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation,  Sign Up For Quote, Sign Up For Appointment, Sign Up For Information)
-#             "image":"...",
-#           }
-#         },
-#         {
-#           "layout": "LayoutBanner_ImageRight",
-#           "value": {
-#             "position": 2,
-#             "h2": "About Us",
-#             "paragraph": "...",
-#             "image":"...",
-#           },
-#         },
-#         {
-#           "layout": "LayoutCards_3Columns",
-#           "value": {
-#             "position": 3,
-#             "h2": "..." (e.g.: News, Customer Reviews, Insights, Resources, Articles),
-#             "blogs": [
-#               {
-#                 "h2": "...",
-#                 "paragraph":
-#                   "...",
-#               },
-#               {
-#                 "h2": "...",
-#                 "paragraph":
-#                   "...",
-#               },
-#               {
-#                 "h2": "...",
-#                 "paragraph":
-#                   "...",
-#               },
-#             ],
-#           },
-#         },
-#         {
-#           "layout": "LayoutForm_ContactUs",
-#           "value": {
-#             "position": 4,
-#             "h1": "Have a question?",
-#             "h4": "Contact us if you have any questions!",
-#             "image":"...",
-#           },
-#         },
-#         {
-#           "layout": "LayoutForm_FAQ",
-#           "value": {
-#             "position": 5,
-#             "h2": "Frequently Asked Questions",
-#             "Faq": [
-#               {
-#                 "h3": "...",
-#                 "paragraph": "...",
-#               },
-#               {
-#                 "h3": "...",
-#                 "paragraph": "...",
-#               },
-#               {
-#                 "h3": "...",
-#                 "paragraph": "...",
-#               },
-#               {
-#                 "h3": "...",
-#                 "paragraph": "...",
-#               },
-#               {
-#                 "h3": "...",
-#                 "paragraph": "...",
-#               },...
-#             ],
-#           },
-#         },
-
-#         {
-#           "layout": "LayoutGallery_4Columns",
-#           "value": {
-#             "position": 6,
-#             "images": [
-#               { "url": "...", "alt": "..." },
-#               { "url": "...", "alt": "..." },
-#               { "url": "...", "alt": "..." },
-#               { "url": "...", "alt": "..." },
-#               { "url": "...", "alt": "..." },
-#               { "url": "...", "alt": "..." },
-#               { "url": "...", "alt": "..." },
-#               { "url": "...", "alt": "..." },
-#             ],
-#           },
-#         },
-#         {
-#           "layout": "LayoutBanner_ImageRight",
-#           "value": {
-#             "position": 7,
-#             "h2": "...",
-#             "paragraph": "...",
-#             "image": "...",
-#           },
-#         },
-#         {
-#           "layout": "LayoutMap",
-#           "value": {
-#             "position": 8,
-#             "map_src":
-#               "https://maps.google.com/maps?q=Scotland&t=&z=10&ie=UTF8&iwloc=&output=embed",
-#           },
-#         },
-#         {
-#           "layout": "LayoutFooter",
-#           "value": {
-#             position: 9,
-#             h1: "Contact Info",
-#             "p_1": "...",
-#             "p_2": "...",
-#             "p_3": "....",
-#             "logo": "...",
-#           },
-#         },
 # }
 
 
@@ -1208,232 +1164,199 @@ if __name__ == "__main__":
 # }
 
 
+# [
+#     {
+#     "layout": "Layout_version_1_1",
+#     "value": {
+#         "image": "...",
+#         "position": 0
+#         }
+#     },
+#     {
+#     "layout": "Layout_version_1_2",
+#     "value": {
+#         "position": 1,
+#         "button": [
+#             {
+#                 "name": "...", 
+#                 "layout": 1
+#             },
+#             {
+#                 "name": "...",
+#                 "layout": 2
+#             }
+#         ],
+#         "image":"...",
+#         "h1": "...",
+#         "h2": "..."
+#         }
+#     },
+#     {
+#     "layout": "Layout_version_1_3",
+#     "value": {
+#         "position": 2,
+#         "h2": "About Us",
+#         "paragraph": "...",
+#         "image":"..."
+#         }
+#     },
+#     {
+#     "layout": "Layout_version_1_4",
+#     "value": {
+#         "position": 3,
+#         "h2": "...",
+#         "blogs": [
+#                 {
+#                     "h2": "...",
+#                     "paragraph": "..."
+#                 },
+#                 {
+#                     "h2": "...",
+#                     "paragraph": "..."
+#                 },
+#                 {
+#                     "h2": "...",
+#                     "paragraph": "..."
+#                 }
+#             ]
+#         }
+#     },
+#     {
+#     "layout": "Layout_version_1_5",
+#     "value": {
+#         "position": 4,
+#         "h1": "Have a question?",
+#         "h4": "Contact us if you have any questions!",
+#         "image":"..."
+#         }
+#     },
+#     {
+#     "layout": "Layout_version_1_6",
+#     "value": {
+#         "position": 5,
+#         "h2": "Frequently Asked Questions",
+#         "Faq": [
+#                 {
+#                     "h3": "...",
+#                     "paragraph": "..."
+#                 },
+#             ]
+#         }
+#     },
+
+#     {
+#     "layout": "Layout_version_1_7",
+#     "value": {
+#         "position": 6,
+#         "images": [
+#                 { "url": "...", "alt": "..." },
+#             ]
+#         }
+#     },
+#     {
+#     "layout": "Layout_version_1_8",
+#     "value": {
+#         "position": 7,
+#         "h2": "...",
+#         "paragraph": "...",
+#         "image": "..."
+#         }
+#     },
+#     {
+#     "layout": "Layout_version_1_9",
+#     "value": {
+#         "position": 8,
+#         "map_src":
+#         "https://maps.google.com/maps?q=Scotland&t=&z=10&ie=UTF8&iwloc=&output=embed"
+#         }
+#     },
+#     {
+#     "layout": "Layout_version_1_10",
+#     "value": {
+#         "position": 9,
+#         "h1": "Contact Info",
+#         "paragraph": ["", "", ""],
+#         "image": "..."
+#         }
+#     }
+# ]
+
+
 
 # {
-#         "LayoutBanner_CenteredTextFullImage": {
-#           "value": {
-#             "position": 1,
-#             "h1": "...",
-#             "h2": "...",
-#             "button": [] (Pick 2 from these: Learn More, Contact Us, Get Started, Sign Up, Subscribe, Shop Now, Book Now, Get Offer, Get Quote, Get Pricing, Get Estimate, Browse Now, Try It Free, Join Now, Download Now, Get Demo, Request Demo, Request Quote, Request Appointment, Request Information, Start Free Trial, Sign Up For Free, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation, Sign Up For Quote, Sign Up For Appointment, Sign Up For Information, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation, Sign Up For Quote, Sign Up For Appointment, Sign Up For Information, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation, Sign Up For Quote, Sign Up For Appointment, Sign Up For Information, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation,  Sign Up For Quote, Sign Up For Appointment, Sign Up For Information)
-#           }
+#         "banner": {
+#                 "h1": "...",
+#                 "h2": "...",
+#                 "button": [
+#                 {
+#                     "name": "...", 
+#                     "layout": 1
+#                 },
+#                 {
+#                     "name": "...",
+#                     "layout": 2
+#                 }
+                
+#                 ]
 #         },
-#         "LayoutBanner_ImageRight": {
-#           "value": {
-#             "position": 2,
-#             "h2": "About Us",
-#             "paragraph": "...",
-#           }
+#         "about": {
+#                 "h2": "About Us",
+#                 "p": "..."
 #         },
-#         "LayoutCards_3Columns": {
-#           "value": {
-#             "position": 3,
-#             "h2": "..." (e.g.: News, Customer Reviews, Insights, Resources, Articles),
-#             "blogs": [
-#               {
-#                 "h2": "...",
-#                 "paragraph":
-#                   "...",
-#               },
-#               {
-#                 "h2": "...",
-#                 "paragraph":
-#                   "...",
-#               },
-#               {
-#                 "h2": "...",
-#                 "paragraph":
-#                   "...",
-#               }
+#         "blogs":{
+#             "h2": "... (e.g.: News, Customer Reviews, Insights, Resources, Articles)",
+#             "post": [{
+#                     "h3": "...",
+#                     "p": "...",
+#                 },
+#                 {
+#                     "h3": "...",
+#                     "p": "...",
+#                 },
+#                 {
+#                     "h3": "...",
+#                     "p": "...",
+#                 }
 #             ]
-#           }
 #         },
-#         "LayoutForm_ContactUs": {
-#           "layout": "",
-#           "value": {
-#             "position": 4,
-#             "h1": "Have a question?",
-#             "h4": "Contact us today!",
-#           }
-#         },
-#         "LayoutForm_FAQ": {
-#           "layout": "",
-#           "value": {
-#             "position": 5,
+#         "faq":{
 #             "h2": "Frequently Asked Questions",
-#             "Faq": [
-#               {
-#                 "h3": "...",
-#                 "paragraph": "...",
-#               },
-#               {
-#                 "h3": "...",
-#                 "paragraph": "...",
-#               },
-#               {
-#                 "h3": "...",
-#                 "paragraph": "...",
-#               },
-#               {
-#                 "h3": "...",
-#                 "paragraph": "...",
-#               },
-#               {
-#                 "h3": "...",
-#                 "paragraph": "...",
-#               },...
+#             "question": [{
+#                     "id": 1,
+#                     "h3": "...",
+#                     "p": "...",
+#                 },
+#                 {
+#                     "id": 2,
+#                     "h3": "...",
+#                     "p": "...",
+#                 },
+#                 {
+#                     "id": 3,
+#                     "h3": "...",
+#                     "p": "...",
+#                 },
+#                 {
+#                     "id": 4,
+#                     "h3": "...",
+#                     "p": "...",
+#                 },
+#                 {
+#                     "id": 5,
+#                     "h3": "...",
+#                     "p": "...",
+#                 },
 #             ]
-#           }
 #         },
-#         "LayoutBanner_ImageRight": {
-#           "value": {
-#             "position": 7,
-#             "h2": "...",
-#             "paragraph": "...",
-#           }
+#         "map":{
+#             "map_src": "..."
 #         },
-#         "LayoutFooter": {
-#           "value": {
-#             position: 9,
-#             h1: "Contact Info",
-#             "p_1": "...",
-#             "p_2": "...",
-#             "p_3": "....",
-#             "logo": "...",
-#           },
-#         },
-# }
+#         "footer":{
+#             "number": "...",
+#             "email": "...",
+#             "address": "..."
+#         }
+#     }
 
 
-[
-    {
-      "layout": "LayoutHeader",
-      "value": {
-        "logo": "...",
-        "position": 0
-      }
-    },
-    {
-      "layout": "LayoutBanner_CenteredTextFullImage",
-      "value": {
-        "position": 1,
-        "h1": "...",
-        "h2": "...",
-        "button": [],
-        "image":"..."
-      }
-    },
-    {
-      "layout": "LayoutBanner_ImageRight",
-      "value": {
-        "position": 2,
-        "h2": "About Us",
-        "paragraph": "...",
-        "image":"..."
-      },
-    },
-    {
-      "layout": "LayoutCards_3Columns",
-      "value": {
-        "position": 3,
-        "h2": "...",
-        "blogs": [
-          {
-            "h2": "...",
-            "paragraph": "..."
-          },
-          {
-            "h2": "...",
-            "paragraph": "..."
-          },
-          {
-            "h2": "...",
-            "paragraph": "..."
-          }
-        ]
-      }
-    },
-    {
-      "layout": "LayoutForm_ContactUs",
-      "value": {
-        "position": 4,
-        "h1": "Have a question?",
-        "h4": "Contact us if you have any questions!",
-        "image":"..."
-      }
-    },
-    {
-      "layout": "LayoutForm_FAQ",
-      "value": {
-        "position": 5,
-        "h2": "Frequently Asked Questions",
-        "Faq": [
-          {
-            "h3": "...",
-            "paragraph": "..."
-          },
-          {
-            "h3": "...",
-            "paragraph": "..."
-          },
-          {
-            "h3": "...",
-            "paragraph": "..."
-          },
-          {
-            "h3": "...",
-            "paragraph": "..."
-          },
-          {
-            "h3": "...",
-            "paragraph": "..."
-          }
-        ]
-      }
-    },
-
-    {
-      "layout": "LayoutGallery_4Columns",
-      "value": {
-        "position": 6,
-        "images": [
-          { "url": "...", "alt": "..." },
-          { "url": "...", "alt": "..." },
-          { "url": "...", "alt": "..." },
-          { "url": "...", "alt": "..." },
-          { "url": "...", "alt": "..." },
-          { "url": "...", "alt": "..." },
-          { "url": "...", "alt": "..." },
-          { "url": "...", "alt": "..." }
-        ]
-      }
-    },
-    {
-      "layout": "LayoutBanner_ImageRight",
-      "value": {
-        "position": 7,
-        "h2": "...",
-        "paragraph": "...",
-        "image": "..."
-      }
-    },
-    {
-      "layout": "LayoutMap",
-      "value": {
-        "position": 8,
-        "map_src":
-          "https://maps.google.com/maps?q=Scotland&t=&z=10&ie=UTF8&iwloc=&output=embed"
-      }
-    },
-    {
-      "layout": "LayoutFooter",
-      "value": {
-        "position": 9,
-        "h1": "Contact Info",
-        "p_1": "...",
-        "p_2": "...",
-        "p_3": "....",
-        "logo": "..."
-      }
-    }
-]
+# 

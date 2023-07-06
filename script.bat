@@ -15,27 +15,24 @@ set "Keyword[2]=Best Biscuit Company in Malaysia"
 set "Keyword[3]=Best Hotel in Malaysia"
 set "Keyword[4]=Car Rental Company in Malaysia"
 set "Keyword[5]=Best Ice Cream in Malaysia"
-set "Keyword[6]=Top Tech Company in Malaysia"
+set "Keyword[6]=Best Phone Company in Malaysia"
 set "Keyword[7]=Car Delership in Malaysia"
 set "Keyword[8]=Online Florist in Malaysia"
 
 
 :: Path to your Python script, modify if needed
-set "ScriptPath=.\seo.py"
+set "ScriptPath=.\demo.py"
 
 set /A "index1=(%RANDOM% %% 9)"
 set /A "index2=(%RANDOM% %% 9)"
 :: These are the predefined inputs
 
-set /A "RandomNumber1=(%RANDOM% %% 5) + 1"
-set /A "RandomNumber2=(%RANDOM% %% 5) + 1"
 
 call echo Company Name: %%CompanyName[%index1%]%%
 call echo Keyword: %%Keyword[%index2%]%%
-call echo Selected Keyword: %RandomNumber1%
-call echo Selected Outline: %RandomNumber2%
+
 
 :: This is where you run the Python script with the inputs
-call python %ScriptPath% "%%CompanyName[%index1%]%%" "%%Keyword[%index2%]%%" %RandomNumber1% %RandomNumber2%
+call python %ScriptPath% "%%CompanyName[%index1%]%%" "%%Keyword[%index2%]%%"
 
 exit
