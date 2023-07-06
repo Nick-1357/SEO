@@ -779,7 +779,7 @@ def generate_logo(company_name: str,
                   industry: str,) -> str:
     print("Generating Logo")
     prompt = f"""
-    Generate a paragraph about a logo for {company_name} that is about {topic} and {industry}.
+    Generate a few sentences to describe a logo for the company {company_name} that is about {topic} in {industry}.
     Examples:
     A 2d, symmetrical, flat logo for a blockchain company that is sleek and simple. It should be of black shade and should be subtle.
     """

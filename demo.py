@@ -554,7 +554,6 @@ def get_image_context(company_name: str,
     ]
 
     image_context = chat_with_gpt3("Image Description Generation", prompt_messages, temp=0.7, p=0.8)
-    print(image_context)
     imageurl = chat_with_dall_e(image_context, section)
     # print(imageurl)
     image_base64 = url_to_base64(imageurl)
@@ -692,7 +691,7 @@ def main():
             else:
                 flag = False
                 # Write to JSON file
-                directory_path = os.path.join(workspace_path, "content")
+                directory_path = os.path.join(workspace_path, "demo")
                 os.makedirs(directory_path, exist_ok=True)
                 with open(os.path.join(directory_path, f'data.json'), 'w', encoding='utf-8') as f:
                     json.dump(merged_dict, f, ensure_ascii=False, indent=4)
