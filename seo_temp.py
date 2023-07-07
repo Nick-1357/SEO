@@ -143,7 +143,7 @@ def generate_content_response(prompt: str | List[Message],
 
             # Increment the delay
             delay *= exponential_base * (1 + jitter * random.random())
-            print(f"Wait for {delay} seconds.")
+            print(f"Wait for {round(delay, 2)} seconds.")
 
         time.sleep(delay)  # wait for n seconds before retrying
 
@@ -193,7 +193,7 @@ def generate_image_response(prompt: str,
                 
             # Increment the delay
             delay *= exponential_base * (1 + jitter * random.random())
-            print(f"Wait for {delay} seconds.")
+            print(f"Wait for {round(delay, 2)} seconds.")
             
             time.sleep(delay)  # wait for n seconds before retrying
 
@@ -907,23 +907,23 @@ def image_generation(company_name: str,
     print("Starting Image Process...")
     image_json = {
         "logo": {
-            
+            "image": ""
         },
         "banner": 
             {
-                "image": "..."
+                "image": ""
             },
         "about": 
             {
-                "image": "..."
+                "image": ""
             },
         "contactus":
             {
-                "image": "..."
+                "image": ""
             },
         "blog2":
             {
-                "image": "..."
+                "image": ""
             },
         "gallery": 
             {
@@ -942,7 +942,7 @@ def image_generation(company_name: str,
         for future in concurrent.futures.as_completed(futures):
             section = futures[future]
             try:
-                image_url: list = future.result()
+                image_url: str = future.result()
             except Exception as exc:
                 print('%r generated an exception: %s' % (section, exc))
             else:
@@ -1049,7 +1049,6 @@ def main():
                 continue
             else:
                 print(f"Maximum tries exceeded. Exiting the program.")
-                flag = False
                 break
 
 
