@@ -705,7 +705,6 @@ def main():
                 tries += 1
             else:
                 print(f"Maximum tries exceeded. Exiting the program.")
-                flag = False
                 break
 
 
