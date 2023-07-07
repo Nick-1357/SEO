@@ -775,7 +775,7 @@ def get_image_context(company_name: str,
 
     image_context = chat_with_gpt3("Image Description Generation", prompt_messages, temp=0.7, p=0.8)
     # print(image_context)
-    image_context += " with no text. No fonts included."
+    image_context += "Detailed 4K photorealistic. No fonts or text."
     imageurl = chat_with_dall_e(image_context, section)
     print(imageurl)
     image_base64 = url_to_base64(imageurl)
@@ -874,7 +874,7 @@ def generate_logo(company_name: str,
     logo_context = chat_with_gpt3("Logo Description Generation", prompt_messages, temp=0.7, p=0.8)
     logo_context += " with no text. No fonts included."
     print(logo_context)
-    # logo_context = ""
+    logo_context = "The newest f1 car but perodua brand"
     imageurl = chat_with_dall_e(logo_context, "Logo")
     print(imageurl)
     image_base = url_to_base64(imageurl)
