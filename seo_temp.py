@@ -724,7 +724,7 @@ def get_image_context(company_name: str,
 
     prompt_messages: List[Message] = [
         {"role": "system",
-         "content": "You are an web designer with the objective to identify search engine optimized long-tail keywords and generate contents, with the goal of generating website contents and enhance website's visibility, driving organic traffic, and improving online business performance."},
+         "content": "You are an web designer with the objective to create a stunning, unique and attractive design for the company to gain more traffic on the company's website."},
         {"role": "user",
          "content": "Generate 1 short paragraph about the detailed description of an image about wood cutting carpentry workshop. The image should also be about carpentry workshop."},
         {"role": "assistant",
@@ -775,8 +775,9 @@ def get_image_context(company_name: str,
 
     image_context = chat_with_gpt3("Image Description Generation", prompt_messages, temp=0.7, p=0.8)
     # print(image_context)
+    image_context += " with no text. No fonts included."
     imageurl = chat_with_dall_e(image_context, section)
-    # print(imageurl)
+    print(imageurl)
     image_base64 = url_to_base64(imageurl)
     return image_base64
 
@@ -787,13 +788,93 @@ def generate_logo(company_name: str,
                   industry: str,) -> str:
     print("Generating Logo")
     prompt = f"""
-    Generate 1 logo concept for my {company_name} that incorporates sleek looking geometric shapes and modern sleek style, reflecting {topic} and {industry}. What color scheme would best complement this design?
-    Write it in a few sentences
+    Describe the details and design of a logo for the company that provides {topic} in the {industry} industry.
+    Only talk about the objects and the color.
+    Example: 
+    "Flat vector logo of a curved wave, blue, trending on Dribble"/
+    "Line art logo of a owl, golden, minimal, solid black background"/
+    "Gradient color logo, a gradient in 2 circles"/
+    "Geometrical logo of a pyramid, dreamy pastel color palette, gradient color"
+    "Organic logo, shape of a leaf"/
+    "Typographical logo, floral, letter” A”, serif typeface"/
+    "Emblem of chess team, royal, coat of arms, golden color, knight"
+    "hamburger 3D logo, very cute shape, miniature small scale painting style, minimalism, lite object style, up view, matte, white background, soft round form, ultra high definition details, 8k"/
+    "Minimal logo of a cafe, a coffee bean, gradient brown color"/
+    "Graphic logo of a red wine company, eagle, modern, classy, high end, red and gold — v 5"
+    "A 2d, symmetrical, flat logo for a blockchain company that is sleek and simple. It should be of black shade and should be subtle."/ 
+    Write it in a few sentences.
     """
-    # A 2d, symmetrical, flat logo for a blockchain company that is sleek and simple. It should be of black shade and should be subtle.
-    # Generate a sentence to describe the details and design of a logo for the company {company_name} that provides {topic}.
-    logo_context = chat_with_gpt3("Logo Description Generation", prompt, temp=0.7, p=0.8)
+    
+    prompt_messages: List[Message] = [
+        {"role": "system",
+         "content": "You are an web designer with the objective to create a stunning and unique logo to attract the attention of people."},
+        {"role": "user",
+         "content": "Describe the details and design of a logo for the company that provides pet services in Malaysia in the Pet industry"},
+        {"role": "assistant",
+         "content": "Line art logo of a owl, golden, minimal, solid black background"},
+        {"role": "user",
+         "content": "Describe the details and design of a logo for the company that provides insurance in the insurance industry"},
+        {"role": "assistant",
+         "content": "Geometrical logo of a pyramid, dreamy pastel color palette, gradient color."},
+        {"role": "user",
+         "content": "Describe the details and design of a logo for the company that provides printing in the Printing industry"},
+        {"role": "assistant",
+         "content": "Typographical logo, floral, letter” A”, serif typeface"},
+        {"role": "user",
+         "content": "Describe the details and design of a logo for the company that provides E-Sports in Malaysia in the Video Game industry"},
+        {"role": "assistant",
+         "content": "Emblem of chess team, royal, coat of arms, golden color, knight"},
+        {"role": "user",
+         "content": "Describe the details and design of a logo for the company that provides Flower Delivery Services in the Floral industry"},
+        {"role": "assistant",
+         "content": "Elegant and feminine logo for a florist, pastel color, minimal."},
+        {"role": "user",
+         "content": "Describe the details and design of a logo for the company that provides Best Burger in Malaysia in the Food and Beverage industry"},
+        {"role": "assistant",
+         "content": "hamburger 3D logo, very cute shape, miniature small scale painting style, minimalism, lite object style, up view, matte, white background, soft round form, ultra high definition details, 8k."},
+        {"role": "user",
+         "content": "Describe the details and design of a logo for the company that provides Best Cafe in Malaysia in the Food and Beverage industry"},
+        {"role": "assistant",
+         "content": "Minimal logo of a cafe, a coffee bean, gradient brown color."},
+        {"role": "user",
+         "content": "Describe the details and design of a logo for the company that provides Best Wine Company in Malaysia in the Wine industry"},
+        {"role": "assistant",
+         "content": "Graphic logo of a red wine company, eagle, modern, classy, high end, red and gold."},
+        {"role": "user",
+         "content": "Describe the details and design of a logo for the company that provides Music Services in the Music industry"},
+        {"role": "assistant",
+         "content": "boho style logo design, sun and wave"},
+        {"role": "user",
+         "content": "Describe the details and design of a logo for the company that provides Best Bar in Malaysia in the Hospitality and Entertainment industry"},
+        {"role": "assistant",
+         "content": "Outline logo of a bar, a glass of cocktail, flat design, neon light, dark background"},
+        {"role": "user",
+         "content": "Describe the details and design of a logo for the company that provides Recycling Services in Malaysia in the Waste Management and Recycling industry"},
+        {"role": "assistant",
+         "content": "Globe logo, green and blue, glossy base, 3d rendering, white background, isometric, translucent, technology sense, studio light, C4D, blender, clean, hyper-detailed"},
+        {"role": "user",
+         "content": "Describe the details and design of a logo for the company that provides Best Headphone Company in Malaysia in the Audio industry"},
+        {"role": "assistant",
+         "content": "Logo of a music company, headphone, splashing, futuristic, cyberpunk "},
+        {"role": "user",
+         "content": "Describe the details and design of a logo for the company that provides Best Sushi Resturant in Malaysia in the Food and Beverage industry"},
+        {"role": "assistant",
+         "content": "Japanese style logo of a sushi restaurant, a sashimi bowl with blue waves — ar 1:1 — niji 5"},
+        {"role": "user",
+         "content": "Describe the details and design of a logo for the company that provides Game Design Services in Malaysia in the Software industry"},
+        {"role": "assistant",
+         "content": "Mascot for a video game company, fox, japanese style — ar 1:1 — niji 5 — style cute"},
+        {"role": "user",
+         "content": "Describe the details and design of a logo for the company that provides Best Surfing Course in Malaysia in the Sports and Recreation industry"},
+        {"role": "assistant",
+         "content": "Flat vector logo of a curved wave, blue, trending on Dribble"},
+        {"role": "user",
+         "content": f"Describe the details and design of a logo for the companythat provides {topic} in the {industry} industry."}
+    ]
+    logo_context = chat_with_gpt3("Logo Description Generation", prompt_messages, temp=0.7, p=0.8)
+    logo_context += " with no text. No fonts included."
     print(logo_context)
+    # logo_context = ""
     imageurl = chat_with_dall_e(logo_context, "Logo")
     print(imageurl)
     image_base = url_to_base64(imageurl)
