@@ -30,7 +30,7 @@ openai.api_key = openai_api_key
 openai.Model.list()
 
 # load memory directory
-memory_dir = os.getenv("MEMORY_DIRECTORY", "local")
+memory_dir = "local"
 workspace_path = "./"
 if memory_dir == "production":
     workspace_path = "/tmp"
