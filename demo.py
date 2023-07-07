@@ -143,7 +143,7 @@ def generate_content_response(prompt: str | List[Message],
 
             # Increment the delay
             delay *= exponential_base * (1 + jitter * random.random())
-            print(f"Wait for {delay} seconds.")
+            print(f"Wait for {round(delay, 2)} seconds.")
 
         time.sleep(delay)  # wait for n seconds before retrying
 
@@ -193,7 +193,7 @@ def generate_image_response(prompt: str,
                 
             # Increment the delay
             delay *= exponential_base * (1 + jitter * random.random())
-            print(f"Wait for {delay} seconds.")
+            print(f"Wait for {round(delay, 2)} seconds.")
             
             time.sleep(delay)  # wait for n seconds before retrying
 
