@@ -35,7 +35,8 @@ share/python-wheels/
 *.egg
 MANIFEST
 /.vscode
-.vscode/
+.vscode/extensions.json
+.vscode/settings.json
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -171,4 +172,4 @@ cython_debug/
 #.idea/
 /token_usage.csv
 content/data.json
-demo/data.json
+/demo/data.json

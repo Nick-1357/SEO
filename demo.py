@@ -554,6 +554,7 @@ def get_image_context(company_name: str,
     ]
 
     image_context = chat_with_gpt3("Image Description Generation", prompt_messages, temp=0.7, p=0.8)
+    image_context += " No fonts included."
     imageurl = chat_with_dall_e(image_context, section)
     # print(imageurl)
     image_base64 = url_to_base64(imageurl)
