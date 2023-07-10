@@ -636,9 +636,10 @@ def url_to_jpg(url: str, section: str) -> str:
             
             # Get the current timestamp and format it as a string
             timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-            
+            filename = f"{section}-{timestamp}.jpg"
             # Save the image object as a .jpg file with the timestamp as the filename
-            image.save(directory / f"{section}-{timestamp}.jpg")
+            image.save(directory / filename)
+            return(filename)
         else:
             print("Unable to download image")
     except Exception as e:
