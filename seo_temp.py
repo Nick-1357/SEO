@@ -1,5 +1,6 @@
 import csv
 import concurrent.futures
+import io
 import json
 import os
 import openai
@@ -8,10 +9,10 @@ import random
 import requests
 import sys
 import time
-import io
 import base64
 from PIL import Image
 from pathlib import Path
+from datetime import datetime, date, time, timezone
 from dotenv import load_dotenv
 from typing import List, Dict, TypedDict
 from concurrent.futures import ThreadPoolExecutor, wait
@@ -148,6 +149,22 @@ def generate_content_response(prompt: str | List[Message],
         time.sleep(delay)  # wait for n seconds before retrying
 
 
+def chat_with_gpt3(stage: str,
+                   prompt: str | List[Message],
+                   temp: float = 0.5,
+                   p: float = 0.5,
+                   freq: float = 0,
+                   presence: float = 0,
+                   model: str = "gpt-3.5-turbo") -> str:
+    max_retries = 5       
+    response, prompt_tokens, completion_tokens, total_tokens = generate_content_response(prompt, temp, p, freq, presence, max_retries, model)
+    if response is not None:   # If a response was successfully received
+        write_to_csv((stage, prompt_tokens, completion_tokens, total_tokens, None, None))
+        return response
+    else:
+        return None
+    
+
 def generate_image_response(prompt: str,
                             max_retries: int) -> str:
     delay: float = 1  # initial delay
@@ -196,22 +213,6 @@ def generate_image_response(prompt: str,
             print(f"Wait for {round(delay, 2)} seconds.")
             
             time.sleep(delay)  # wait for n seconds before retrying
-
-
-def chat_with_gpt3(stage: str,
-                   prompt: str | List[Message],
-                   temp: float = 0.5,
-                   p: float = 0.5,
-                   freq: float = 0,
-                   presence: float = 0,
-                   model: str = "gpt-3.5-turbo") -> str:
-    max_retries = 5       
-    response, prompt_tokens, completion_tokens, total_tokens = generate_content_response(prompt, temp, p, freq, presence, max_retries, model)
-    if response is not None:   # If a response was successfully received
-        write_to_csv((stage, prompt_tokens, completion_tokens, total_tokens, None, None))
-        return response
-    else:
-        return None
 
 
 def chat_with_dall_e(prompt: str,
@@ -281,55 +282,105 @@ def update_json(data1):
             {
                 "layout": "Layout_header_1",
                 "value": {
-                    "image": "",
-                    "position": 0
+                "style": [],
+                "image": "...",
+                "position": 0
                 }
             },
             {
                 "layout": "Layout_centered_image_1",
                 "value": {
+                    "style": [],
                     "position": 1,
                     "button": [
                         {
-                            "name": "",
-                            "layout": 1
+                            "name": "...",
+                            "layout": 1,
+                            "style": []
                         },
                         {
-                            "name": "",
-                            "layout": 2
+                            "name": "...",
+                            "layout": 2,
+                            "style": []
                         }
                     ],
-                    "image": "",
-                    "h1": "",
-                    "h2": ""
+                    "image": "...",
+                    "h1": {
+                        "value": "...",
+                        "html": "same as value",
+                        "style": []
+                    },
+                    "h2": {
+                        "value": "...",
+                        "html": "same as value",
+                        "style": []
+                    }
                 }
             },
             {
                 "layout": "Layout_right_image_1",
                 "value": {
+                    "style": [],
                     "position": 2,
-                    "h2": "About Us",
-                    "paragraph": "",
-                    "image": ""
+                    "h2": {
+                        "value": "...",
+                        "html": "same as value",
+                        "style": []
+                    },
+                    "paragraph": {
+                        "value": "...",
+                        "html": "same as value",
+                        "style": []
+                    },
+                    "image": "..."
                 }
             },
             {
                 "layout": "Layout_three_blogs_1",
                 "value": {
+                    "style": [],
                     "position": 3,
-                    "h2": "",
+                    "h2": {
+                        "value": "...",
+                        "html": "same as value",
+                        "style": []
+                    },
                     "blogs": [
                         {
-                            "h2": "",
-                            "paragraph": ""
+                            "h2": {
+                                "value": "...",
+                                "html": "same as value",
+                                "style": []
+                            },
+                            "paragraph": {
+                                "value": "...",
+                                "html": "same as value",
+                                "style": []
+                            }
                         },
                         {
-                            "h2": "",
-                            "paragraph": ""
+                            "h2": {
+                                "value": "...",
+                                "html": "same as value",
+                                "style": []
+                            },
+                            "paragraph": {
+                                "value": "...",
+                                "html": "same as value",
+                                "style": []
+                            }
                         },
                         {
-                            "h2": "",
-                            "paragraph": ""
+                            "h2": {
+                                "value": "...",
+                                "html": "same as value",
+                                "style": []
+                            },
+                            "paragraph": {
+                                "value": "...",
+                                "html": "same as value",
+                                "style": []
+                            }
                         }
                     ]
                 }
@@ -337,98 +388,165 @@ def update_json(data1):
             {
                 "layout": "Layout_contact_us_1",
                 "value": {
+                    "style": [],
                     "position": 4,
-                    "h1": "Have a question?",
-                    "h4": "Contact us today!",
-                    "image": ""
+                    "h1": {
+                        "value": "Have a Question?",
+                        "html": "Have a Question?",
+                        "style": []
+                    },
+                    "h4": {
+                        "value": "Contact us today!",
+                        "html": "Contact us today!",
+                        "style": []
+                    },
+                    "image": "..."
                 }
             },
             {
                 "layout": "Layout_frequently_asked_questions_1",
                 "value": {
-                    "position": 5,
-                    "h2": "Frequently Asked Questions",
-                    "Faq": [
-                        {
-                            "h3": "",
-                            "paragraph": ""
+                "style": [],
+                "position": 5,
+                "h2": {
+                    "value": "...",
+                    "html": "same as value",
+                    "style": []
+                },
+                "Faq": [
+                    {
+                        "h3": {
+                            "value": "...",
+                            "html": "same as value",
+                            "style": []
+                        },
+                        "paragraph": {
+                            "value": "...",
+                            "html": "same as value",
+                            "style": []
                         }
-                    ]
+                    }
+                ]
                 }
             },
             {
                 "layout": "Layout_gallery_1",
                 "value": {
+                    "style": [],
+                    "h2": {
+                        "value": "Gallery",
+                        "html": "Gallery",
+                        "style": []
+                    },
                     "position": 6,
-                    "images": [
-                        {
-                            "url": "",
-                            "alt": ""
-                        }
-                    ]
+                    "images": [{ "url": "...", "alt": "..." }]
                 }
             },
             {
                 "layout": "Layout_right_image_2",
                 "value": {
+                    "style": [],
                     "position": 7,
-                    "h2": "",
-                    "paragraph": "",
-                    "image": ""
+                    "h2": {
+                        "value": "...",
+                        "html": "same as value",
+                        "style": []
+                    },
+                    "paragraph": {
+                        "value": "...",
+                        "html": "same as value",
+                        "style": []
+                    },
+                    "image": "..."
                 }
             },
             {
                 "layout": "Layout_map_1",
                 "value": {
+                    "style": [],
                     "position": 8,
+                    "h2": {
+                        "value": "Map",
+                        "html": "same as value",
+                        "style": []
+                    },
                     "map_src": ""
                 }
             },
             {
                 "layout": "Layout_footer_1",
                 "value": {
+                    "style": [],
                     "position": 9,
-                    "h1": "Contact Info",
-                    "paragraph": ["", "", ""],
-                    "image": ""
+                    "h1": {
+                        "value": "Contact Info",
+                        "html": "Contact Info",
+                        "style": []
+                    },
+                    "paragraph": [
+                        {
+                            "value": "...",
+                            "html": "same as value",
+                            "style": []
+                        },
+                        {
+                            "value": "...",
+                            "html": "same as value",
+                            "style": []
+                        },
+                        {
+                            "value": "...",
+                            "html": "same as value",
+                            "style": []
+                        }
+                    ],
+                    "image": "..."
                 }
             }
         ],
         "meta_data": {
-            "title": "",
-            "description": ""
+            "title": "...",
+            "description": "..."
         }
     }
-
+    
     # update the second JSON data with the data from the first JSON:
     data2['layouts'][0]['value']['image'] = data1['logo']['image']
     
-    data2['layouts'][1]['value']['h1'] = data1['banner']['h1']
-    data2['layouts'][1]['value']['h2'] = data1['banner']['h2']
+    data2['layouts'][1]['value']['h1']['value'] = data1['banner']['h1']
+    data2['layouts'][1]['value']['h1']['html'] = data1['banner']['h1']
+    data2['layouts'][1]['value']['h2']['value'] = data1['banner']['h2']
+    data2['layouts'][1]['value']['h2']['html'] = data1['banner']['h2']
     data2['layouts'][1]['value']['button'] = data1['banner']['button']
     data2['layouts'][1]['value']['image'] = data1['banner']['image']
 
-    data2['layouts'][2]['value']['h2'] = data1['about']['h2']
-    data2['layouts'][2]['value']['paragraph'] = data1['about']['p']
+    data2['layouts'][2]['value']['h2']['value'] = data1['about']['h2']
+    data2['layouts'][2]['value']['h2']['html'] = data1['about']['h2']
+    data2['layouts'][2]['value']['paragraph']['value'] = data1['about']['p']
+    data2['layouts'][2]['value']['paragraph']['html'] = data1['about']['p']
     data2['layouts'][2]['value']['image'] = data1['about']['image']
 
-    data2['layouts'][3]['value']['h2'] = data1['blogs']['h2']
-    data2['layouts'][3]['value']['blogs'] = [{'h2': post['h3'], 'paragraph': post['p']} for post in data1['blogs']['post']]
+    data2['layouts'][3]['value']['h2']['value'] = data1['blogs']['h2']
+    data2['layouts'][3]['value']['h2']['html'] = data1['blogs']['h2']
+    data2['layouts'][3]['value']['blogs'] =[{'h2': {'value': post['h3'], 'html': post['h3'], 'style': []}, 'paragraph': {'value': post['p'], 'html': post['p'], 'style': []}} for post in data1['blogs']['post']]
 
     data2["layouts"][4]['value']['image'] = data1['contactus']['image']
     
-    data2['layouts'][5]['value']['h2'] = data1['faq']['h2']
-    data2['layouts'][5]['value']['Faq'] = [{'h3': q['h3'], 'paragraph': q['p']} for q in data1['faq']['question']]
+    data2['layouts'][5]['value']['h2']['value'] = data1['faq']['h2']
+    data2['layouts'][5]['value']['h2']['html'] = data1['faq']['h2']
+    data2['layouts'][5]['value']['Faq'] = [{'h3': {'value': q['h3'], 'html': q['h3']}, 'paragraph': {'value': q['p'], 'html': q['p']}} for q in data1['faq']['question']]
 
-    data2["layouts"][7]['value']['h2'] = data1['blog2']['h2']
-    data2["layouts"][7]['value']['paragraph'] = data1['blog2']['p']
+    data2["layouts"][7]['value']['h2']['html'] = data1['blog2']['h2']
+    data2["layouts"][7]['value']['h2']['value'] = data1['blog2']['h2']
+    data2["layouts"][7]['value']['paragraph']['value'] = data1['blog2']['p']
+    data2["layouts"][7]['value']['paragraph']['html'] = data1['blog2']['p']
     data2["layouts"][7]['value']['image'] = data1['blog2']['image']
        
     data2['layouts'][6]['value']['images'] = [{'url': img, 'alt': ''} for img in data1['gallery']['image']]
 
     data2['layouts'][8]['value']['map_src'] = data1['map']['map_src']
     
-    data2['layouts'][9]['value']['paragraph'] = data1['footer']['info']
+    data2['layouts'][9]['value']['paragraph'] = [{'value': para, 'html': para} for para in data1['footer']['info']]
     data2['layouts'][9]['value']['image'] = data1['logo']['image']
     
     data2['meta_data']['title'] = data1['meta']['title']
@@ -474,13 +592,31 @@ def url_to_base64(url: str) -> str:
             return base64_image
         else:
             print("Unable to download image")
-    except:
+    except Exception as e:
+        print(f"An error occurred while trying to download the image: {e}")
         return None
-
-# def fail_safe(website: str) -> str:
-#     if website.find('<!DOCTYPE html>') == -1:
-#         website = htmlcode
-#     return website
+    
+def url_to_jpg(url: str, section: str) -> str:
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            image_data = response.content
+            
+            byteImgIO = io.BytesIO(image_data)
+            image = Image.open(byteImgIO)
+            directory = Path(workspace_path) / 'content'
+            os.makedirs(directory, exist_ok=True)
+            
+            # Get the current timestamp and format it as a string
+            timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+            
+            # Save the image object as a .jpg file with the timestamp as the filename
+            image.save(directory / f"{section}-{timestamp}.jpg")
+        else:
+            print("Unable to download image")
+    except Exception as e:
+        print(f"An error occurred while trying to download the image: {e}")
+        return None
 
 
 # ##===================================================================================================
@@ -589,10 +725,12 @@ def generate_content(company_name: str,
                     {
                         "name": "...", 
                         "layout": 1
+                        "style": []
                     },
                     {
                         "name": "...",
                         "layout": 2
+                        "style": []
                     }...
                 ] (Pick from these: Learn More, Contact Us, Get Started, Sign Up, Subscribe, Shop Now, Book Now, Get Offer, Get Quote, Get Pricing, Get Estimate, Browse Now, Try It Free, Join Now, Download Now, Get Demo, Request Demo, Request Quote, Request Appointment, Request Information, Start Free Trial, Sign Up For Free, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation, Sign Up For Quote, Sign Up For Appointment, Sign Up For Information, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation, Sign Up For Quote, Sign Up For Appointment, Sign Up For Information, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation, Sign Up For Quote, Sign Up For Appointment, Sign Up For Information, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation,  Sign Up For Quote, Sign Up For Appointment, Sign Up For Information)
         },
@@ -674,6 +812,7 @@ def content_generation(company_name: str,
                        keyword: str,
                        title: str,
                        location: str) -> dict:
+    print("Starting Content Process")
     try:
         description = generate_meta_description(company_name, topic, keyword)
         content = generate_content(company_name, topic, industry, keyword, title)
@@ -778,14 +917,15 @@ def get_image_context(company_name: str,
     image_context += "Detailed 4K photorealistic. No fonts or text."
     imageurl = chat_with_dall_e(image_context, section)
     print(imageurl)
-    image_base64 = url_to_base64(imageurl)
-    return image_base64
+    image_jpg = url_to_jpg(imageurl, section)
+    # image_base64 = url_to_base64(imageurl)
+    return image_jpg
 
 
 def generate_logo(company_name: str,
                   topic: str,
                   keyword: str,
-                  industry: str,) -> str:
+                  industry: str) -> str:
     print("Generating Logo")
     prompt = f"""
     Describe the details and design of a logo for the company that provides {topic} in the {industry} industry.
@@ -874,11 +1014,12 @@ def generate_logo(company_name: str,
     logo_context = chat_with_gpt3("Logo Description Generation", prompt_messages, temp=0.7, p=0.8)
     logo_context += " with no text. No fonts included."
     print(logo_context)
-    logo_context = "The newest f1 car but perodua brand"
+    # logo_context = "The newest f1 car but perodua brand"
     imageurl = chat_with_dall_e(logo_context, "Logo")
     print(imageurl)
-    image_base = url_to_base64(imageurl)
-    return image_base
+    image_jpg = url_to_jpg(imageurl, section="logo")
+    # image_base = url_to_base64(imageurl)
+    return image_jpg
     
     
 def generate_gallery_images(company_name: str,
@@ -888,12 +1029,11 @@ def generate_gallery_images(company_name: str,
     gallery = []
     
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        futures = {executor.submit(get_image_context, company_name, keyword, f"gallery {i}", topic, industry): i for i in range(8)}
+        futures = {executor.submit(get_image_context, company_name, keyword, f"gallery{i}", topic, industry): i for i in range(8)}
 
         for future in concurrent.futures.as_completed(futures):
             try:
                 result = future.result()  # Get the result of the future
-                # result_base64 = url_to_base64(result)
                 gallery.append(result)
             except Exception as e:
                 print(f"An exception occurred during execution: {e}")
@@ -1054,3 +1194,240 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+
+{
+  "layouts": [
+        {
+          "layout": "Layout_header_1",
+          "value": {
+            "style": [],
+            "image": "...",
+            "position": 0,
+          }
+        },
+        {
+          "layout": "Layout_centered_image_1",
+          "value": {
+            "style": [],
+            "position": 1,
+            "button": [
+              {
+                "name": "...",
+                "layout": 1,
+                "style": [],
+              },
+              {
+                "name": "...",
+                "layout": 2,
+                "style": [],
+              },
+            ],
+            "image": "...",
+            "h1": {
+              "value": "...",
+              "html": "same as value",
+              "style": [],
+            },
+            "h2": {
+              "value": "...",
+              "html": "same as value",
+              "style": [],
+            }
+          }
+        },
+        {
+          "layout": "Layout_right_image_1",
+          "value": {
+            "style": [],
+            "position": 2,
+            "h2": {
+              "value": "...",
+              "html": "same as value",
+              "style": []
+            },
+            "paragraph": {
+              "value": "...",
+              "html": "same as value",
+              "style": []
+            },
+            "image": "..."
+          }
+        },
+        {
+          "layout": "Layout_three_blogs_1",
+          "value": {
+            "style": [],
+            "position": 3,
+            "h2": {
+              "value": "...",
+              "html": "same as value",
+              "style": []
+            },
+            "blogs": [
+              {
+                "h2": {
+                  "value": "...",
+                  "html": "same as value",
+                  "style": []
+                },
+                "paragraph": {
+                  "value": "...",
+                  "html": "same as value",
+                  "style": []
+                }
+              },
+              {
+                "h2": {
+                  "value": "...",
+                  "html": "same as value",
+                  "style": []
+                },
+                "paragraph": {
+                  "value": "...",
+                  "html": "same as value",
+                  "style": []
+                }
+              },
+              {
+                "h2": {
+                  "value": "...",
+                  "html": "same as value",
+                  "style": []
+                },
+                "paragraph": {
+                  "value": "...",
+                  "html": "same as value",
+                  "style": []
+                }
+              }
+            ]
+          }
+        },
+        {
+          "layout": "Layout_contact_us_1",
+          "value": {
+            "style": [],
+            "position": 4,
+            "h1": {
+              "value": "...",
+              "html": "same as value",
+              "style": []
+            },
+            "h4": {
+              "value": "...",
+              "html": "same as value",
+              "style": [],
+            },
+            "image": "..."
+          }
+        },
+        {
+          "layout": "Layout_frequently_asked_questions_1",
+          "value": {
+            "style": [],
+            "position": 5,
+            "h2": {
+              "value": "...",
+              "html": "same as value",
+              "style": []
+            },
+            "Faq": [
+              {
+                "h3": {
+                  "value": "...",
+                  "html": "same as value",
+                  "style": []
+                },
+                "paragraph": {
+                  "value": "...",
+                  "html": "same as value",
+                  "style": []
+                }
+              }
+            ]
+          }
+        },
+        {
+          "layout": "Layout_gallery_1",
+          "value": {
+            "style": [],
+            "h2": {
+              "value": "...",
+              "html": "same as value",
+              "style": []
+            },
+            "position": 6,
+            "images": [{ "url": "...", "alt": "..." }]
+          }
+        },
+        {
+          "layout": "Layout_right_image_2",
+          "value": {
+            "style": [],
+            "position": 7,
+            "h2": {
+              "value": "...",
+              "html": "same as value",
+              "style": []
+            },
+            "paragraph": {
+              "value": "...",
+              "html": "same as value",
+              "style": []
+            },
+            "image": "..."
+          }
+        },
+        {
+          "layout": "Layout_map_1",
+          "value": {
+            "style": [],
+            "position": 8,
+            "h2": {
+              "value": "Map",
+              "html": "same as value",
+              "style": []
+            },
+            "map_src": ""
+          }
+        },
+        {
+          "layout": "Layout_footer_1",
+          "value": {
+            "style": [],
+            "position": 9,
+            "h1": {
+              "value": "...",
+              "html": "same as value",
+              "style": []
+            },
+            "paragraph": [
+              {
+                "value": "...",
+                "html": "same as value",
+                "style": []
+              },
+              {
+                "value": "...",
+                "html": "same as value",
+                "style": []
+              },
+              {
+                "value": "...",
+                "html": "same as value",
+                "style": []
+              }
+            ],
+            "image": "...",
+          }
+        }
+      ],
+
+      "meta_data": {
+        "title": "...",
+        "description": "...",
+      }
+}
