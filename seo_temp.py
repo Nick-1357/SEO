@@ -596,6 +596,33 @@ def url_to_base64(url: str) -> str:
         print(f"An error occurred while trying to download the image: {e}")
         return None
     
+
+def url_to_file(url: str) -> str:
+    """
+    Download image from url and save it in a location (local file or s3 bucket)
+    :param url: url path of the image
+    :param bool production: boolean value to check for production stage
+    :return: directory path of the file
+    """
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            # Get the content of the response
+            image_data = response.content
+
+            if memory_dir == "production":
+                # workspace_path: "/tmp"
+                pass
+            elif memory_dir == "local":
+                # workspace_path: "./"
+                pass
+
+        else:
+            print("Unable to download image")
+    except:
+        return None
+
+
 def url_to_jpg(url: str, section: str) -> str:
     try:
         response = requests.get(url)
