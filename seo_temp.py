@@ -375,7 +375,12 @@ def update_json(data1):
                 "layout": "Layout_header_1",
                 "value": {
                     "style": [],
-                    "image": "",
+                    "images": [
+                        {
+                            "file_name": "",
+                            "alt": ""
+                        }
+                    ],
                     "position": 0
                 }
             },
@@ -391,7 +396,12 @@ def update_json(data1):
                             "style": []
                         }
                     ],
-                    "image": "",
+                    "images": [
+                        {
+                            "file_name": "",
+                            "alt": ""
+                        }
+                    ],
                     "h1": {
                         "value": "",
                         "html": "same as value",
@@ -419,7 +429,12 @@ def update_json(data1):
                         "html": "same as value",
                         "style": []
                     },
-                    "image": ""
+                    "images": [
+                        {
+                            "file_name": "",
+                            "alt": ""
+                        }
+                    ]
                 }
             },
             {
@@ -463,7 +478,12 @@ def update_json(data1):
                         "html": "Contact us today!",
                         "style": []
                     },
-                    "image": ""
+                    "images": [
+                        {
+                            "file_name": "",
+                            "alt": ""
+                        }
+                    ]
                 }
             },
             {
@@ -504,7 +524,7 @@ def update_json(data1):
                     "position": 6,
                     "images": [
                         {
-                            "url": "",
+                            "file_name": "",
                             "alt": ""
                         }
                     ]
@@ -525,7 +545,12 @@ def update_json(data1):
                         "html": "same as value",
                         "style": []
                     },
-                    "image": ""
+                    "images": [
+                        {
+                            "file_name": "",
+                            "alt": ""
+                        }
+                    ]
                 }
             },
             {
@@ -558,7 +583,12 @@ def update_json(data1):
                             "style": []
                         }
                     ],
-                    "image": ""
+                    "images": [
+                        {
+                            "file_name": "",
+                            "alt": ""
+                        }
+                    ]
                 }
             }
         ],
@@ -569,7 +599,12 @@ def update_json(data1):
     }
     
     # update the second JSON data with the data from the first JSON:
-    data2['layouts'][0]['value']['image'] = data1['logo']['image']
+    data2['layouts'][0]['value']['images']: list = [
+        {
+            "file_name": data1['logo']['image'],
+            "alt": ""
+        }
+    ]
 
     # Layout_centered_image_1
     data2['layouts'][1]['value']['h1']['value'] = data1['banner']['h1']
@@ -577,14 +612,24 @@ def update_json(data1):
     data2['layouts'][1]['value']['h2']['value'] = data1['banner']['h2']
     data2['layouts'][1]['value']['h2']['html'] = data1['banner']['h2']
     data2['layouts'][1]['value']['button'] = data1['banner']['button']
-    data2['layouts'][1]['value']['image'] = data1['banner']['image']
+    data2['layouts'][1]['value']['images']: list = [
+        {
+            "file_name": data1['banner']['image'],
+            "alt": ""
+        }
+    ]
 
     # Layout_right_image_1
     data2['layouts'][2]['value']['h2']['value'] = data1['about']['h2']
     data2['layouts'][2]['value']['h2']['html'] = data1['about']['h2']
     data2['layouts'][2]['value']['paragraph']['value'] = data1['about']['p']
     data2['layouts'][2]['value']['paragraph']['html'] = data1['about']['p']
-    data2['layouts'][2]['value']['image'] = data1['about']['image']
+    data2['layouts'][2]['value']['images']: list = [
+        {
+            "file_name": data1['about']['image'],
+            "alt": ""
+        }
+    ]
 
     # Layout_three_blogs_1
     data2['layouts'][3]['value']['h2']['value'] = data1['blogs']['h2']
@@ -592,7 +637,12 @@ def update_json(data1):
     data2['layouts'][3]['value']['blogs'] = [{'h3': {'value': post['h3'], 'html': post['h3'], 'style': []}, 'paragraph': {'value': post['p'], 'html': post['p'], 'style': []}} for post in data1['blogs']['post']]
 
     # Layout_contact_us_1
-    data2["layouts"][4]['value']['image'] = data1['contactus']['image']
+    data2["layouts"][4]['value']['images']: list = [
+        {
+            "file_name": data1['contactus']['image'],
+            "alt": ""
+        }
+    ]
 
     # Layout_frequently_asked_questions_1
     data2['layouts'][5]['value']['h2']['value'] = data1['faq']['h2']
@@ -600,21 +650,31 @@ def update_json(data1):
     data2['layouts'][5]['value']['faq'] = [{'h3': {'value': q['h3'], 'html': q['h3'], 'style': []}, 'paragraph': {'value': q['p'], 'html': q['p'], 'style': []}} for q in data1['faq']['question']]
 
     # Layout_gallery_1
-    data2['layouts'][6]['value']['images'] = [{'url': img, 'alt': ''} for img in data1['gallery']['image']]
+    data2['layouts'][6]['value']['images'] = [{'file_name': img, 'alt': ''} for img in data1['gallery']['image']]
 
     # Layout_right_image_2
     data2["layouts"][7]['value']['h2']['html'] = data1['blog2']['h2']
     data2["layouts"][7]['value']['h2']['value'] = data1['blog2']['h2']
     data2["layouts"][7]['value']['paragraph']['value'] = data1['blog2']['p']
     data2["layouts"][7]['value']['paragraph']['html'] = data1['blog2']['p']
-    data2["layouts"][7]['value']['image'] = data1['blog2']['image']
+    data2["layouts"][7]['value']['images']: list = [
+        {
+            "file_name": data1['blog2']['image'],
+            "alt": ""
+        }
+    ]
 
     # Layout_map_1
     data2['layouts'][8]['value']['map_src'] = data1['map']['map_src']
 
     # Layout_footer_1
     data2['layouts'][9]['value']['paragraph'] = [{'value': para, 'html': para, 'style': []} for para in data1['footer']['info']]
-    data2['layouts'][9]['value']['image'] = data1['logo']['image']
+    data2['layouts'][9]['value']['images']: list = [
+        {
+            "file_name": data1['logo']['image'],
+            "alt": ""
+        }
+    ]
 
     # meta_data
     data2['meta_data']['title'] = data1['meta']['title']
