@@ -3,6 +3,8 @@ import concurrent.futures
 import io
 import json
 import os
+
+import boto3
 import openai
 import re
 import random
@@ -595,32 +597,6 @@ def url_to_base64(url: str) -> str:
     except Exception as e:
         print(f"An error occurred while trying to download the image: {e}")
         return None
-    
-
-def url_to_file(url: str) -> str:
-    """
-    Download image from url and save it in a location (local file or s3 bucket)
-    :param url: url path of the image
-    :param bool production: boolean value to check for production stage
-    :return: directory path of the file
-    """
-    try:
-        response = requests.get(url)
-        if response.status_code == 200:
-            # Get the content of the response
-            image_data = response.content
-
-            if memory_dir == "production":
-                # workspace_path: "/tmp"
-                pass
-            elif memory_dir == "local":
-                # workspace_path: "./"
-                pass
-
-        else:
-            print("Unable to download image")
-    except:
-        return None
 
 
 def url_to_jpg(url: str, section: str) -> str:
@@ -633,13 +609,25 @@ def url_to_jpg(url: str, section: str) -> str:
             image = Image.open(byteImgIO)
             directory = Path(workspace_path) / 'content'
             os.makedirs(directory, exist_ok=True)
-            
+
+
             # Get the current timestamp and format it as a string
-            timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-            filename = f"{section}-{timestamp}.jpg"
+            timestamp = datetime.now().strftime("%Y%m%d%H%M%S%f")
+            filename = f"{section}_{timestamp}.jpg"
             # Save the image object as a .jpg file with the timestamp as the filename
             image.save(directory / filename)
-            return(filename)
+
+            if memory_dir == "production":
+                campaign_id = os.getenv("CAMPAIGN_ID", "0")
+                bucket_name = os.getenv("BUCKET_NAME", None)
+
+                s3_path = str(campaign_id) + "/asset/" + filename
+                s3 = boto3.client('s3')
+                print("Uploading {}...".format(s3_path))
+                s3.upload_file(Filename=directory / filename,
+                               Bucket=bucket_name,
+                               Key=s3_path)
+            return filename
         else:
             print("Unable to download image")
     except Exception as e:
