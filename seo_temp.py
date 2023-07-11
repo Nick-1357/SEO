@@ -812,7 +812,12 @@ def generate_meta_description(company_name: str,
     return meta_description
 
 
-def generate_footer(company_name: str, location: str):
+def generate_footer(company_name: str,
+                    topic: str,
+                    industry: str,
+                    keyword: str,
+                    title: str,
+                    location: str) -> dict:
     """
      Generate a footer. We need to generate an email to the Google Maps site and the map's url so it can be embedded in the template
      
@@ -847,7 +852,8 @@ def generate_content(company_name: str,
                      topic: str,
                      industry: str,
                      keyword: str,
-                     title: str) -> str:
+                     title: str,
+                     location: str) -> str:
     """
     Generates content for the template. This is a function that takes care of the creation of the content
     
@@ -974,8 +980,8 @@ def content_generation(company_name: str,
     print("Starting Content Process")
     try:
         description = generate_meta_description(company_name, topic, keyword)
-        content = generate_content(company_name, topic, industry, keyword, title)
-        footer = generate_footer(company_name, location)
+        content = generate_content(company_name, topic, industry, keyword, title, location)
+        footer = generate_footer(company_name, topic, industry, keyword, title, location)
     except Exception as e:
         return {'error': str(e)}
     content = processjson(content)
@@ -993,10 +999,10 @@ def content_generation(company_name: str,
 # =======================================================================================================================
 
 def get_image(company_name: str,
-                      keyword: str,
-                      section: str,
-                      topic: str,
-                      industry: str) -> str:
+              keyword: str,
+              section: str,
+              topic: str,
+              industry: str) -> str:
     """
     Generate a context for an image. It is used to determine the location of the image and the context of the industry
     
@@ -1093,8 +1099,9 @@ def get_image(company_name: str,
 
 
 def generate_logo(company_name: str,
-                  topic: str,
                   keyword: str,
+                  section: str,
+                  topic: str,
                   industry: str) -> str:
     """
     Generate a logo for a company. This is a function that can be used to generate a logo for an industry that provides a topic and keyword
@@ -1205,6 +1212,7 @@ def generate_logo(company_name: str,
     
 def generate_gallery_images(company_name: str,
                             keyword: str,
+                            section: str,
                             topic: str, 
                             industry: str) -> List[str]:
     """
@@ -1273,7 +1281,7 @@ def image_generation(company_name: str,
             }
         
     }
-    image_json["logo"]["image"] = generate_logo(company_name, topic, keyword, industry)
+    image_json["logo"]["image"] = generate_logo(company_name, keyword, "Logo", topic, industry)
     with concurrent.futures.ThreadPoolExecutor() as executor:
         # Start the threads and collect the futures for non-gallery sections
        
@@ -1293,7 +1301,7 @@ def image_generation(company_name: str,
                 if image:
                     image_json[section]["image"] = image
                     
-    image_json["gallery"]["image"] = (generate_gallery_images(company_name, keyword, topic, industry))            
+    image_json["gallery"]["image"] = (generate_gallery_images(company_name, keyword, "gallery", topic, industry))            
         
     print("Images Generated")
     return image_json
