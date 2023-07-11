@@ -374,9 +374,9 @@ def update_json(data1):
             {
                 "layout": "Layout_header_1",
                 "value": {
-                "style": [],
-                "image": "...",
-                "position": 0
+                    "style": [],
+                    "image": "",
+                    "position": 0
                 }
             },
             {
@@ -386,19 +386,19 @@ def update_json(data1):
                     "position": 1,
                     "button": [
                         {
-                            "name": "...",
+                            "name": "",
                             "layout": 1,
                             "style": []
                         }
                     ],
-                    "image": "...",
+                    "image": "",
                     "h1": {
-                        "value": "...",
+                        "value": "",
                         "html": "same as value",
                         "style": []
                     },
                     "h2": {
-                        "value": "...",
+                        "value": "",
                         "html": "same as value",
                         "style": []
                     }
@@ -410,16 +410,16 @@ def update_json(data1):
                     "style": [],
                     "position": 2,
                     "h2": {
-                        "value": "...",
+                        "value": "",
                         "html": "same as value",
                         "style": []
                     },
                     "paragraph": {
-                        "value": "...",
+                        "value": "",
                         "html": "same as value",
                         "style": []
                     },
-                    "image": "..."
+                    "image": ""
                 }
             },
             {
@@ -428,19 +428,19 @@ def update_json(data1):
                     "style": [],
                     "position": 3,
                     "h2": {
-                        "value": "...",
+                        "value": "",
                         "html": "same as value",
                         "style": []
                     },
                     "blogs": [
                         {
                             "h2": {
-                                "value": "...",
+                                "value": "",
                                 "html": "same as value",
                                 "style": []
                             },
                             "paragraph": {
-                                "value": "...",
+                                "value": "",
                                 "html": "same as value",
                                 "style": []
                             }
@@ -463,28 +463,28 @@ def update_json(data1):
                         "html": "Contact us today!",
                         "style": []
                     },
-                    "image": "..."
+                    "image": ""
                 }
             },
             {
                 "layout": "Layout_frequently_asked_questions_1",
                 "value": {
-                "style": [],
-                "position": 5,
-                "h2": {
-                    "value": "...",
-                    "html": "same as value",
-                    "style": []
-                },
-                "Faq": [
-                    {
-                        "h3": {
-                            "value": "...",
-                            "html": "same as value",
-                            "style": []
+                    "style": [],
+                    "position": 5,
+                    "h2": {
+                        "value": "",
+                        "html": "same as value",
+                        "style": []
+                    },
+                    "Faq": [
+                        {
+                            "h3": {
+                                "value": "",
+                                "html": "same as value",
+                                "style": []
+                            }
                         }
-                    }
-                ]
+                    ]
                 }
             },
             {
@@ -497,7 +497,12 @@ def update_json(data1):
                         "style": []
                     },
                     "position": 6,
-                    "images": [{ "url": "...", "alt": "..." }]
+                    "images": [
+                        {
+                            "url": "",
+                            "alt": ""
+                        }
+                    ]
                 }
             },
             {
@@ -506,16 +511,16 @@ def update_json(data1):
                     "style": [],
                     "position": 7,
                     "h2": {
-                        "value": "...",
+                        "value": "",
                         "html": "same as value",
                         "style": []
                     },
                     "paragraph": {
-                        "value": "...",
+                        "value": "",
                         "html": "same as value",
                         "style": []
                     },
-                    "image": "..."
+                    "image": ""
                 }
             },
             {
@@ -543,18 +548,18 @@ def update_json(data1):
                     },
                     "paragraph": [
                         {
-                            "value": "...",
+                            "value": "",
                             "html": "same as value",
                             "style": []
                         }
                     ],
-                    "image": "..."
+                    "image": ""
                 }
             }
         ],
         "meta_data": {
-            "title": "...",
-            "description": "..."
+            "title": "",
+            "description": ""
         }
     }
     
@@ -692,7 +697,6 @@ def url_to_jpg(url: str, section: str) -> str:
             image = Image.open(byteImgIO)
             directory = Path(workspace_path) / 'content'
             os.makedirs(directory, exist_ok=True)
-
 
             # Get the current timestamp and format it as a string
             timestamp = datetime.now().strftime("%Y%m%d%H%M%S%f")
