@@ -35,6 +35,7 @@ openai.Model.list()
 # load memory directory
 memory_dir = os.getenv("MEMORY_DIRECTORY", "local")
 workspace_path = "./"
+# The workspace_path is the path to the workspace directory.
 if memory_dir == "production":
     workspace_path = "/tmp"
 elif memory_dir == "local":
@@ -51,6 +52,13 @@ class Message(TypedDict):
 
 
 def query(query_parameters: Dict[str, str]) -> bytes:
+    """
+     Query the VirusTotal API with the given parameters. This is a wrapper around requests. post that does not raise exceptions.
+     
+     @param query_parameters - A dictionary of key value pairs that are used to make the query.
+     
+     @return The response as a byte string or an empty string
+    """
     try:
         response = requests.post(API_URL, headers=headers, json=query_parameters, timeout=10)
         response.raise_for_status()
@@ -63,6 +71,15 @@ def query(query_parameters: Dict[str, str]) -> bytes:
 def stabilityai_generate(prompt: str,
                          size: str,
                          section: str) -> str:
+    """
+    Generate stabilityai jpg image. This is a wrapper around query that allows you to specify the size and section of the image you want to generate
+    
+    @param prompt - prompt to provide to the user
+    @param size - size of the image in pixels ( must be between 1 and 1024 )
+    @param section - section of the image that will be generated ( ex : images. jpg)
+    
+    @return path to generated jpg
+    """
     print(f"Generating {section} image...")
     image_bytes = query({
         "inputs": f"{prompt}",
@@ -84,11 +101,25 @@ def generate_content_response(prompt: str | List[Message],
                               presence: float,
                               max_retries: int,
                               model: str) -> tuple:
+    """
+    Generate a response to a content request. This is a wrapper around openai. ChatCompletion.
+    
+    @param prompt - The prompt to respond to
+    @param temp - The temperatures to use for the response
+    @param p - The p - value to use for the response
+    @param freq - The frequency penalty 
+    @param presence - The presence penalty
+    @param max_retries - The maximum number of retries before terminating
+    @param model - The model to use for the API call.
+    
+    @return A tuple containing the response ( if any )
+    """
     delay: float = 1  # initial delay
     exponential_base: float = 2
     jitter: bool = True
     num_retries: int = 0
 
+    # This function is used to wait for a chat completion.
     while True:
         if num_retries >= max_retries:
             print(f"Max retries exceeded. The API continues to respond with an error after " + str(
@@ -158,8 +189,22 @@ def chat_with_gpt3(stage: str,
                    freq: float = 0,
                    presence: float = 0,
                    model: str = "gpt-3.5-turbo") -> str:
+    """
+    Generate a response to a prompt with GPT
+    
+    @param stage - The stage of the t2w
+    @param prompt - The prompt to send to the user ( s )
+    @param temp - Randomeness ( default 0.5 )
+    @param p - Randomeness ( default 0.5 )
+    @param freq - Frequency Penalty ( default 0 )
+    @param presence - Presence Penalty ( default 0 )
+    @param model - Model to use ( default gpt - 3. 5 - turbo )
+    
+    @return The response or None if something went wrong ( in which case the user should be prompted
+    """
     max_retries = 5       
     response, prompt_tokens, completion_tokens, total_tokens = generate_content_response(prompt, temp, p, freq, presence, max_retries, model)
+    # If a response was received return the response.
     if response is not None:   # If a response was successfully received
         write_to_csv((stage, prompt_tokens, completion_tokens, total_tokens, None, None))
         return response
@@ -169,11 +214,20 @@ def chat_with_gpt3(stage: str,
 
 def generate_image_response(prompt: str,
                             max_retries: int) -> str:
+    """
+        Generates and returns image URL. This is a wrapper around openai. Image. create that handles rate limiting and timeouts
+        
+        @param prompt - prompt to send to the DALL E API
+        @param max_retries - maximum number of retries to make before terminating
+        
+        @return url of the generated image or " " if an error
+    """
     delay: float = 1  # initial delay
     exponential_base: float = 2
     jitter: bool = True
     num_retries: int = 0
 
+    # This function is used to generate an image and return the image.
     while True:
         if num_retries >= max_retries:
             print(f"Max retries exceeded. The API continues to respond with an error after " + str(
@@ -219,8 +273,17 @@ def generate_image_response(prompt: str,
 
 def chat_with_dall_e(prompt: str,
                      section: str) -> str:
+    """
+    Prompt the user for a response. This is a dalle version of : func : ` chat_with_dall `
+
+    @param prompt - The prompt for image
+    @param section - The section of the image that is being generated
+
+    @return The URL of the response or None if no response was
+    """
     max_retries = 3
     url: str = generate_image_response(prompt, max_retries)
+    # Returns the URL of the response.
     if url is not None:   # If a response was successfully received
         return url
     else:
@@ -232,18 +295,27 @@ def chat_with_dall_e(prompt: str,
 
 
 def write_to_csv(data: tuple):
+    """
+     Writes the data to csv file. This is a function that takes a tuple of data and writes it to the token_usage. csv file
+     
+     @param data - tuple of data to write into the csv file
+     
+    """
     file_path = os.path.join(workspace_path, "token_usage.csv")
     file_exists = os.path.isfile(file_path)  # Check if file already exists
     with open(file_path, 'a+', newline='') as csvfile:
         fieldnames = ['Company Name', 'Keyword', 'Iteration', 'Stage', 'Prompt Tokens', 'Completion Tokens', 'Total Tokens', 'Price']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        # Write header to file if file exists
         if not file_exists:
             writer.writeheader()  # If file doesn't exist, write the header
 
         csvfile.seek(0)  # Move the file pointer to the beginning of the file so we can read from the start
         last_row = None
+        # This function will read the last row of the csv file
         for last_row in csv.DictReader(csvfile):
             pass  # The loop will leave 'last_row' as the last row
+        # The initialize iteration number
         if data[0] == 'Initial':
             iteration = 0
         else:
@@ -265,9 +337,20 @@ def write_to_csv(data: tuple):
 # ##==================================================================================================
 
 def deep_update(source, overrides):
+    """
+     Update a dict with values from another dict. This is a deep update function for the config.
+     
+     @param source - The dict to update. It will be modified in place
+     @param overrides - The dict to override the values in
+     
+     @return The source dict with the values
+    """
+    # Return the source code if overrides is not None.
     if not overrides or not isinstance(overrides, dict):
         return source
+    # Updates the source dictionary with the given overrides.
     for key, value in overrides.items():
+        # Set the value of the source node.
         if isinstance(value, dict):
             # get node or create one
             node = source.setdefault(key, {})
@@ -278,6 +361,13 @@ def deep_update(source, overrides):
 
 
 def update_json(data1):
+    """
+     Updates the JSON for front-end
+     
+     @param data1 - The JSON to update
+     
+     @return The updated JSON as a Python dictionary
+    """
     # convert the JSON strings to Python dictionaries:
     data2 = {
         "layouts": [
@@ -298,11 +388,6 @@ def update_json(data1):
                         {
                             "name": "...",
                             "layout": 1,
-                            "style": []
-                        },
-                        {
-                            "name": "...",
-                            "layout": 2,
                             "style": []
                         }
                     ],
@@ -359,30 +444,6 @@ def update_json(data1):
                                 "html": "same as value",
                                 "style": []
                             }
-                        },
-                        {
-                            "h2": {
-                                "value": "...",
-                                "html": "same as value",
-                                "style": []
-                            },
-                            "paragraph": {
-                                "value": "...",
-                                "html": "same as value",
-                                "style": []
-                            }
-                        },
-                        {
-                            "h2": {
-                                "value": "...",
-                                "html": "same as value",
-                                "style": []
-                            },
-                            "paragraph": {
-                                "value": "...",
-                                "html": "same as value",
-                                "style": []
-                            }
                         }
                     ]
                 }
@@ -418,11 +479,6 @@ def update_json(data1):
                 "Faq": [
                     {
                         "h3": {
-                            "value": "...",
-                            "html": "same as value",
-                            "style": []
-                        },
-                        "paragraph": {
                             "value": "...",
                             "html": "same as value",
                             "style": []
@@ -490,16 +546,6 @@ def update_json(data1):
                             "value": "...",
                             "html": "same as value",
                             "style": []
-                        },
-                        {
-                            "value": "...",
-                            "html": "same as value",
-                            "style": []
-                        },
-                        {
-                            "value": "...",
-                            "html": "same as value",
-                            "style": []
                         }
                     ],
                     "image": "..."
@@ -559,6 +605,13 @@ def update_json(data1):
 
 
 def processjson(jsonf: str) -> str:
+    """
+     Processes a JSON string and returns the result. If the JSON cannot be parsed an empty string is returned
+     
+     @param jsonf - the JSON string to process
+     
+     @return the JSON string or an empty string if there was
+    """
     startindex = jsonf.find("{")
     endindex = jsonf.rfind("}")
     if startindex == -1 or endindex == -1:
@@ -572,19 +625,41 @@ def processjson(jsonf: str) -> str:
 
 
 def sanitize_filename(filename: str) -> str:
+    """
+     Remove special characters from filename and replace spaces with underscores. This is useful for converting filenames to a format that can be used in a file name
+     
+     @param filename - The filename to clean up
+     
+     @return A cleaned up version of the filename ( no spaces
+    """
     """Remove special characters and replace spaces with underscores in a string to use as a filename."""
     return re.sub(r'[^A-Za-z0-9]+', '_', filename)
 
 
 def sanitize_location(location: str) -> str:
+    """
+     Sanitizes location to prevent XSS.
+     
+     @param location - The location to sanitize.
+     
+     @return The sanitized location as a string in the format " %20 " or " %2C "
+    """
     url_safe_address = location.replace(" ", "%20")
     url_safe_address = url_safe_address.replace(",", "%2C")
     return url_safe_address
 
 
 def url_to_base64(url: str) -> str:
+    """
+     Download an image from a URL and convert it to a base64 string.
+     
+     @param url - The URL of the image to download. It should be a URL that points to an image.
+     
+     @return The base64 string of the image or None if there was an error
+    """
     try:
         response = requests.get(url)
+        # Returns the image data as a base64 encoded string
         if response.status_code == 200:
             # Get the content of the response
             image_data = response.content
@@ -600,6 +675,14 @@ def url_to_base64(url: str) -> str:
 
 
 def url_to_jpg(url: str, section: str) -> str:
+    """
+     Downloads and saves the image to jpg. This is used to generate the image for the user
+     
+     @param url - The url of the image
+     @param section - The section of the image to be downloaded
+     
+     @return The filename of the image or None if there was an error
+    """
     try:
         response = requests.get(url)
         if response.status_code == 200:
@@ -640,7 +723,14 @@ def url_to_jpg(url: str, section: str) -> str:
 # ##===================================================================================================
 
 
-def get_industry(topic) -> str:
+def get_industry(topic: str) -> str:
+    """
+     Get industry for keywords.
+     
+     @param topic - keyword from user input
+     
+     @return identified industry for keyword
+    """
     prompt = f"Generate an industry for these keywords, no explanation is needed: {topic}"
     industry = chat_with_gpt3("Industry Identification", prompt, temp=0.2, p=0.1)
     print("Industry Found")
@@ -648,6 +738,13 @@ def get_industry(topic) -> str:
 
 
 def get_audience(topic: str) -> List[str]:
+    """
+     Get a list of audiences for a topic.
+     
+     @param topic - The topic for which to get the audience.
+     
+     @return A list of target audiences for the topic. It is empty if user cancels
+    """
     audienceList = []
     prompt = f"Generate a list of target audience for these keywords, no explanation is needed: {topic}"
     audience = chat_with_gpt3("Target Search", prompt, temp=0.2, p=0.1)
@@ -660,6 +757,11 @@ def get_audience(topic: str) -> List[str]:
 
 
 def get_location(topic: str) -> str:
+    """
+     Generate location from user keyword.
+     @param topic - topic of the address.
+     @return a string of the form " street / city / postcode/ state / country
+    """
     print("Identifying Location..")
     prompt = f"Generate an address (Building number, Street name, Postal Code, City/Town name, State, Country) in one line for this keywords, no explanation is needed: {topic}"
     location = chat_with_gpt3("Location Identification", prompt, temp=0.2, p=0.1)
@@ -668,6 +770,13 @@ def get_location(topic: str) -> str:
 
 
 def generate_long_tail_keywords(topic: str) -> List[str]:
+    """
+     Generate 5 SEO optimised long tail keywords related to the topic.
+     
+     @param topic - topic to generate long tail keywords for
+     
+     @return list of keywords for the topic as a list of string
+    """
     keyword_clusters = []
     prompt = f"Generate 5 SEO-optimized long-tail keywords related to the topic: {topic}."
     keywords_str = chat_with_gpt3("Keyword Clusters Search", prompt, temp=0.2, p=0.1)
@@ -681,6 +790,14 @@ def generate_long_tail_keywords(topic: str) -> List[str]:
 
 def generate_title(company_name: str,
                    keyword: str) -> str:
+    """
+    Generate and return title for a given companies headline.
+
+    @param company_name - The name of the company
+    @param keyword - The keyword for the title to be generated.
+
+    @return The title as a string
+    """
     prompt = f"Suggest 1 SEO optimized headline about '{keyword}' for the company {company_name}"
     title = chat_with_gpt3("Title Generation", prompt, temp=0.7, p=0.8)
     title = title.replace('"', '')
@@ -691,6 +808,15 @@ def generate_title(company_name: str,
 def generate_meta_description(company_name: str,
                               topic: str,
                               keywords: str) -> str:
+    """
+    Generate a meta description for a website based on a topic and keywords.
+    
+    @param company_name - Company name to be used in the message
+    @param topic - Topic for which we want to generate a meta description
+    @param keywords - Keywords that will be used in the meta description
+    
+    @return Meta description as a string
+    """
     print("Generating meta description...")
     prompt = f"""
     Generate a meta description for a website based on this topic: '{topic}'.
@@ -701,6 +827,14 @@ def generate_meta_description(company_name: str,
 
 
 def generate_footer(company_name: str, location: str):
+    """
+     Generate a footer. We need to generate an email to the Google Maps site and the map's url so it can be embedded in the template
+     
+     @param company_name - The company name of the user
+     @param location - The location of the user in the google maps
+     
+     @return The JSON representation of the template's footer
+    """
     print("Generating footer")
     start = random.choice(["+601", "+603"])
     rest = "".join(random.choice("0123456789") for _ in range(8))  # we generate 8 more digits since we already have 2
@@ -728,6 +862,17 @@ def generate_content(company_name: str,
                      industry: str,
                      keyword: str,
                      title: str) -> str:
+    """
+    Generates content for the template. This is a function that takes care of the creation of the content
+    
+    @param company_name - The name of the company
+    @param topic - The keyword of the users
+    @param industry - The industry of the topic
+    @param keyword - The keyword found
+    @param title - The title of the content
+    
+    @return The JSON string of the content
+    """
 
     print("Generating Content...")
     directory_path = os.path.join(workspace_path, "content")
@@ -828,6 +973,18 @@ def content_generation(company_name: str,
                        keyword: str,
                        title: str,
                        location: str) -> dict:
+    """
+    Generates and returns content. This is the main function of the content generation process
+    
+    @param company_name - The name of the company
+    @param topic - The topic of the industry to generate
+    @param industry - The industry of the industry to generate
+    @param keyword - The keyword of the industry to generate
+    @param title - The title of the industry to generate
+    @param location - The location of the industry to generate
+    
+    @return dict with meta information about the content
+    """
     print("Starting Content Process")
     try:
         description = generate_meta_description(company_name, topic, keyword)
@@ -849,11 +1006,22 @@ def content_generation(company_name: str,
 # Image Generation
 # =======================================================================================================================
 
-def get_image_context(company_name: str,
+def get_image(company_name: str,
                       keyword: str,
                       section: str,
                       topic: str,
                       industry: str) -> str:
+    """
+    Generate a context for an image. It is used to determine the location of the image and the context of the industry
+    
+    @param company_name - The name of the company
+    @param keyword - The keyword that is being viewed in the context
+    @param section - The section that is being viewed in the context
+    @param topic - The topic that is being viewed in the context
+    @param industry - The industry that is being viewed in the context
+    
+    @return The context of the industry as a string
+    """
     print("Generating Context...")
     examples = """
     Wide shot of a sleek and modern chair design that is currently trending on Artstation, sleek and modern design, artstation trending, highly detailed, beautiful setting in the background, art by wlop, greg rutkowski, thierry doizon, charlie bowater, alphonse mucha, golden hour lighting, ultra realistic./
@@ -942,6 +1110,17 @@ def generate_logo(company_name: str,
                   topic: str,
                   keyword: str,
                   industry: str) -> str:
+    """
+    Generate a logo for a company. This is a function that can be used to generate a logo for an industry that provides a topic and keyword
+    
+    @param company_name - The name of the company
+    @param topic - The topic to generate a logo for
+    @param keyword - The keyword to generate a logo for
+    @param industry - The industry for which we want to generate a logo
+    
+    @return The path to the generated logo or None if none
+    """
+    
     print("Generating Logo")
     prompt = f"""
     Describe the details and design of a logo for the company that provides {topic} in the {industry} industry.
@@ -1042,11 +1221,22 @@ def generate_gallery_images(company_name: str,
                             keyword: str,
                             topic: str, 
                             industry: str) -> List[str]:
+    """
+        Generate gallery images for a company. This is a thread safe function to call get_image in parallel
+        
+        @param company_name - The company's name
+        @param keyword - The generated keyword
+        @param topic - User's keyword
+        @param industry - The industry of the topic
+        
+        @return A list of image ids that were generated from DALL E 
+    """
     gallery = []
     
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        futures = {executor.submit(get_image_context, company_name, keyword, f"gallery{i}", topic, industry): i for i in range(8)}
+        futures = {executor.submit(get_image, company_name, keyword, f"gallery{i}", topic, industry): i for i in range(8)}
 
+        # Get the result of all futures in concurrent. futures. as_completed.
         for future in concurrent.futures.as_completed(futures):
             try:
                 result = future.result()  # Get the result of the future
@@ -1060,6 +1250,16 @@ def image_generation(company_name: str,
                      topic: str,
                      industry: str,
                      keyword: str) -> Dict:
+    """
+    Generates images for a topic industry and keyword. This function is used to generate a json file that can be uploaded to Snapchat
+    
+    @param company_name - The name of the company
+    @param topic - User's keyword
+    @param industry - The industry of topic
+    @param keyword - The keyword that will be used for the image generation
+    
+    @return A dict with the name of image for each entry
+    """
     print("Starting Image Process...")
     image_json = {
         "logo": {
@@ -1091,19 +1291,21 @@ def image_generation(company_name: str,
     with concurrent.futures.ThreadPoolExecutor() as executor:
         # Start the threads and collect the futures for non-gallery sections
        
-        futures = {executor.submit(get_image_context, company_name, keyword, section, topic, industry): section for section in ["banner", "about", "contactus", "blog2"]}
+        futures = {executor.submit(get_image, company_name, keyword, section, topic, industry): section for section in ["banner", "about", "contactus", "blog2"]}
 
         # Add the gallery futures
 
+        # Returns the image url of the image.
         for future in concurrent.futures.as_completed(futures):
             section = futures[future]
             try:
-                image_url: str = future.result()
+                image: str = future.result()
             except Exception as exc:
                 print('%r generated an exception: %s' % (section, exc))
             else:
-                if image_url:
-                    image_json[section]["image"] = image_url
+                # Set image_url to the image_json section
+                if image:
+                    image_json[section]["image"] = image
                     
     image_json["gallery"]["image"] = (generate_gallery_images(company_name, keyword, topic, industry))            
         
@@ -1117,6 +1319,18 @@ def feature_function(company_name: str,
                      selected_keyword: str,
                      title: str,
                      location: str) -> Dict:
+    """
+    This function takes as input the values to be used in the feature function.
+    
+    @param company_name - The name of the company
+    @param topic - User's keyword
+    @param industry - The industry of the feature
+    @param selected_keyword - Randomly selected keyword
+    @param title - The generated title
+    @param location - The generated location 
+    
+    @return A dictionary with the result of the content and image generation function or empty
+    """
     with concurrent.futures.ThreadPoolExecutor() as executor:
         image_future = executor.submit(image_generation, company_name, topic, industry, selected_keyword)
         content_future = executor.submit(content_generation, company_name, topic, industry, selected_keyword, title, location)
@@ -1128,6 +1342,7 @@ def feature_function(company_name: str,
         except Exception as e:
             print("An exception occurred during execution: ", e)
 
+        # Update the result of the image and content.
         if image_result is None or content_result is None:
             print("Error: No results returned")
             return {}
@@ -1144,6 +1359,9 @@ def feature_function(company_name: str,
 
 
 def main():
+    """
+     Main function to get data from the user. Args : None
+    """
     # Get the company name and topic from the user
     flag = True
     tries = 0
@@ -1179,8 +1397,10 @@ def main():
             print(title)
             
             merged_dict = feature_function(company_name, topic, industry, selected_keyword, title, location)
+            # Write the merged_dict to a data.json file.
             if merged_dict is None:
                 print("Error: No results returned")
+                # If the maximum number of tries exceeded the program exits.
                 if tries < max_tries:
                     tries += 1
                 else:
@@ -1201,6 +1421,7 @@ def main():
         except Exception as e:
             tries += 1
             print(f"An exception occurred: {e}, retrying attempt {tries}")
+            # If the maximum number of tries exceeded print out the program.
             if tries <= max_tries:
                 continue
             else:
@@ -1208,242 +1429,6 @@ def main():
                 break
 
 
+# main function for the main module
 if __name__ == "__main__":
     main()
-
-
-
-
-{
-  "layouts": [
-        {
-          "layout": "Layout_header_1",
-          "value": {
-            "style": [],
-            "image": "...",
-            "position": 0,
-          }
-        },
-        {
-          "layout": "Layout_centered_image_1",
-          "value": {
-            "style": [],
-            "position": 1,
-            "button": [
-              {
-                "name": "...",
-                "layout": 1,
-                "style": [],
-              },
-              {
-                "name": "...",
-                "layout": 2,
-                "style": [],
-              },
-            ],
-            "image": "...",
-            "h1": {
-              "value": "...",
-              "html": "same as value",
-              "style": [],
-            },
-            "h2": {
-              "value": "...",
-              "html": "same as value",
-              "style": [],
-            }
-          }
-        },
-        {
-          "layout": "Layout_right_image_1",
-          "value": {
-            "style": [],
-            "position": 2,
-            "h2": {
-              "value": "...",
-              "html": "same as value",
-              "style": []
-            },
-            "paragraph": {
-              "value": "...",
-              "html": "same as value",
-              "style": []
-            },
-            "image": "..."
-          }
-        },
-        {
-          "layout": "Layout_three_blogs_1",
-          "value": {
-            "style": [],
-            "position": 3,
-            "h2": {
-              "value": "...",
-              "html": "same as value",
-              "style": []
-            },
-            "blogs": [
-              {
-                "h2": {
-                  "value": "...",
-                  "html": "same as value",
-                  "style": []
-                },
-                "paragraph": {
-                  "value": "...",
-                  "html": "same as value",
-                  "style": []
-                }
-              },
-              {
-                "h2": {
-                  "value": "...",
-                  "html": "same as value",
-                  "style": []
-                },
-                "paragraph": {
-                  "value": "...",
-                  "html": "same as value",
-                  "style": []
-                }
-              },
-              {
-                "h2": {
-                  "value": "...",
-                  "html": "same as value",
-                  "style": []
-                },
-                "paragraph": {
-                  "value": "...",
-                  "html": "same as value",
-                  "style": []
-                }
-              }
-            ]
-          }
-        },
-        {
-          "layout": "Layout_contact_us_1",
-          "value": {
-            "style": [],
-            "position": 4,
-            "h1": {
-              "value": "...",
-              "html": "same as value",
-              "style": []
-            },
-            "h4": {
-              "value": "...",
-              "html": "same as value",
-              "style": [],
-            },
-            "image": "..."
-          }
-        },
-        {
-          "layout": "Layout_frequently_asked_questions_1",
-          "value": {
-            "style": [],
-            "position": 5,
-            "h2": {
-              "value": "...",
-              "html": "same as value",
-              "style": []
-            },
-            "Faq": [
-              {
-                "h3": {
-                  "value": "...",
-                  "html": "same as value",
-                  "style": []
-                },
-                "paragraph": {
-                  "value": "...",
-                  "html": "same as value",
-                  "style": []
-                }
-              }
-            ]
-          }
-        },
-        {
-          "layout": "Layout_gallery_1",
-          "value": {
-            "style": [],
-            "h2": {
-              "value": "...",
-              "html": "same as value",
-              "style": []
-            },
-            "position": 6,
-            "images": [{ "url": "...", "alt": "..." }]
-          }
-        },
-        {
-          "layout": "Layout_right_image_2",
-          "value": {
-            "style": [],
-            "position": 7,
-            "h2": {
-              "value": "...",
-              "html": "same as value",
-              "style": []
-            },
-            "paragraph": {
-              "value": "...",
-              "html": "same as value",
-              "style": []
-            },
-            "image": "..."
-          }
-        },
-        {
-          "layout": "Layout_map_1",
-          "value": {
-            "style": [],
-            "position": 8,
-            "h2": {
-              "value": "Map",
-              "html": "same as value",
-              "style": []
-            },
-            "map_src": ""
-          }
-        },
-        {
-          "layout": "Layout_footer_1",
-          "value": {
-            "style": [],
-            "position": 9,
-            "h1": {
-              "value": "...",
-              "html": "same as value",
-              "style": []
-            },
-            "paragraph": [
-              {
-                "value": "...",
-                "html": "same as value",
-                "style": []
-              },
-              {
-                "value": "...",
-                "html": "same as value",
-                "style": []
-              },
-              {
-                "value": "...",
-                "html": "same as value",
-                "style": []
-              }
-            ],
-            "image": "...",
-          }
-        }
-      ],
-
-      "meta_data": {
-        "title": "...",
-        "description": "...",
-      }
-}
