@@ -434,7 +434,7 @@ def update_json(data1):
                     },
                     "blogs": [
                         {
-                            "h2": {
+                            "h3": {
                                 "value": "",
                                 "html": "same as value",
                                 "style": []
@@ -453,12 +453,12 @@ def update_json(data1):
                 "value": {
                     "style": [],
                     "position": 4,
-                    "h1": {
+                    "h2": {
                         "value": "Have a Question?",
                         "html": "Have a Question?",
                         "style": []
                     },
-                    "h4": {
+                    "paragraph": {
                         "value": "Contact us today!",
                         "html": "Contact us today!",
                         "style": []
@@ -476,9 +476,14 @@ def update_json(data1):
                         "html": "same as value",
                         "style": []
                     },
-                    "Faq": [
+                    "faq": [
                         {
                             "h3": {
+                                "value": "",
+                                "html": "same as value",
+                                "style": []
+                            },
+                            "paragraph": {
                                 "value": "",
                                 "html": "same as value",
                                 "style": []
@@ -530,7 +535,7 @@ def update_json(data1):
                     "position": 8,
                     "h2": {
                         "value": "Map",
-                        "html": "same as value",
+                        "html": "Map",
                         "style": []
                     },
                     "map_src": ""
@@ -541,7 +546,7 @@ def update_json(data1):
                 "value": {
                     "style": [],
                     "position": 9,
-                    "h1": {
+                    "h2": {
                         "value": "Contact Info",
                         "html": "Contact Info",
                         "style": []
@@ -565,7 +570,8 @@ def update_json(data1):
     
     # update the second JSON data with the data from the first JSON:
     data2['layouts'][0]['value']['image'] = data1['logo']['image']
-    
+
+    # Layout_centered_image_1
     data2['layouts'][1]['value']['h1']['value'] = data1['banner']['h1']
     data2['layouts'][1]['value']['h1']['html'] = data1['banner']['h1']
     data2['layouts'][1]['value']['h2']['value'] = data1['banner']['h2']
@@ -573,35 +579,44 @@ def update_json(data1):
     data2['layouts'][1]['value']['button'] = data1['banner']['button']
     data2['layouts'][1]['value']['image'] = data1['banner']['image']
 
+    # Layout_right_image_1
     data2['layouts'][2]['value']['h2']['value'] = data1['about']['h2']
     data2['layouts'][2]['value']['h2']['html'] = data1['about']['h2']
     data2['layouts'][2]['value']['paragraph']['value'] = data1['about']['p']
     data2['layouts'][2]['value']['paragraph']['html'] = data1['about']['p']
     data2['layouts'][2]['value']['image'] = data1['about']['image']
 
+    # Layout_three_blogs_1
     data2['layouts'][3]['value']['h2']['value'] = data1['blogs']['h2']
     data2['layouts'][3]['value']['h2']['html'] = data1['blogs']['h2']
-    data2['layouts'][3]['value']['blogs'] =[{'h2': {'value': post['h3'], 'html': post['h3'], 'style': []}, 'paragraph': {'value': post['p'], 'html': post['p'], 'style': []}} for post in data1['blogs']['post']]
+    data2['layouts'][3]['value']['blogs'] = [{'h3': {'value': post['h3'], 'html': post['h3'], 'style': []}, 'paragraph': {'value': post['p'], 'html': post['p'], 'style': []}} for post in data1['blogs']['post']]
 
+    # Layout_contact_us_1
     data2["layouts"][4]['value']['image'] = data1['contactus']['image']
-    
+
+    # Layout_frequently_asked_questions_1
     data2['layouts'][5]['value']['h2']['value'] = data1['faq']['h2']
     data2['layouts'][5]['value']['h2']['html'] = data1['faq']['h2']
-    data2['layouts'][5]['value']['Faq'] = [{'h3': {'value': q['h3'], 'html': q['h3']}, 'paragraph': {'value': q['p'], 'html': q['p']}} for q in data1['faq']['question']]
+    data2['layouts'][5]['value']['faq'] = [{'h3': {'value': q['h3'], 'html': q['h3'], 'style': []}, 'paragraph': {'value': q['p'], 'html': q['p'], 'style': []}} for q in data1['faq']['question']]
 
+    # Layout_gallery_1
+    data2['layouts'][6]['value']['images'] = [{'url': img, 'alt': ''} for img in data1['gallery']['image']]
+
+    # Layout_right_image_2
     data2["layouts"][7]['value']['h2']['html'] = data1['blog2']['h2']
     data2["layouts"][7]['value']['h2']['value'] = data1['blog2']['h2']
     data2["layouts"][7]['value']['paragraph']['value'] = data1['blog2']['p']
     data2["layouts"][7]['value']['paragraph']['html'] = data1['blog2']['p']
     data2["layouts"][7]['value']['image'] = data1['blog2']['image']
-       
-    data2['layouts'][6]['value']['images'] = [{'url': img, 'alt': ''} for img in data1['gallery']['image']]
 
+    # Layout_map_1
     data2['layouts'][8]['value']['map_src'] = data1['map']['map_src']
-    
-    data2['layouts'][9]['value']['paragraph'] = [{'value': para, 'html': para} for para in data1['footer']['info']]
+
+    # Layout_footer_1
+    data2['layouts'][9]['value']['paragraph'] = [{'value': para, 'html': para, 'style': []} for para in data1['footer']['info']]
     data2['layouts'][9]['value']['image'] = data1['logo']['image']
-    
+
+    # meta_data
     data2['meta_data']['title'] = data1['meta']['title']
     data2['meta_data']['description'] = data1['meta']['description']
     # convert the updated data back to a JSON string:
@@ -714,6 +729,7 @@ def url_to_jpg(url: str, section: str) -> str:
                 s3.upload_file(Filename=directory / filename,
                                Bucket=bucket_name,
                                Key=s3_path)
+                return s3_path
             return filename
         else:
             print("Unable to download image")
