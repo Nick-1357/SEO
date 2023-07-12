@@ -3,8 +3,7 @@ import concurrent.futures
 import io
 import json
 import os
-
-import boto3
+# import boto3
 import openai
 import re
 import random
@@ -698,10 +697,10 @@ def processjson(jsonf: str) -> str:
         return ""
     else:
         try:
-            json.loads(jsonf[startindex:endindex+1])
-            return jsonf[startindex:endindex+1]
-        except ValueError:
-            return ""
+            return json.loads(jsonf[startindex:endindex+1])
+        except ValueError as e:
+            print(e)
+            return {}
 
 
 def sanitize_filename(filename: str) -> str:
@@ -1078,8 +1077,7 @@ def content_generation(company_name: str,
         footer = generate_footer(company_name, topic, industry, keyword, title, location)
     except Exception as e:
         return {'error': str(e)}
-    content = processjson(content)
-    contentjson = json.loads(content)
+    contentjson = processjson(content)
     updated_json = {"meta": {"title": title, "description": description}}
     updated_json.update(contentjson)
     updated_json.update(footer)
