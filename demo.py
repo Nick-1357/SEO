@@ -281,7 +281,7 @@ def processjson(jsonf: str) -> str:
         return ""
     else:
         try:
-            return (json.loads(jsonf[startindex:endindex+1]))
+            return json.loads(jsonf[startindex:endindex+1])
         except ValueError:
             return ""
 

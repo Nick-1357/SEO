@@ -3,7 +3,6 @@ import concurrent.futures
 import io
 import json
 import os
-import boto3
 import openai
 import re
 import random
@@ -36,6 +35,7 @@ memory_dir = os.getenv("MEMORY_DIRECTORY", "local")
 workspace_path = "./"
 # The workspace_path is the path to the workspace directory.
 if memory_dir == "production":
+    import boto3
     workspace_path = "/tmp"
 elif memory_dir == "local":
     workspace_path = "./"
