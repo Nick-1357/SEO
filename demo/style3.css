@@ -29,6 +29,7 @@ p{
   margin-right: 0;
   font-weight: bold;
   color: #ffffff;
+  max-width: 1400px;
 }
 .heading-2 {
   display: block;
@@ -1042,7 +1043,7 @@ input[type="checkbox"] {
   height: 100%;
   flex-direction: column;
   padding: 4rem 4rem;
-  max-width: 1400px;
+  /* max-width: 1400px; */
 }
 .bg-lightgray {
   background-color: #f7f6f6;
