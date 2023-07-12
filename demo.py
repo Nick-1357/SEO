@@ -281,8 +281,7 @@ def processjson(jsonf: str) -> str:
         return ""
     else:
         try:
-            json.loads(jsonf[startindex:endindex+1])
-            return jsonf[startindex:endindex+1]
+            return (json.loads(jsonf[startindex:endindex+1]))
         except ValueError:
             return ""
 
@@ -465,9 +464,8 @@ def content_generation(company_name: str,
     except Exception as e:
         return {'error': str(e)}
     content = processjson(content)
-    contentjson = json.loads(content)
     updated_json = {"meta": {"title": title, "description": description}}
-    updated_json.update(contentjson)
+    updated_json.update(content)
     print("Content Generated")
     # print(json.dumps(updated_json, indent=4))
     return updated_json
