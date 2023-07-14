@@ -111,6 +111,7 @@ def retry_with_exponential_backoff(
             # Retry on specified errors
             except errors as e:
                 # Increment retries
+                print (e)
                 num_retries += 1
 
                 # Check if max retries has been reached
@@ -181,7 +182,7 @@ def sanitize_location(location: str) -> str:
     return url_safe_address
 
 
-def processjson(jsonf: str) -> str:
+def processjson(jsonf: str) -> Dict:
     """
      Processes a JSON string and returns the result. If the JSON cannot be parsed an empty string is returned
      
@@ -192,7 +193,7 @@ def processjson(jsonf: str) -> str:
     startindex = jsonf.find("{")
     endindex = jsonf.rfind("}")
     if startindex == -1 or endindex == -1:
-        return ""
+        return {}
     else:
         try:
             return json.loads(jsonf[startindex:endindex+1])

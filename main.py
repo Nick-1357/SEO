@@ -398,7 +398,7 @@ def feature_function(company_name: str,
     @return A dictionary with the result of the content and image generation function or empty
     """
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        image_future = executor.submit(image_generation, company_name, topic, industry, selected_keyword)
+        image_future = executor.submit(image_generation, topic, industry, selected_keyword)
         content_future = executor.submit(content_generation, company_name, topic, industry, selected_keyword, title, location)
         futures = [image_future, content_future]
         done, not_done = concurrent.futures.wait(futures, timeout=60, return_when=concurrent.futures.ALL_COMPLETED)
