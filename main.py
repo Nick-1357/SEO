@@ -11,8 +11,8 @@ import time
 from pathlib import Path
 from typing import List, Dict, TypedDict
 from concurrent.futures import ThreadPoolExecutor, wait
-from content_main import get_industry, get_audience, get_location, generate_meta_description, generate_long_tail_keywords, generate_title, content_generation
-from image_main import image_generation
+from .content_main import get_industry, get_audience, get_location, generate_meta_description, generate_long_tail_keywords, generate_title, content_generation, processjson
+from .image_main import image_generation, get_image, generate_gallery_images, generate_logo
 
 
 memory_dir = os.getenv("MEMORY_DIRECTORY", "local")

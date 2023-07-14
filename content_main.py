@@ -15,40 +15,6 @@ from dotenv import load_dotenv
 from typing import List, Dict, TypedDict
 from concurrent.futures import ThreadPoolExecutor, wait
 
-# =======================================================================================================================
-# CSV Functions
-# =======================================================================================================================
-
-
-def write_to_csv(data: tuple):
-    """
-     Writes the data to csv file. This is a function that takes a tuple of data and writes it to the token_usage. csv file
-     
-     @param data - tuple of data to write into the csv file
-     
-    """
-    file_path = os.path.join(workspace_path, "token_usage.csv")
-    file_exists = os.path.isfile(file_path)  # Check if file already exists
-    with open(file_path, 'a+', newline='') as csvfile:
-        fieldnames = ['Company Name', 'Keyword', 'Iteration', 'Stage', 'Prompt Tokens', 'Completion Tokens', 'Total Tokens', 'Price']
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        # Write header to file if file exists
-        if not file_exists:
-            writer.writeheader()  # If file doesn't exist, write the header
-
-        csvfile.seek(0)  # Move the file pointer to the beginning of the file so we can read from the start
-        last_row = None
-        # This function will read the last row of the csv file
-        for last_row in csv.DictReader(csvfile):
-            pass  # The loop will leave 'last_row' as the last row
-        # The initialize iteration number
-        if data[0] == 'Initial':
-            iteration = 0
-        else:
-            iteration = int(last_row['Iteration']) + 1 if last_row else 0  # If there is a last row, increment its 'Iteration' value by 1. Otherwise, start at 0
-        price = 0.000004 * data[3]  # Calculate the price of the request
-        writer.writerow({'Company Name': data[4], 'Keyword': data[5], 'Iteration': iteration, 'Stage': data[0], 'Prompt Tokens': data[1], 'Completion Tokens': data[2], 'Total Tokens': data[3], 'Price': float(price)})
-
 #==================================================================================================
 # Load Parameters
 #==================================================================================================
