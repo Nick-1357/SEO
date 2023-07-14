@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import List, Dict, TypedDict
 from concurrent.futures import ThreadPoolExecutor, wait
 from .content_main import get_industry, get_audience, get_location, generate_meta_description, generate_long_tail_keywords, generate_title, content_generation, processjson
-from .image_main import image_generation, get_image, generate_gallery_images, generate_logo
+from .image_main import image_generation, get_image, generate_gallery_images, generate_logo, chat_with_dall_e, stabilityai_generate
 
 
 memory_dir = os.getenv("MEMORY_DIRECTORY", "local")
