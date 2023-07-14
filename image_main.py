@@ -15,7 +15,7 @@ from dotenv import load_dotenv
 from typing import List, Dict, TypedDict
 from concurrent.futures import ThreadPoolExecutor, wait
 from diffusers import StableDiffusionPipeline, EulerDiscreteScheduler
-from content_main import chat_with_gpt3
+from .content_main import chat_with_gpt3
 
 #==================================================================================================
 # Load Parameters
@@ -250,7 +250,7 @@ def url_to_jpg(url: str | bytes, section: str) -> str:
 # Image Generation
 # =======================================================================================================================
 
-def get_image(method_name: function,
+def get_image(method_name,
               keyword: str,
               section: str,
               topic: str,
@@ -350,7 +350,7 @@ def get_image(method_name: function,
     return image_jpg
 
 
-def generate_logo(method_name: function,
+def generate_logo(method_name,
                   keyword: str,
                   section: str,
                   topic: str,
@@ -462,7 +462,7 @@ def generate_logo(method_name: function,
     return image_jpg
     
     
-def generate_gallery_images(method_name: function,
+def generate_gallery_images(method_name,
                             keyword: str,
                             section: str,
                             topic: str, 
