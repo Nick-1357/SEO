@@ -21,7 +21,7 @@ set "Keyword[8]=Online Florist in Malaysia"
 
 
 :: Path to your Python script, modify if needed
-set "ScriptPath=.\seo_temp.py"
+set "ScriptPath=.\main.py"
 
 set /A "index1=(%RANDOM% %% 9)"
 set /A "index2=(%RANDOM% %% 9)"
