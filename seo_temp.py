@@ -270,8 +270,7 @@ def generate_image_response(prompt: str,
             time.sleep(delay)  # wait for n seconds before retrying
 
 
-def chat_with_dall_e(prompt: str,
-                     section: str) -> str:
+def chat_with_dall_e(prompt: str) -> str:
     """
     Prompt the user for a response. This is a dalle version of : func : ` chat_with_dall `
 
@@ -683,7 +682,7 @@ def update_json(data1):
     return data2
 
 
-def processjson(jsonf: str) -> str:
+def processjson(jsonf: str) -> dict:
     """
      Processes a JSON string and returns the result. If the JSON cannot be parsed an empty string is returned
      
@@ -694,7 +693,7 @@ def processjson(jsonf: str) -> str:
     startindex = jsonf.find("{")
     endindex = jsonf.rfind("}")
     if startindex == -1 or endindex == -1:
-        return ""
+        return {}
     else:
         try:
             return json.loads(jsonf[startindex:endindex+1])
@@ -1090,8 +1089,7 @@ def content_generation(company_name: str,
 # Image Generation
 # =======================================================================================================================
 
-def get_image(company_name: str,
-              keyword: str,
+def get_image(keyword: str,
               section: str,
               topic: str,
               industry: str) -> str:
@@ -1183,15 +1181,14 @@ def get_image(company_name: str,
     image_context = chat_with_gpt3("Image Description Generation", prompt_messages, temp=0.7, p=0.8)
     # print(image_context)
     image_context += "Detailed 4K photorealistic. No fonts or text."
-    imageurl = chat_with_dall_e(image_context, section)
+    imageurl = chat_with_dall_e(image_context)
     print(imageurl)
     image_jpg = url_to_jpg(imageurl, section)
     # image_base64 = url_to_base64(imageurl)
     return image_jpg
 
 
-def generate_logo(company_name: str,
-                  keyword: str,
+def generate_logo(keyword: str,
                   section: str,
                   topic: str,
                   industry: str) -> str:
@@ -1295,15 +1292,14 @@ def generate_logo(company_name: str,
     logo_context += " with no text. No fonts included."
     print(logo_context)
     # logo_context = "The newest f1 car but perodua brand"
-    imageurl = chat_with_dall_e(logo_context, "Logo")
+    imageurl = chat_with_dall_e(logo_context)
     print(imageurl)
     image_jpg = url_to_jpg(imageurl, section="logo")
     # image_base = url_to_base64(imageurl)
     return image_jpg
     
     
-def generate_gallery_images(company_name: str,
-                            keyword: str,
+def generate_gallery_images(keyword: str,
                             section: str,
                             topic: str, 
                             industry: str) -> List[str]:
@@ -1320,7 +1316,7 @@ def generate_gallery_images(company_name: str,
     gallery = []
     
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        futures = {executor.submit(get_image, company_name, keyword, f"gallery{i}", topic, industry): i for i in range(8)}
+        futures = {executor.submit(get_image, keyword, f"gallery{i}", topic, industry): i for i in range(8)}
 
         # Get the result of all futures in concurrent. futures. as_completed.
         for future in concurrent.futures.as_completed(futures):
@@ -1332,8 +1328,7 @@ def generate_gallery_images(company_name: str,
     return gallery
 
 
-def image_generation(company_name: str,
-                     topic: str,
+def image_generation(topic: str,
                      industry: str,
                      keyword: str) -> Dict:
     """
@@ -1373,11 +1368,11 @@ def image_generation(company_name: str,
             }
         
     }
-    image_json["logo"]["image"] = generate_logo(company_name, keyword, "Logo", topic, industry)
+    image_json["logo"]["image"] = generate_logo(keyword, "Logo", topic, industry)
     with concurrent.futures.ThreadPoolExecutor() as executor:
         # Start the threads and collect the futures for non-gallery sections
        
-        futures = {executor.submit(get_image, company_name, keyword, section, topic, industry): section for section in ["banner", "about", "contactus", "blog2"]}
+        futures = {executor.submit(get_image, keyword, section, topic, industry): section for section in ["banner", "about", "contactus", "blog2"]}
 
         # Add the gallery futures
 
@@ -1393,7 +1388,7 @@ def image_generation(company_name: str,
                 if image:
                     image_json[section]["image"] = image
                     
-    image_json["gallery"]["image"] = (generate_gallery_images(company_name, keyword, "gallery", topic, industry))            
+    image_json["gallery"]["image"] = (generate_gallery_images(keyword, "gallery", topic, industry))
         
     print("Images Generated")
     return image_json
@@ -1418,7 +1413,7 @@ def feature_function(company_name: str,
     @return A dictionary with the result of the content and image generation function or empty
     """
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        image_future = executor.submit(image_generation, company_name, topic, industry, selected_keyword)
+        image_future = executor.submit(image_generation, topic, industry, selected_keyword)
         content_future = executor.submit(content_generation, company_name, topic, industry, selected_keyword, title, location)
         futures = [image_future, content_future]
         done, not_done = concurrent.futures.wait(futures, timeout=60, return_when=concurrent.futures.ALL_COMPLETED)
