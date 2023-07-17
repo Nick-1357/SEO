@@ -1,25 +1,21 @@
 import concurrent.futures
 import io
-import json
 import os
 import openai
 import re
-import random
 import requests
-import time
 import base64
 from PIL import Image
 from pathlib import Path
-from datetime import datetime, date, time, timezone
+from datetime import datetime
 from dotenv import load_dotenv
 from typing import List, Dict, TypedDict
-from concurrent.futures import ThreadPoolExecutor, wait
-from diffusers import StableDiffusionPipeline, EulerDiscreteScheduler
-from .content_main import chat_with_gpt3
+from .content_main import chat_with_gpt3, retry_with_exponential_backoff
 
-#==================================================================================================
+
+# ==================================================================================================
 # Load Parameters
-#==================================================================================================
+# ==================================================================================================
 
 # Load .env file
 load_dotenv()
@@ -48,9 +44,9 @@ class Message(TypedDict):
     role: str
     content: str
     
-#==================================================================================================
+# ==================================================================================================
 # API Interaction
-#==================================================================================================
+# ==================================================================================================
 
 
 def query(query_parameters: Dict[str, str]) -> bytes:
@@ -70,7 +66,7 @@ def query(query_parameters: Dict[str, str]) -> bytes:
         return b""
 
 
-def stabilityai_generate(prompt: str) -> str:
+def stabilityai_generate(prompt: str) -> bytes:
     """
     Generate stabilityai jpg image. This is a wrapper around query that allows you to specify the size and section of the image you want to generate
     
@@ -87,55 +83,6 @@ def stabilityai_generate(prompt: str) -> str:
     })
     return image_bytes
 
-def retry_with_exponential_backoff(
-    func,
-    initial_delay: float = 1,
-    exponential_base: float = 2,
-    jitter: bool = True,
-    max_retries: int = 10,
-    errors: tuple = (openai.error.RateLimitError,
-                     openai.error.Timeout,
-                     openai.error.ServiceUnavailableError,
-                     openai.error.APIError,
-                     openai.error.InvalidRequestError,
-                     openai.error.APIConnectionError),
-):
-    """Retry a function with exponential backoff."""
-
-    def wrapper(*args, **kwargs):
-        # Initialize variables
-        num_retries = 0
-        delay = initial_delay
-
-        # Loop until a successful response or max_retries is hit or an exception is raised
-        while True:
-            try:
-                return func(*args, **kwargs)
-
-            # Retry on specified errors
-            except errors as e:
-                # Increment retries
-                print (e)
-                num_retries += 1
-
-                # Check if max retries has been reached
-                if num_retries > max_retries:
-                    raise Exception(
-                        f"Maximum number of retries ({max_retries}) exceeded."
-                    )
-
-                # Increment the delay
-                delay *= exponential_base * (1 + jitter * random.random())
-
-                # Sleep for the delay
-                time.sleep(delay)
-
-            # Raise exceptions for any errors not specified
-            except Exception as e:
-                raise e
-
-    return wrapper
-
 
 @retry_with_exponential_backoff
 def chat_with_dall_e(messages: str) -> str:
@@ -150,9 +97,10 @@ def chat_with_dall_e(messages: str) -> str:
     return response['data'][0]['url']
 
 
-#==================================================================================================
+# ==================================================================================================
 # JSON Functions
-#==================================================================================================
+# ==================================================================================================
+
 
 def sanitize_filename(filename: str) -> str:
     """
@@ -165,10 +113,10 @@ def sanitize_filename(filename: str) -> str:
     """Remove special characters and replace spaces with underscores in a string to use as a filename."""
     return re.sub(r'[^A-Za-z0-9]+', '_', filename)
 
-#==================================================================================================
+# ==================================================================================================
 # URL Functions
-#==================================================================================================
-#==================================================================================================
+# ==================================================================================================
+
 
 def url_to_base64(url: str) -> str:
     """
@@ -205,14 +153,14 @@ def url_to_jpg(url: str | bytes, section: str) -> str:
      @return The filename of the image or None if there was an error
     """
     try:
-        if type(url) == str:
+        if isinstance(url, str):
             response = requests.get(url)
             if response.status_code == 200:
                 image_data = response.content
             else:
                 print("Unable to download image")
                 return None
-        elif type(url) == bytes:
+        elif isinstance(url, bytes):
             image_data = url
         else:
             print("Unable to get image")
@@ -237,8 +185,8 @@ def url_to_jpg(url: str | bytes, section: str) -> str:
             s3 = boto3.client('s3')
             print("Uploading {}...".format(s3_path))
             s3.upload_file(Filename=directory / filename,
-                            Bucket=bucket_name,
-                            Key=s3_path)
+                           Bucket=bucket_name,
+                           Key=s3_path)
             return s3_path
         return filename
     
@@ -250,6 +198,7 @@ def url_to_jpg(url: str | bytes, section: str) -> str:
 # Image Generation
 # =======================================================================================================================
 
+
 def get_image(method_name,
               keyword: str,
               section: str,
@@ -257,7 +206,8 @@ def get_image(method_name,
               industry: str) -> str:
     """
     Generate a context for an image. It is used to determine the location of the image and the context of the industry
-    
+
+    @param method_name - The method to use
     @param keyword - The keyword that is being viewed in the context
     @param section - The section that is being viewed in the context
     @param topic - The topic that is being viewed in the context
@@ -357,9 +307,11 @@ def generate_logo(method_name,
                   industry: str) -> str:
     """
     Generate a logo for a company. This is a function that can be used to generate a logo for an industry that provides a topic and keyword
-    
-    @param topic - The topic to generate a logo for
+
+    @param method_name - The method to use
     @param keyword - The keyword to generate a logo for
+    @param section - The section that is being viewed in the context
+    @param topic - The topic to generate a logo for
     @param industry - The industry for which we want to generate a logo
     
     @return The path to the generated logo or None if none
@@ -468,14 +420,15 @@ def generate_gallery_images(method_name,
                             topic: str, 
                             industry: str) -> List[str]:
     """
-        Generate gallery images for a company. This is a thread safe function to call get_image in parallel
-        
-        @param company_name - The company's name
-        @param keyword - The generated keyword
-        @param topic - User's keyword
-        @param industry - The industry of the topic
-        
-        @return A list of image ids that were generated from DALL E 
+    Generate gallery images for a company. This is a thread safe function to call get_image in parallel
+
+    @param method_name - The method to use
+    @param keyword - The generated keyword
+    @param section - The section that is being viewed in the context
+    @param topic - User's keyword
+    @param industry - The industry of the topic
+
+    @return A list of image ids that were generated from DALL E
     """
     gallery = []
     
@@ -506,9 +459,10 @@ def image_generation(topic: str,
     """
     print("Starting Image Process...")
     image_json = {
-        "logo": {
-            "image": ""
-        },
+        "logo":
+            {
+                "image": ""
+            },
         "banner": 
             {
                 "image": ""

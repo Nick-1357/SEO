@@ -1,25 +1,18 @@
-import csv
 import concurrent.futures
-import io
 import json
 import os
-import re
 import random
-import requests
 import sys
-import time
-from pathlib import Path
 from typing import List, Dict, TypedDict
-from concurrent.futures import ThreadPoolExecutor, wait
-from .content_main import get_industry, get_audience, get_location, generate_meta_description, generate_long_tail_keywords, generate_title, content_generation, processjson
-from .image_main import image_generation, get_image, generate_gallery_images, generate_logo, chat_with_dall_e, stabilityai_generate
+
+from .content_main import get_industry, get_location, generate_long_tail_keywords, generate_title, content_generation, processjson
+from .image_main import image_generation
 
 
 memory_dir = os.getenv("MEMORY_DIRECTORY", "local")
 workspace_path = "./"
 # The workspace_path is the path to the workspace directory.
 if memory_dir == "production":
-    import boto3
     workspace_path = "/tmp"
 elif memory_dir == "local":
     workspace_path = "./"
@@ -27,6 +20,7 @@ elif memory_dir == "local":
 # ##==================================================================================================
 # JSON Functions
 # ##==================================================================================================
+
 
 def deep_update(source, overrides):
     """
@@ -375,9 +369,10 @@ def update_json(data1):
     updated_json = json.dumps(data2)
     return data2
 
-#==================================================================================================
+# ==================================================================================================
 # JSON Generating Function
-#==================================================================================================
+# ==================================================================================================
+
 
 def feature_function(company_name: str,
                      topic: str,
@@ -479,8 +474,7 @@ def main():
                     json.dump(merged_dict, f, ensure_ascii=False, indent=4)
                 
                 # End procedures
-                
-                
+
         except Exception as e:
             tries += 1
             print(f"An exception occurred: {e}, retrying attempt {tries}")
