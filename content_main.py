@@ -159,6 +159,7 @@ def processjson(jsonf: str) -> Dict:
         try:
             return json.loads(jsonf[startindex:endindex+1])
         except ValueError as e:
+            print("Json load error:\n", jsonf[startindex:endindex+1])
             print(e)
             return {}
 
