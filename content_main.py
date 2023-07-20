@@ -1,23 +1,16 @@
-import concurrent.futures
-import csv
-import io
 import json
 import os
 import openai
 import re
 import random
-import requests
-import sys
 import time
-from pathlib import Path
-from datetime import datetime, date, time, timezone
 from dotenv import load_dotenv
 from typing import List, Dict, TypedDict
-from concurrent.futures import ThreadPoolExecutor, wait
 
-#==================================================================================================
+
+# ==================================================================================================
 # Load Parameters
-#==================================================================================================
+# ==================================================================================================
 
 # Load .env file
 load_dotenv()
@@ -34,7 +27,6 @@ memory_dir = os.getenv("MEMORY_DIRECTORY", "local")
 workspace_path = "./"
 # The workspace_path is the path to the workspace directory.
 if memory_dir == "production":
-    import boto3
     workspace_path = "/tmp"
 elif memory_dir == "local":
     workspace_path = "./"
@@ -77,7 +69,7 @@ def retry_with_exponential_backoff(
             # Retry on specified errors
             except errors as e:
                 # Increment retries
-                print (e)
+                print("error: \n", e)
                 num_retries += 1
 
                 # Check if max retries has been reached
@@ -90,10 +82,12 @@ def retry_with_exponential_backoff(
                 delay *= exponential_base * (1 + jitter * random.random())
 
                 # Sleep for the delay
+                print(f"Wait for {round(delay, 2)} seconds.")
                 time.sleep(delay)
 
             # Raise exceptions for any errors not specified
             except Exception as e:
+                print("exception: \n", e)
                 raise e
 
     return wrapper
@@ -164,6 +158,7 @@ def processjson(jsonf: str) -> Dict:
         try:
             return json.loads(jsonf[startindex:endindex+1])
         except ValueError as e:
+            print("Json load error:\n", jsonf[startindex:endindex+1])
             print(e)
             return {}
 
@@ -354,7 +349,7 @@ def generate_content(company_name: str,
                 "h2": "About Us",
                 "p": "..."
         },
-        "blogs":{
+        "blogs": {
             "h2": "... (e.g.: Our Services, Customer Reviews, Insights, Resources)",
             "post": [{
                     "h3": "...",
