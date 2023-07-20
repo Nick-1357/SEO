@@ -15,7 +15,7 @@ from dotenv import load_dotenv
 from typing import List, Dict, TypedDict
 from concurrent.futures import ThreadPoolExecutor, wait
 from diffusers import StableDiffusionPipeline, EulerDiscreteScheduler
-from .content_main import chat_with_gpt3
+from content_main import chat_with_gpt3
 
 #==================================================================================================
 # Load Parameters
