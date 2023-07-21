@@ -401,9 +401,6 @@ def generate_content(company_name: str,
         "blog2": {
                 "h2": "Our Mission",
                 "p": "..."
-        },
-        "gallery": {
-                "h2": "gallery"
         }
     }
     """
