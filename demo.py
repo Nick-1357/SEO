@@ -86,6 +86,8 @@ def generate_content_response(prompt: str | List[Message],
     jitter: bool = True
     num_retries: int = 0
 
+    language_selected = os.getenv("LANGUAGE", "English")
+
     while True:
         if num_retries >= max_retries:
             print(f"Max retries exceeded. The API continues to respond with an error after " + str(
@@ -98,6 +100,7 @@ def generate_content_response(prompt: str | List[Message],
                         model=f"{model}",
                         messages=[
                                 {"role": "system", "content": "You are an web designer with the objective to identify search engine optimized long-tail keywords and generate contents, with the goal of generating website contents and enhance website's visibility, driving organic traffic, and improving online business performance."},
+                                {"role": "system", "content": f"You will be writing in {language_selected} language"},
                                 {"role": "user", "content": prompt}
                             ],
                         temperature=temp,
@@ -433,6 +436,9 @@ def generate_content(company_name: str,
                     "p": "...",
                 },...
             ]
+        },
+        "gallery": {
+            "h2": "gallery"
         }
     }
     """
@@ -657,6 +663,7 @@ def main():
     except IndexError:
         company_name = input("Company Name: ")
         topic = input("Your Keywords: ")
+        os.environ["LANGUAGE"] = input("Language: ")
     
     while flag:
         try:

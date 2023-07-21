@@ -7,6 +7,7 @@ from typing import List, Dict, TypedDict
 
 from .content_main import get_industry, get_location, generate_long_tail_keywords, generate_title, content_generation, processjson
 from .image_main import image_generation
+from .utils import language
 
 
 memory_dir = os.getenv("MEMORY_DIRECTORY", "local")
@@ -16,6 +17,18 @@ if memory_dir == "production":
     workspace_path = "/tmp"
 elif memory_dir == "local":
     workspace_path = "./"
+
+language_state = language.en
+
+
+def load_language_state():
+
+    global language_state
+
+    lang = os.getenv("LANGUAGE")
+
+    language_state = language.language_locale.get(lang, language.en)
+    print("language loaded: ", lang, "\n", language_state.contact_us_today)
 
 # ##==================================================================================================
 # JSON Functions
@@ -323,6 +336,10 @@ def update_json(data1):
     data2['layouts'][3]['value']['blogs'] = [{'h3': {'value': post['h3'], 'html': post['h3'], 'style': []}, 'paragraph': {'value': post['p'], 'html': post['p'], 'style': []}} for post in data1['blogs']['post']]
 
     # Layout_contact_us_1
+    data2['layouts'][4]['value']['h2']['value'] = language_state.have_a_question
+    data2['layouts'][4]['value']['h2']['html'] = language_state.have_a_question
+    data2['layouts'][4]['value']['paragraph']['value'] = language_state.contact_us_today
+    data2['layouts'][4]['value']['paragraph']['html'] = language_state.contact_us_today
     data2["layouts"][4]['value']['images']: list = [
         {
             "file_name": data1['contactus']['image'],
@@ -336,6 +353,8 @@ def update_json(data1):
     data2['layouts'][5]['value']['faq'] = [{'h3': {'value': q['h3'], 'html': q['h3'], 'style': []}, 'paragraph': {'value': q['p'], 'html': q['p'], 'style': []}} for q in data1['faq']['question']]
 
     # Layout_gallery_1
+    data2['layouts'][6]['value']['h2']['value'] = language_state.gallery
+    data2['layouts'][6]['value']['h2']['html'] = language_state.gallery
     data2['layouts'][6]['value']['images'] = [{'file_name': img, 'alt': ''} for img in data1['gallery']['image']]
 
     # Layout_right_image_2
@@ -351,9 +370,13 @@ def update_json(data1):
     ]
 
     # Layout_map_1
+    data2["layouts"][8]['value']['h2']['html'] = language_state.map
+    data2["layouts"][8]['value']['h2']['value'] = language_state.map
     data2['layouts'][8]['value']['map_src'] = data1['map']['map_src']
 
     # Layout_footer_1
+    data2["layouts"][9]['value']['h2']['html'] = language_state.contact_info
+    data2["layouts"][9]['value']['h2']['value'] = language_state.contact_info
     data2['layouts'][9]['value']['paragraph'] = [{'value': para, 'html': para, 'style': []} for para in data1['footer']['info']]
     data2['layouts'][9]['value']['images']: list = [
         {
