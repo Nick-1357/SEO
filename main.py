@@ -7,7 +7,7 @@ from typing import List, Dict, TypedDict
 
 from .content_main import get_industry, get_location, generate_long_tail_keywords, generate_title, content_generation, processjson
 from .image_main import image_generation
-from utils import language
+from .utils import language
 
 
 memory_dir = os.getenv("MEMORY_DIRECTORY", "local")
@@ -28,6 +28,7 @@ def load_language_state():
     lang = os.getenv("LANGUAGE")
 
     language_state = language.language_locale.get(lang, language.en)
+    print("language loaded: ", lang, "\n", language_state.contact_us_today)
 
 # ##==================================================================================================
 # JSON Functions
