@@ -95,13 +95,17 @@ def retry_with_exponential_backoff(
 
 @retry_with_exponential_backoff
 def chat_with_gpt3(messages: str | List[Message], temp=1.0, p=1.0, freq=0.0, presence=0.0, model="gpt-3.5-turbo") -> str:
+
+    language_selected = os.getenv("LANGUAGE")
+
     if isinstance(messages, str):
         response = openai.ChatCompletion.create(
             model=f"{model}",
             messages=[
-                    {"role": "system", "content": "You are an web designer with the objective to identify search engine optimized long-tail keywords and generate contents, with the goal of generating website contents and enhance website's visibility, driving organic traffic, and improving online business performance."},
-                    {"role": "user", "content": messages}
-                ],
+                {"role": "system", "content": "You are an web designer with the objective to identify search engine optimized long-tail keywords and generate contents, with the goal of generating website contents and enhance website's visibility, driving organic traffic, and improving online business performance."},
+                {"role": "system", "content": f"You will be writing in {language_selected} language"},
+                {"role": "user", "content": messages}
+            ],
             temperature=temp,
             # max_tokens=2500,
             top_p=p,
@@ -397,6 +401,9 @@ def generate_content(company_name: str,
         "blog2": {
                 "h2": "Our Mission",
                 "p": "..."
+        },
+        "gallery": {
+                "h2": "gallery"
         }
     }
     """

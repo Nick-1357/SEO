@@ -336,6 +336,8 @@ def update_json(data1):
     data2['layouts'][5]['value']['faq'] = [{'h3': {'value': q['h3'], 'html': q['h3'], 'style': []}, 'paragraph': {'value': q['p'], 'html': q['p'], 'style': []}} for q in data1['faq']['question']]
 
     # Layout_gallery_1
+    data2['layouts'][6]['value']['h2']['value'] = data1['gallery']['h2']
+    data2['layouts'][6]['value']['h2']['html'] = data1['gallery']['h2']
     data2['layouts'][6]['value']['images'] = [{'file_name': img, 'alt': ''} for img in data1['gallery']['image']]
 
     # Layout_right_image_2
