@@ -85,6 +85,10 @@ window.onload = function() {
         </a>
         `;
 
+        
+        document.getElementById('blogt').innerHTML = `${blog.h2}`;
+        document.getElementById('blogt2').innerHTML = `${blog.h2}`;
+
 
         // document.getElementById('about').innerHTML = `<h2>${about.h2}</h2><p>${about.p}</p>`;
         // ... and so on for all sections of your JSON ...

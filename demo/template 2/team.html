@@ -50,17 +50,17 @@
             </button>
           </div>
           <div class="overlay-content">
-            <a class="" href="index.html">
+            <a class="active" href="index.html">
               Home
             </a>
             <a class="" href="about.html">
               About
             </a>
             <a class="" href="portfolio.html">
-              Portfolio
+              Gallery
             </a>
-            <a class="active" href="team.html">
-              Team
+            <a id="blogt" class="" href="team.html">
+              
             </a>
           </div>
         </div>
@@ -69,7 +69,7 @@
             Logo
           </span>
         </a>
-        <a href="" class="call_btn">
+        <a href="#contact_section" class="call_btn">
           Call Us Now
         </a>
       </nav>
@@ -84,96 +84,13 @@
       <div class="row">
         <div class="col-lg-4 col-md-5 detail-box detail_box_common text_center">
           <div class="heading_container heading_center">
-            <h2>
-              Our Creative Team
+            <h2 id="blogtitle">
             </h2>
           </div>
-          <p>
-            The point of using LoremIt is a long established fact that a reader will be distracted by the readable
-            content
-            of a page when looking at its layout. The point of using Lorem
-          </p>
         </div>
         <div class="col-lg-8 col-md-7 team_container text_center">
-          <div class="row">
-            <div class="col-sm-6 mx-auto">
-              <div class="team_box">
-                <div class="img-box">
-                  <img src="images/team1.jpg" alt="">
-                </div>
-                <div class="detail-box ">
-                  <h5>
-                    Jesssica Rai
-                  </h5>
-                  <div class="social-box">
-                    <a href="">
-                      <i class="fa fa-facebook" aria-hidden="true"></i>
-                    </a>
-                    <a href="">
-                      <i class="fa fa-twitter" aria-hidden="true"></i>
-                    </a>
-                    <a href="">
-                      <i class="fa fa-linkedin" aria-hidden="true"></i>
-                    </a>
-                    <a href="">
-                      <i class="fa fa-instagram" aria-hidden="true"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-6 mx-auto">
-              <div class="team_box">
-                <div class="img-box">
-                  <img src="images/team2.jpg" alt="">
-                </div>
-                <div class="detail-box">
-                  <h5>
-                    John Wayne
-                  </h5>
-                  <div class="social-box">
-                    <a href="">
-                      <i class="fa fa-facebook" aria-hidden="true"></i>
-                    </a>
-                    <a href="">
-                      <i class="fa fa-twitter" aria-hidden="true"></i>
-                    </a>
-                    <a href="">
-                      <i class="fa fa-linkedin" aria-hidden="true"></i>
-                    </a>
-                    <a href="">
-                      <i class="fa fa-instagram" aria-hidden="true"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-6 mx-auto">
-              <div class="team_box">
-                <div class="img-box">
-                  <img src="images/team3.jpg" alt="">
-                </div>
-                <div class="detail-box">
-                  <h5>
-                    Chritina Stark
-                  </h5>
-                  <div class="social-box">
-                    <a href="">
-                      <i class="fa fa-facebook" aria-hidden="true"></i>
-                    </a>
-                    <a href="">
-                      <i class="fa fa-twitter" aria-hidden="true"></i>
-                    </a>
-                    <a href="">
-                      <i class="fa fa-linkedin" aria-hidden="true"></i>
-                    </a>
-                    <a href="">
-                      <i class="fa fa-instagram" aria-hidden="true"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div id="blogpost" class="row">
+            
           </div>
         </div>
       </div>
@@ -183,12 +100,21 @@
 
   <!-- contact section -->
 
-  <section class="contact_section ">
+  <section id="contact_section" class="contact_section">
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-8 map_container">
           <div class="map">
-            <div id="googleMap"></div>
+            <iframe
+            src="https://maps.google.com/maps?q=123%20Jalan%20Bukit%20Bintang%2C%2055100%20Kuala%20Lumpur%2C%20Malaysia&t=&z=10&ie=UTF8&iwloc=&output=embed"
+            width="100%"
+            height="450"
+            style="border: 0; border-radius: 10px;"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            :class="[nexmind_editor_text_website ? 'map_stop_scroll' : '']"
+            ></iframe>
           </div>
         </div>
         <div class="col-md-4 detail-box detail_box_common">
@@ -250,7 +176,7 @@
           <p>
             &copy; <span id="displayYear"></span> All Rights Reserved. Design
             by
-            <a href="https://html.design/">Free Html Templates</a>
+            <a href="https://html.design/">NexMind</a>
           </p>
         </div>
         <div class="col-xl-6">
@@ -262,10 +188,10 @@
               About
             </a>
             <a class="" href="portfolio.html">
-              Portfolio
+              Gallery
             </a>
-            <a class="" href="team.html">
-              Team
+            <a id="blogt2" class="" href="team.html">
+              
             </a>
           </div>
         </div>
@@ -279,6 +205,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
   </script>
   <script src="js/custom.js"></script>
+  <script src="js/blog.js"></script>
   <!-- Google Map -->
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
   </script>
