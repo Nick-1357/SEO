@@ -230,7 +230,7 @@ def update_json(data1):
                 }
             },
             {
-                "layout": "Layout_right_image_1",
+                "layout": "Layout_right_image_8",
                 "value": {
                     "style": [],
                     "position": 7,
@@ -357,7 +357,7 @@ def update_json(data1):
     data2['layouts'][6]['value']['h2']['html'] = language_state.gallery
     data2['layouts'][6]['value']['images'] = [{'file_name': img, 'alt': ''} for img in data1['gallery']['image']]
 
-    # Layout_right_image_2
+    # Layout_right_image_8
     data2["layouts"][7]['value']['h2']['html'] = data1['blog2']['h2']
     data2["layouts"][7]['value']['h2']['value'] = data1['blog2']['h2']
     data2["layouts"][7]['value']['paragraph']['value'] = data1['blog2']['p']
