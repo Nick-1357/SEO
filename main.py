@@ -91,7 +91,7 @@ def update_json(data1):
                     "button": [
                         {
                             "name": "",
-                            "layout": 1,
+                            "layout": 2,
                             "style": []
                         }
                     ],
