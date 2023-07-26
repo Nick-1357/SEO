@@ -230,7 +230,7 @@ def update_json(data1):
                 }
             },
             {
-                "layout": "Layout_right_image_2",
+                "layout": "Layout_right_image_1",
                 "value": {
                     "style": [],
                     "position": 7,
