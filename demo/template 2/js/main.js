@@ -30,7 +30,7 @@ window.onload = function() {
         <h1>
             ${banner.h1}
         </h1>
-        <a href="" class="">
+        <a href="#about2" class="">
             ${banner.button[0]}
         </a>
         `;
@@ -60,7 +60,7 @@ window.onload = function() {
         <p>
             ${about.p}
         </p>
-        <a href="">
+        <a href="about.html">
             Read More
         </a>
         `;
