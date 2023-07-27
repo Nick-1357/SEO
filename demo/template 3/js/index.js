@@ -48,23 +48,23 @@ window.onload = function() {
         <img src="data:image/jpg;base64,${banner.image}" alt="" />
         `;
 
-        // document.getElementById("aboutimage").innerHTML = `
-        // <img src="data:image/jpeg;base64,${about.image}" alt="" />      
-        // `;
+        document.getElementById("aboutimage").innerHTML = `
+        <img src="data:image/jpeg;base64,${about.image}" alt="" />      
+        `;
         
-        // document.getElementById('about1').innerHTML = `
-        // <div class="heading_container heading_center">
-        //     <h2>
-        //       About Us
-        //     </h2>
-        // </div>
-        // <p>
-        //     ${about.p}
-        // </p>
-        // <a href="">
-        //     Read More
-        // </a>
-        // `;
+        document.getElementById('about').innerHTML = `
+        <div class="heading_container">
+              <h2>
+                ${about.h2}
+              </h2>
+            </div>
+            <p>
+              ${about.p}
+            </p>
+            <a href="">
+              Read More
+            </a>
+        `;
         
         // document.getElementById('galleryheader').innerHTML = `${gallery.h2}`;
 
@@ -132,27 +132,83 @@ window.onload = function() {
         // // document.getElementById('about').innerHTML = `<h2>${about.h2}</h2><p>${about.p}</p>`;
         // // ... and so on for all sections of your JSON ...
 
-        // document.getElementById('blogtitle').innerHTML = `${blog.h2}`;
+        document.getElementById('blogtitle').innerHTML = `<h2>${blog.h2}</h2>`;
         // document.getElementById('blogt').innerHTML = `${blog.h2}`;
         // document.getElementById('blogt2').innerHTML = `${blog.h2}`;
 
-        // blog.post.forEach(post => {
-        //     document.getElementById('blogpost').innerHTML += `     
-        //     <div class="col-sm-6 mx-auto">
-        //       <div class="team_box">
-        //         <div class="header-box">
-        //           <h3>${post.h3}</h3>
-        //         </div>
-        //         <div class="detail-box ">
-        //             <p>
-        //                 ${post.p}
-        //             </p>
-        //         </div>
-        //       </div>
-        //     </div>
-        //     `;
+        document.getElementById('blogpost').innerHTML += `    
+          <div class="carousel-item active">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-10 mx-auto">
+                  <div class="box">
+                    <div class="detail-box">
+                      <div class="client_info">
+                        <div class="client_name">
+                          <h5>
+                            ${blog.post[0].h3}
+                          </h5>
+                        </div>
+                        <i class="fa fa-quote-left" aria-hidden="true"></i>
+                      </div>
+                      <p>
+                        ${blog.post[0].p}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-10 mx-auto">
+                  <div class="box">
+                    <div class="detail-box">
+                      <div class="client_info">
+                        <div class="client_name">
+                          <h5>
+                            ${blog.post[1].h3}
+                          </h5>
+                        </div>
+                        <i class="fa fa-quote-left" aria-hidden="true"></i>
+                      </div>
+                      <p>
+                        ${blog.post[1].p}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-10 mx-auto">
+                  <div class="box">
+                    <div class="detail-box">
+                      <div class="client_info">
+                        <div class="client_name">
+                          <h5>
+                            ${blog.post[2].h3}
+                          </h5>
+                        </div>
+                        <i class="fa fa-quote-left" aria-hidden="true"></i>
+                      </div>
+                      <p>
+                        ${blog.post[2].p}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+            `;
             
-        // });
 
         // // gallery.image.forEach(img => {
         // //     document.getElementById('gallery').innerHTML += `
@@ -202,11 +258,17 @@ window.onload = function() {
 
         // // document.getElementById('galleryheader').innerHTML = `${gallery.h2}`;
 
-        // // gallery.image.forEach(img => {
-        // //     document.getElementById('gallery').innerHTML += `
-        // //     <img src="data:image/jpeg;base64,${img}" alt="image.alt"/>
-        // //     `;
-        // // });
+        gallery.image.forEach(img => {
+            document.getElementById('gallery').innerHTML += `
+            <div class="col-md-6 col-lg-4">
+              <div class="box ">
+                <div class="img-box">
+                <img src="data:image/jpeg;base64,${img}" alt="image.alt"/>
+                </div>
+              </div>
+            </div>
+            `;
+        });
 
         // document.getElementById('faqtitle').innerHTML = `${faq.h2}`;
 

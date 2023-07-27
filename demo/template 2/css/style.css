@@ -68,7 +68,7 @@ body {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  text-align: center;
+  text-align: justify;
 }
 
 .detail_box_common {
@@ -90,7 +90,7 @@ body {
 }
 
 .text_center {
-  text-align: center;
+  text-align: justify;
 }
 
 /*header section*/
@@ -165,7 +165,7 @@ body {
 .custom_nav-container.navbar-expand-lg .navbar-nav .nav-link {
   padding: 0px 25px;
   color: #fefeff;
-  text-align: center;
+  text-align: justify;
   font-family: "Roboto", sans-serif;
 }
 
@@ -275,7 +275,7 @@ body {
   position: relative;
   top: 20%;
   width: 100%;
-  text-align: center;
+  text-align: justify;
   margin-top: 30px;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -491,7 +491,7 @@ a:focus {
 }
 
 .portfolio_section {
-  text-align: center;
+  text-align: justify;
   background-color: #e4e4e4;
 }
 

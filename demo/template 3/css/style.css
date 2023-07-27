@@ -387,7 +387,9 @@ a:focus {
 }
 
 .about_section .img-box img {
+  padding: 20px;
   max-width: 100%;
+  border-radius: 50px;
 }
 
 .about_section .detail-box p {
