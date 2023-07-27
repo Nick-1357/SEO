@@ -417,8 +417,16 @@ def generate_content(company_name: str,
     2) The content should be engaging and unique.
     3) The FAQ section should follow the SERP and rich result guidelines
     """
-    content = chat_with_gpt3(prompt, temp=0.7, p=0.8, model="gpt-3.5-turbo-16k")
-    return content
+    max_retries = 3
+    current_retry = 0
+    while current_retry < max_retries:
+        current_retry += 1
+        content = chat_with_gpt3(prompt, temp=0.7, p=0.8, model="gpt-3.5-turbo-16k")
+
+        if processjson(content):
+            return content
+        print("retry generate content...\n\n")
+        return ""
 
 
 def content_generation(company_name: str,

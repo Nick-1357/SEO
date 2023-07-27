@@ -27,6 +27,8 @@ class Locale:
     gallery: str
     have_a_question: str
     map: str
+    mission: str
+    submit: str
 
 
 en = Locale(
@@ -34,7 +36,9 @@ en = Locale(
     contact_info="Contact Info",
     gallery="Gallery",
     have_a_question="Have a Question?",
-    map="Map"
+    map="Map",
+    mission="Our Mission",
+    submit="Submit"
 )
 
 ar = Locale(
@@ -42,7 +46,9 @@ ar = Locale(
     contact_info="معلومات الاتصال",
     gallery="معرض الصور",
     have_a_question="هل لديك سؤال؟",
-    map="خريطة"
+    map="خريطة",
+    mission="مهمتنا",
+    submit="يُقدِّم"
 )
 
 zh = Locale(
@@ -50,7 +56,9 @@ zh = Locale(
     contact_info="联系方式",
     gallery="图画",
     have_a_question="有疑问吗?",
-    map="地图"
+    map="地图",
+    mission="我们的任务",
+    submit="提交"
 )
 
 fr = Locale(
@@ -58,7 +66,9 @@ fr = Locale(
     contact_info="Coordonnées de contact",
     gallery="Galerie",
     have_a_question="Vous avez une question?",
-    map="Carte"
+    map="Carte",
+    mission="Notre mission",
+    submit="Soumettre"
 )
 
 de = Locale(
@@ -66,7 +76,9 @@ de = Locale(
     contact_info="Kontaktinformationen",
     gallery="Galerie",
     have_a_question="Haben Sie eine Frage?",
-    map="Karte"
+    map="Karte",
+    mission="unsere Aufgabe",
+    submit="Einreichen"
 )
 
 id_ = Locale(
@@ -74,7 +86,9 @@ id_ = Locale(
     contact_info="Informasi Kontak",
     gallery="Galeri",
     have_a_question="Ada pertanyaan?",
-    map="Peta"
+    map="Peta",
+    mission="misi kita",
+    submit="Kirim"
 )
 
 it = Locale(
@@ -82,7 +96,9 @@ it = Locale(
     contact_info="Informazioni di contatto",
     gallery="Galleria",
     have_a_question="Hai una domanda?",
-    map="Mappa"
+    map="Mappa",
+    mission="la nostra missione",
+    submit="Invia"
 )
 
 ja = Locale(
@@ -90,7 +106,9 @@ ja = Locale(
     contact_info="連絡先情報",
     gallery="ギャラリー",
     have_a_question="質問はありますか？",
-    map="地図"
+    map="地図",
+    mission="我々の使命",
+    submit="送信"
 )
 
 ms = Locale(
@@ -98,7 +116,9 @@ ms = Locale(
     contact_info="Maklumat Hubungan",
     gallery="Galeri",
     have_a_question="Ada pertanyaan?",
-    map="Peta"
+    map="Peta",
+    mission="misi kita",
+    submit="Hantarkan"
 )
 
 pt = Locale(
@@ -106,7 +126,9 @@ pt = Locale(
     contact_info="Informações de Contato",
     gallery="Galeria",
     have_a_question="Tem alguma pergunta?",
-    map="Mapa"
+    map="Mapa",
+    mission="nossa missão",
+    submit="Enviar"
 )
 
 es = Locale(
@@ -114,7 +136,9 @@ es = Locale(
     contact_info="Información de contacto",
     gallery="Galería",
     have_a_question="¿Tienes alguna pregunta?",
-    map="Mapa"
+    map="Mapa",
+    mission="Nuestra misión",
+    submit="Entregar"
 )
 
 tl = Locale(
@@ -122,7 +146,9 @@ tl = Locale(
     contact_info="Impormasyon sa Pakikipag-ugnayan",
     gallery="Galeriya",
     have_a_question="May tanong ka ba?",
-    map="Mapa"
+    map="Mapa",
+    mission="Ang aming misyon",
+    submit="Ipasa"
 )
 
 vi = Locale(
@@ -130,7 +156,9 @@ vi = Locale(
     contact_info="Thông tin liên hệ",
     gallery="Triển lãm ảnh",
     have_a_question="Có câu hỏi không?",
-    map="Bản đồ"
+    map="Bản đồ",
+    mission="Nhiệm vụ của chúng ta",
+    submit="Nộp"
 )
 
 language_locale = {

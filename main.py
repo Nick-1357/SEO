@@ -187,7 +187,13 @@ def update_json(data1):
                             "file_name": "",
                             "alt": ""
                         }
-                    ]
+                    ],
+                    "button": [
+                        {
+                            "name": "Submit",
+                            "style": []
+                        }
+                    ],
                 }
             },
             {
@@ -350,6 +356,7 @@ def update_json(data1):
     data2['layouts'][4]['value']['h2']['html'] = language_state.have_a_question
     data2['layouts'][4]['value']['paragraph']['value'] = language_state.contact_us_today
     data2['layouts'][4]['value']['paragraph']['html'] = language_state.contact_us_today
+    data2['layouts'][4]['value']['button'][0]['name'] = language_state.submit
     data2["layouts"][4]['value']['images']: list = [
         {
             "file_name": data1['contactus']['image'],
@@ -368,8 +375,8 @@ def update_json(data1):
     data2['layouts'][6]['value']['images'] = [{'file_name': img, 'alt': ''} for img in data1['gallery']['image']]
 
     # Layout_right_image_1
-    data2["layouts"][7]['value']['h2']['html'] = data1['mission']['h2']
-    data2["layouts"][7]['value']['h2']['value'] = data1['mission']['h2']
+    data2["layouts"][7]['value']['h2']['html'] = language_state.mission
+    data2["layouts"][7]['value']['h2']['value'] = language_state.mission
     data2["layouts"][7]['value']['paragraph']['value'] = data1['mission']['p']
     data2["layouts"][7]['value']['paragraph']['html'] = data1['mission']['p']
     data2["layouts"][7]['value']['images']: list = [
