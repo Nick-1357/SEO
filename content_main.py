@@ -398,7 +398,7 @@ def generate_content(company_name: str,
                 },...
             ]
         },
-        "blog2": {
+        "mission": {
                 "h2": "Our Mission",
                 "p": "..."
         }

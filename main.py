@@ -73,6 +73,7 @@ def update_json(data1):
             {
                 "layout": "Layout_header_1",
                 "value": {
+                    "description": "header",
                     "style": [],
                     "images": [
                         {
@@ -86,6 +87,7 @@ def update_json(data1):
             {
                 "layout": "Layout_centered_image_1",
                 "value": {
+                    "description": "banner",
                     "style": [],
                     "position": 1,
                     "button": [
@@ -116,6 +118,7 @@ def update_json(data1):
             {
                 "layout": "Layout_right_image_1",
                 "value": {
+                    "description": "about",
                     "style": [],
                     "position": 2,
                     "h2": {
@@ -139,6 +142,7 @@ def update_json(data1):
             {
                 "layout": "Layout_three_blogs_1",
                 "value": {
+                    "description": "blogs",
                     "style": [],
                     "position": 3,
                     "h2": {
@@ -165,6 +169,7 @@ def update_json(data1):
             {
                 "layout": "Layout_contact_us_1",
                 "value": {
+                    "description": "contact",
                     "style": [],
                     "position": 4,
                     "h2": {
@@ -188,6 +193,7 @@ def update_json(data1):
             {
                 "layout": "Layout_frequently_asked_questions_1",
                 "value": {
+                    "description": "faq",
                     "style": [],
                     "position": 5,
                     "h2": {
@@ -214,6 +220,7 @@ def update_json(data1):
             {
                 "layout": "Layout_gallery_1",
                 "value": {
+                    "description": "gallery",
                     "style": [],
                     "h2": {
                         "value": "Gallery",
@@ -230,8 +237,9 @@ def update_json(data1):
                 }
             },
             {
-                "layout": "Layout_right_image_8",
+                "layout": "Layout_right_image_1",
                 "value": {
+                    "description": "mission",
                     "style": [],
                     "position": 7,
                     "h2": {
@@ -255,6 +263,7 @@ def update_json(data1):
             {
                 "layout": "Layout_map_1",
                 "value": {
+                    "description": "map",
                     "style": [],
                     "position": 8,
                     "h2": {
@@ -268,6 +277,7 @@ def update_json(data1):
             {
                 "layout": "Layout_footer_1",
                 "value": {
+                    "description": "footer",
                     "style": [],
                     "position": 9,
                     "h2": {
@@ -357,14 +367,14 @@ def update_json(data1):
     data2['layouts'][6]['value']['h2']['html'] = language_state.gallery
     data2['layouts'][6]['value']['images'] = [{'file_name': img, 'alt': ''} for img in data1['gallery']['image']]
 
-    # Layout_right_image_8
-    data2["layouts"][7]['value']['h2']['html'] = data1['blog2']['h2']
-    data2["layouts"][7]['value']['h2']['value'] = data1['blog2']['h2']
-    data2["layouts"][7]['value']['paragraph']['value'] = data1['blog2']['p']
-    data2["layouts"][7]['value']['paragraph']['html'] = data1['blog2']['p']
+    # Layout_right_image_1
+    data2["layouts"][7]['value']['h2']['html'] = data1['mission']['h2']
+    data2["layouts"][7]['value']['h2']['value'] = data1['mission']['h2']
+    data2["layouts"][7]['value']['paragraph']['value'] = data1['mission']['p']
+    data2["layouts"][7]['value']['paragraph']['html'] = data1['mission']['p']
     data2["layouts"][7]['value']['images']: list = [
         {
-            "file_name": data1['blog2']['image'],
+            "file_name": data1['mission']['image'],
             "alt": ""
         }
     ]
