@@ -256,7 +256,7 @@ window.onload = function() {
         // //     </div>`;
         // // });
 
-        // // document.getElementById('galleryheader').innerHTML = `${gallery.h2}`;
+        document.getElementById('galleryheader').innerHTML = `${gallery.h2}`;
 
         gallery.image.forEach(img => {
             document.getElementById('gallery').innerHTML += `
