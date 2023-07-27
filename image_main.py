@@ -43,7 +43,7 @@ elif memory_dir == "local":
 class Message(TypedDict):
     role: str
     content: str
-    
+
 # ==================================================================================================
 # API Interaction
 # ==================================================================================================
@@ -189,7 +189,7 @@ def url_to_jpg(url: str | bytes, section: str) -> str:
                            Key=s3_path)
             return s3_path
         return filename
-    
+
     except Exception as e:
         print(f"An error occurred while trying to download the image: {e}")
         return None
@@ -197,6 +197,16 @@ def url_to_jpg(url: str | bytes, section: str) -> str:
 # =======================================================================================================================
 # Image Generation
 # =======================================================================================================================
+
+
+def test_image(*args, **kwargs) -> bytes:
+
+    img = Image.open("content/about_20230727123625117880.jpg")
+    byteImgIO = io.BytesIO()
+    img.save(byteImgIO, format="PNG")
+    byte_img = byteImgIO.getvalue()
+
+    return byte_img
 
 
 def get_image(method_name,
@@ -316,7 +326,7 @@ def generate_logo(method_name,
     
     @return The path to the generated logo or None if none
     """
-    
+
     print("Generating Logo")
     prompt = f"""
     Describe the details and design of a logo for the company that provides {topic} in the {industry} industry.
@@ -335,7 +345,7 @@ def generate_logo(method_name,
     "A 2d, symmetrical, flat logo for a blockchain company that is sleek and simple. It should be of black shade and should be subtle."/ 
     Write it in a few sentences.
     """
-    
+
     prompt_messages: List[Message] = [
         {"role": "system",
          "content": "You are an web designer with the objective to create a stunning and unique logo to attract the attention of people."},
@@ -412,12 +422,12 @@ def generate_logo(method_name,
     image_jpg = url_to_jpg(imageurl, section="logo")
     # image_base = url_to_base64(imageurl)
     return image_jpg
-    
-    
+
+
 def generate_gallery_images(method_name,
                             keyword: str,
                             section: str,
-                            topic: str, 
+                            topic: str,
                             industry: str) -> List[str]:
     """
     Generate gallery images for a company. This is a thread safe function to call get_image in parallel
@@ -431,7 +441,7 @@ def generate_gallery_images(method_name,
     @return A list of image ids that were generated from DALL E
     """
     gallery = []
-    
+
     with concurrent.futures.ThreadPoolExecutor() as executor:
         futures = {executor.submit(get_image, method_name, keyword, f"gallery{i}", topic, industry): i for i in range(8)}
 
@@ -463,11 +473,11 @@ def image_generation(topic: str,
             {
                 "image": ""
             },
-        "banner": 
+        "banner":
             {
                 "image": ""
             },
-        "about": 
+        "about":
             {
                 "image": ""
             },
@@ -475,29 +485,32 @@ def image_generation(topic: str,
             {
                 "image": ""
             },
-        "blog2":
+        "mission":
             {
                 "image": ""
             },
-        "gallery": 
+        "gallery":
             {
                 "image": []
             }
-        
+
     }
-    
+
     if image_model == "stabilityai":
         method_name = stabilityai_generate
     elif image_model == "dalle":
         method_name = chat_with_dall_e
+    elif image_model == "none":
+        print("test image")
+        method_name = test_image
     else:
         print("Invalid Model")
         raise NotImplementedError
     image_json["logo"]["image"] = generate_logo(method_name, keyword, "Logo", topic, industry)
     with concurrent.futures.ThreadPoolExecutor() as executor:
         # Start the threads and collect the futures for non-gallery sections
-       
-        futures = {executor.submit(get_image, method_name, keyword, section, topic, industry): section for section in ["banner", "about", "contactus", "blog2"]}
+
+        futures = {executor.submit(get_image, method_name, keyword, section, topic, industry): section for section in ["banner", "about", "contactus", "mission"]}
 
         # Add the gallery futures
 
@@ -512,8 +525,8 @@ def image_generation(topic: str,
                 # Set image_url to the image_json section
                 if image:
                     image_json[section]["image"] = image
-                    
-    image_json["gallery"]["image"] = (generate_gallery_images(method_name, keyword, "gallery", topic, industry))            
-        
+
+    image_json["gallery"]["image"] = (generate_gallery_images(method_name, keyword, "gallery", topic, industry))
+
     print("Images Generated")
     return image_json
