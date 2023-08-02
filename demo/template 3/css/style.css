@@ -438,10 +438,6 @@ a:focus {
 }
 
 .service_section .box .img-box {
-  width: 75px;
-  height: 75px;
-  background-color: #03a7d3;
-  border-radius: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -458,8 +454,7 @@ a:focus {
 
 .service_section .box .img-box img {
   width: 100%;
-  max-width: 45px;
-  max-height: 45px;
+  
 }
 
 .service_section .box .detail-box {
