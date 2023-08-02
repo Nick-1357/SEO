@@ -426,7 +426,7 @@ def generate_content(company_name: str,
         if processjson(content):
             return content
         print("retry generate content...\n\n")
-        return ""
+    return ""
 
 
 def content_generation(company_name: str,
