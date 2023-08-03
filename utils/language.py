@@ -55,7 +55,7 @@ zh = Locale(
     contact_us_today="联系我们",
     contact_info="联系方式",
     gallery="图画",
-    have_a_question="有疑问吗?",
+    have_a_question="欢迎询问详情",
     map="地图",
     mission="我们的任务",
     submit="提交"
@@ -117,7 +117,7 @@ ms = Locale(
     gallery="Galeri",
     have_a_question="Ada pertanyaan?",
     map="Peta",
-    mission="misi kita",
+    mission="misi kami",
     submit="Hantarkan"
 )
 
