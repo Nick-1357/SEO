@@ -153,60 +153,6 @@ window.onload = function() {
             
         });
 
-        // gallery.image.forEach(img => {
-        //     document.getElementById('gallery').innerHTML += `
-        //     <img src="data:image/jpeg;base64,${img}" alt="image.alt"/>
-        //     `;
-        // });
-
-        // document.getElementById('aboutus').innerHTML = `
-        // <section class="bg-lightgray">
-        //     <div class="banner__sidebyside">
-        //         <div class="banner__text">
-        //             <div  data-aos="zoom-in-up" data-aos-anchor-placement="top-center">
-        //                 <h1 class="banner__heading heading-1">${about.h2}</h1>
-        //                 <h5 class="banner_subheading heading-5">${about.p}</h5>
-        //                 <button class="learn-more">About Us</button>
-        //             </div>
-        //         </div>
-        //         <div class="banner__image" data-aos="flip-right" data-aos-anchor-placement="top-center">
-        //             <div class="img-wrapper">
-        //                 <img src="data:image/jpeg;base64,${about.image}" alt="" />
-        //             </div>
-        //         </div>
-        //     </div>
-        //     <!-- <div class="toolbar">Toolbar</div> -->
-        // </section>`;
-
-
-
-        // document.getElementById('about').innerHTML = `<h2>${about.h2}</h2><p>${about.p}</p>`;
-        // ... and so on for all sections of your JSON ...
-
-        // document.getElementById('blogtitle').innerHTML = `${blog.h2}`;
-
-        // blog.post.forEach(post => {
-        //     document.getElementById('blogpost').innerHTML += `
-        //     <div class="cell">
-        //         <div class="first-content">
-        //             <h5 class="heading-5">${post.h3}</h5>
-        //         </div>
-        //         <div class="second-content">
-        //             <p>
-        //                         ${post.p}
-        //             </p>
-        //         </div>
-        //     </div>`;
-        // });
-
-        // document.getElementById('galleryheader').innerHTML = `${gallery.h2}`;
-
-        // gallery.image.forEach(img => {
-        //     document.getElementById('gallery').innerHTML += `
-        //     <img src="data:image/jpeg;base64,${img}" alt="image.alt"/>
-        //     `;
-        // });
-
         document.getElementById('faqtitle').innerHTML = `${faq.h2}`;
 
         faq.question.forEach(q => {
