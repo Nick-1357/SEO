@@ -10,7 +10,7 @@ from pathlib import Path
 from datetime import datetime
 from dotenv import load_dotenv
 from typing import List, Dict, TypedDict
-from .content_main import chat_with_gpt3, retry_with_exponential_backoff
+from content_main import chat_with_gpt3, retry_with_exponential_backoff
 
 
 # ==================================================================================================
