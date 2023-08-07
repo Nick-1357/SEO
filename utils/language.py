@@ -12,7 +12,7 @@ language_decode = {
     "id": "Indonesian",  # indonesian
     "it": "Italian",  # italian
     "ja": "Japanese",  # japanese
-    "ms": "Malay",  # malaysian
+    "ms": "Bahasa Melayu",  # malaysian
     "pt": "Portuguese",  # portuguese
     "es": "Spanish",  # spanish
     "tl": "Tagalog",  # tagalog
@@ -173,7 +173,7 @@ language_locale = {
     "Indonesian": id_,
     "Italian": it,
     "Japanese": ja,
-    "Malay": ms,
+    "Bahasa Melayu": ms,
     "Portuguese": pt,
     "Spanish": es,
     "Tagalog": tl,
