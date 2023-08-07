@@ -246,7 +246,7 @@ def generate_title(company_name: str,
 
     @return The title as a string
     """
-    prompt = f"Suggest 1 SEO optimized headline about '{keyword}' for the company {company_name}"
+    prompt = f"Suggest 1 SEO optimized headline about '{keyword}' for the company {company_name} with a maxmimum of 7 words"
     title = chat_with_gpt3(prompt, temp=0.7, p=0.8)
     title = title.replace('"', '')
     print("Titles Generated")
@@ -347,7 +347,7 @@ def generate_content(company_name: str,
                         "layout": 3,
                         "style": []
                     }...
-                ] (Pick from these: Learn More, Contact Us, Get Started, Sign Up, Subscribe, Shop Now, Book Now, Get Offer, Get Quote, Get Pricing, Get Estimate, Browse Now, Try It Free, Join Now, Download Now, Get Demo, Request Demo, Request Quote, Request Appointment, Request Information, Start Free Trial, Sign Up For Free, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation, Sign Up For Quote, Sign Up For Appointment, Sign Up For Information, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation, Sign Up For Quote, Sign Up For Appointment, Sign Up For Information, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation, Sign Up For Quote, Sign Up For Appointment, Sign Up For Information, Sign Up For Trial, Sign Up For Demo, Sign Up For Consultation,  Sign Up For Quote, Sign Up For Appointment, Sign Up For Information)
+                ] (Pick from these: Learn More, Contact Us, Get Started, Sign Up, Subscribe, Shop Now, Book Now, Get Offer, Get Quote, Get Pricing, Get Estimate, Browse Now, Try It Free, Join Now, Download Now, Get Demo, Request Demo, Request Quote, Request Appointment, Request Information)
         },
         "about": {
                 "h2": "About Us",
