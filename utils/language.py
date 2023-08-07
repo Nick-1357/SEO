@@ -12,7 +12,7 @@ language_decode = {
     "id": "Indonesian",  # indonesian
     "it": "Italian",  # italian
     "ja": "Japanese",  # japanese
-    "ms": "Malaysian",  # malaysian
+    "ms": "Malay",  # malaysian
     "pt": "Portuguese",  # portuguese
     "es": "Spanish",  # spanish
     "tl": "Tagalog",  # tagalog
