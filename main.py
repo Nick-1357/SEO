@@ -5,9 +5,9 @@ import random
 import sys
 from typing import List, Dict, TypedDict
 
-from content_main import get_industry, get_location, generate_long_tail_keywords, generate_title, content_generation, processjson
-from image_main import image_generation
-from utils import language
+from .content_main import get_industry, get_location, generate_long_tail_keywords, generate_title, content_generation, processjson
+from .image_main import image_generation
+from .utils import language
 
 
 memory_dir = os.getenv("MEMORY_DIRECTORY", "local")
