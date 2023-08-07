@@ -173,7 +173,7 @@ language_locale = {
     "Indonesian": id_,
     "Italian": it,
     "Japanese": ja,
-    "Malaysian": ms,
+    "Malay": ms,
     "Portuguese": pt,
     "Spanish": es,
     "Tagalog": tl,
