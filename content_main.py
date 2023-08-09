@@ -51,7 +51,6 @@ def retry_with_exponential_backoff(
                      openai.error.Timeout,
                      openai.error.ServiceUnavailableError,
                      openai.error.APIError,
-                     openai.error.InvalidRequestError,
                      openai.error.APIConnectionError),
 ):
     """Retry a function with exponential backoff."""
@@ -84,6 +83,16 @@ def retry_with_exponential_backoff(
                 # Sleep for the delay
                 print(f"Wait for {round(delay, 2)} seconds.")
                 time.sleep(delay)
+
+            except openai.error.InvalidRequestError as e:
+                print(e)
+                print("args", args)
+                print("kwargs", kwargs)
+
+                # Sleep for the delay
+                print(f"Wait for {round(delay, 2)} seconds.")
+                time.sleep(delay)
+                raise e
 
             # Raise exceptions for any errors not specified
             except Exception as e:

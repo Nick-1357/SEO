@@ -12,7 +12,7 @@ language_decode = {
     "id": "Indonesian",  # indonesian
     "it": "Italian",  # italian
     "ja": "Japanese",  # japanese
-    "ms": "Malay",  # malaysian
+    "ms": "Bahasa Melayu",  # malaysian
     "pt": "Portuguese",  # portuguese
     "es": "Spanish",  # spanish
     "tl": "Tagalog",  # tagalog
@@ -117,7 +117,7 @@ ms = Locale(
     gallery="Galeri",
     have_a_question="Ada pertanyaan?",
     map="Peta",
-    mission="misi kami",
+    mission="Misi kami",
     submit="Hantarkan"
 )
 
@@ -173,7 +173,7 @@ language_locale = {
     "Indonesian": id_,
     "Italian": it,
     "Japanese": ja,
-    "Malaysian": ms,
+    "Bahasa Melayu": ms,
     "Portuguese": pt,
     "Spanish": es,
     "Tagalog": tl,
