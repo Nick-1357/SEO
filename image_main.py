@@ -22,8 +22,8 @@ load_dotenv()
 
 # Get the API key
 openai.api_key = os.getenv("OPENAI_API_KEY", "")
-API_URL = os.getenv("API_URL", "")
-headers = {"Authorization": f"Bearer {os.getenv('STABILITY_KEY')}"}
+HUGGINGFACE_IMAGE_MODEL = os.getenv("HUGGINGFACE_IMAGE_MODEL", "")
+headers = {"Authorization": f"Bearer {os.getenv('HUGGINGFACE_API_TOKEN ')}"}
 image_model = os.getenv("IMAGE_MODEL", "")
 # Use the API key
 
@@ -58,7 +58,7 @@ def query(query_parameters: Dict[str, str]) -> bytes:
      @return The response as a byte string or an empty string
     """
     try:
-        response = requests.post(API_URL, headers=headers, json=query_parameters, timeout=120)
+        response = requests.post(HUGGINGFACE_IMAGE_MODEL, headers=headers, json=query_parameters, timeout=120)
         response.raise_for_status()
         return response.content
     except requests.exceptions.RequestException as e:
@@ -87,13 +87,41 @@ def stabilityai_generate(prompt: str) -> bytes:
 @retry_with_exponential_backoff
 def chat_with_dall_e(messages: str) -> str:
     print("Generating Image...")
-    response = openai.Image.create(
-        prompt=messages,
-        n=1,
-        size="1024x1024",
-    )
-    # print (response)
-    # print (type(response['data'][0]['url']))
+    try:
+        response = openai.Image.create(
+            prompt=messages,
+            n=1,
+            size="256x256",
+        )
+        # print (response)
+        # print (type(response['data'][0]['url']))
+    except openai.error.InvalidRequestError as e:
+        print(e)
+        # rewrite prompt
+        print("Attempt to fix prompt")
+        _ = [
+            {"role": "user", "content": "Identify the subject of this sentence.\n---\nCreative logo of a hotel, Malaysian flag incorporated, steak and wine elements, modern typography, vibrant colors, celebrating Merdeka Day. with no text. No fonts included."},
+            {"role": "system", "content": 'The subject of this sentence is "Creative logo of a hotel"'},
+            {"role": "user", "content": "Identify the subject of this sentence.\n---\n{}".format(messages)}
+        ]
+
+        img_prompt = chat_with_gpt3(messages=_)
+
+        _ = [
+            {"role": "system", "content": "You are a helpful assistant"},
+            {"role": "assistant", "content": img_prompt},
+            {"role": "user", "content": "Generate 1 short paragraph about the detailed description of an image about the subject matter"}
+        ]
+
+        img_prompt = chat_with_gpt3(messages=_)
+        print("New Prompt:\t", img_prompt)
+
+        response = openai.Image.create(
+            prompt=img_prompt,
+            n=1,
+            size="256x256",
+        )
+
     return response['data'][0]['url']
 
 

@@ -117,7 +117,7 @@ ms = Locale(
     gallery="Galeri",
     have_a_question="Ada pertanyaan?",
     map="Peta",
-    mission="misi kami",
+    mission="Misi kami",
     submit="Hantarkan"
 )
 
